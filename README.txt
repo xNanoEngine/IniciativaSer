@@ -1,0 +1,1 @@
+Los archivos template.env, dejarlos como .env
