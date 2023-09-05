@@ -10,6 +10,7 @@ const app = express();
 // Import routes
 import userRoutes from "./routes/users.routes.js";
 import paperRoutes from "./routes/papers.routes.js";
+import documentoRoutes from "./routes/documentos.routes.js";
 
 // Middlewares
 app.use(morgan("dev"));
@@ -27,5 +28,6 @@ app.use(
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/papers", paperRoutes);
+app.use("/api/documentos", documentoRoutes);
 
 export default app;
