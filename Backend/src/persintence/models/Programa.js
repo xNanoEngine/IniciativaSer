@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 
-export const PersonaJuridica = sequelize.define("persona_juridica",{
+export const Programa = sequelize.define("programa",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -10,9 +10,12 @@ export const PersonaJuridica = sequelize.define("persona_juridica",{
     nombre: {
         type: DataTypes.STRING,
     },
-    cantHabitantes: {
-        type: DataTypes.INTEGER,
-    }    
+    descripcion: {
+        type: DataTypes.STRING,
+    },
+    url: {
+        type: DataTypes.STRING,
+    }
 }, {
     timestamps: false,
-});    
+});

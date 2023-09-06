@@ -13,10 +13,10 @@ export const Persona_Natural = sequelize.define(
       type: DataTypes.STRING,
     },
     ig:{
-      type: DataTypes.STRING,
+      type: DataTypes.???,
     },
     sitio_web:{
-      type: DataTypes.STRING,
+      type: DataTypes.???,
     },
     nombre:{
       type: DataTypes.STRING,
@@ -43,4 +43,4 @@ export const Persona_Natural = sequelize.define(
   {
     timestamps: false,
   }
-)
+);
