@@ -13,10 +13,10 @@ export const Persona_Natural = sequelize.define(
       type: DataTypes.STRING,
     },
     ig:{
-      type: DataTypes.???,
+      type: DataTypes.STRING,
     },
     sitio_web:{
-      type: DataTypes.???,
+      type: DataTypes.STRING,
     },
     nombre:{
       type: DataTypes.STRING,
