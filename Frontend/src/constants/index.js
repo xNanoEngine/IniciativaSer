@@ -11,7 +11,17 @@ export const navLinks = [
   },
   {
     title: "Indicadores territoriales",
-    ref: "/usuarios",
+    subLinks: [
+      // Subelementos para "Indicadores territoriales"
+      {
+        title: "Subelemento 1",
+        ref: "/subelemento1",
+      },
+      {
+        title: "Subelemento 2",
+        ref: "/subelemento2",
+      },
+    ],
   },
   {
     title: "Registrar Iniciativa",
@@ -19,7 +29,7 @@ export const navLinks = [
   },
   {
     title: "Iniciar Sesion",
-    ref: "/usuarios",
+    ref: "/login",
   },
   {
     title: "Usuario",

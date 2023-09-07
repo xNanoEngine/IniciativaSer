@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Home, User, Paper, Home2 } from "./components/pages";
+import { Navbar, Home, User, Paper, Home2, Login } from "./components/pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => {
@@ -13,6 +13,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/usuarios" element={<User />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/papers" element={<Paper />} />
           <Route path="/home" element={<Home />} />
         </Routes>

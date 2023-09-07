@@ -8,7 +8,7 @@ const Home = () => {
         {/* Eliminamos el fondo azul */}
 
         <div className="w-full flex justify-between items-center md:flex-row flex-col sm:mb-16 mb-6 relative z-[1] text-center">
-          <h2 className="font-poppins font-semibold xs:text-[48px] text-[40px] text-white xs:leading-[76.8px] leading-[66.8px] w-full">
+          <h2 className="font-poppins font-semibold xs:text-[48px] text-[40px] text-black xs:leading-[76.8px] leading-[66.8px] w-full">
             Hola Mundo!!!!
           </h2>
         </div>
@@ -19,7 +19,7 @@ const Home = () => {
               <a href={media.link}>
                 <img src={media.icon} className="h-[90px]" alt={media.name} />
               </a>
-              <h2 className="font-poppins text-white py-4 text-center">
+              <h2 className="font-poppins text-black py-4 text-center">
                 {media.name}
               </h2>
             </div>
