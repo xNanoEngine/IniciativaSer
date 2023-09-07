@@ -17,7 +17,7 @@ const Home2 = () => {
           <div className="w-2/6">
             <BarraNav />
           </div>
-          <button className="w-1/12 border-cyan-200 bg-slate-400 rounded-lg">
+          <button className="w-1/12 border-cyan-200 bg-[#E1E4EB] rounded-lg">
             boton
           </button>
           <a className="w-2/12 text-[#666666] font-['Syne Bold'] text-base rounded-lg py-2 cursor-pointer">
