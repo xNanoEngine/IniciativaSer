@@ -38,7 +38,7 @@ function Navbar() {
               >
                 {nav.title}
                 <img
-                  src={toggle2 ? down : up}
+                  src={toggle2 ? up : down}
                   alt="subLinksMenu"
                   className="ml-2 w-[20px] h-[20px] object-contain"
                 />
