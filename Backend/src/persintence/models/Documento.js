@@ -6,7 +6,7 @@ import { Comuna } from "./Comuna.js";
 
 
 export const Documento = sequelize.define(
-    "documentos",
+    "documento",
     {
         id:{
             type: DataTypes.INTEGER,
