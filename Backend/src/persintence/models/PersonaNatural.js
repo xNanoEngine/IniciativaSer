@@ -1,8 +1,11 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
+import { Iniciativa } from "./Iniciativa.js";
+import { ambitodominioarea } from "./ambitodominioarea.js";
+import { Documento } from "./Documento.js";
 
-export const Persona_Natural = sequelize.define(
-  "persona_naturals",
+export const PersonaNatural = sequelize.define(
+  "personanatural",
   {
     id:{
       type: DataTypes.INTEGER,
@@ -44,3 +47,9 @@ export const Persona_Natural = sequelize.define(
     timestamps: false,
   }
 );
+
+PersonaNatural.belongsToMany(Iniciativa, {through: 'iniciativa_personanatural'})
+
+PersonaNatural.belongsToMany(ambitodominioarea, {through: 'ambitodominioarea_personanatural'})
+
+PersonaNatural.belongsToMany(Documento, {through: 'documento_personanatural'})

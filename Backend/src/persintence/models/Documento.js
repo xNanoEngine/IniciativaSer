@@ -1,5 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
+import { ambitodominioarea } from "./ambitodominioarea.js";
+import { PersonaNatural } from "./PersonaNatural.js";
+import { Comuna } from "./Comuna.js";
 
 
 export const Documento = sequelize.define(
@@ -33,3 +36,9 @@ export const Documento = sequelize.define(
         timestamps: false,
     }
 );
+
+Documento.belongsToMany(ambitodominioarea, {through: 'documento_ambitodominioarea'})
+
+Documento.belongsToMany(PersonaNatural, {through: 'documento_personanatural'})=
+
+Documento.belongsToMany(Comuna, {through: 'documento_comuna'})

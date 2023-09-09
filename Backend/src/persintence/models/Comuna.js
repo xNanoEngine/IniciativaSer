@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
+import { Documento } from "./Documento.js";
+import { Iniciativa } from "./Iniciativa.js";
 
 export const Comuna = sequelize.define("comuna",{
     id: {
@@ -16,3 +18,7 @@ export const Comuna = sequelize.define("comuna",{
 }, {
     timestamps: false,
 });    
+
+Comuna.belongsToMany(Documento, {through: 'documento_comuna'})
+
+Comuna.belongsToMany(Iniciativa, {through: 'iniciativa_comuna'})
