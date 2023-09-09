@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Programa } from "./Programa.js";
+import { depende_de } from "./depende_de.js";
+import { Iniciativa } from "./Iniciativa.js";
 
 export const PersonaJuridica = sequelize.define("persona_juridica",{
     id: {
@@ -32,6 +34,10 @@ export const PersonaJuridica = sequelize.define("persona_juridica",{
 }, {
     timestamps: false,
 });    
+
+PersonaJuridica.belongsToMany(PersonaJuridica, { through: 'depende_de' , foreignKey: 'id_personajuridicaEncargada', otherKey: 'id_personajuridicaNormal'});
+
+PersonaJuridica.belongsToMany(Iniciativa, {through: 'personajuridica_iniciativa'})
 
 PersonaJuridica.hasMany(Programa, { foreinkey: "personaId", targetId: "id" })
 Programa.belongsTo(PersonaJuridica, { foreinkey: "personaId", targetId: "id" })
