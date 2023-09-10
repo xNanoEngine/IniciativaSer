@@ -11,6 +11,8 @@ const app = express();
 import userRoutes from "./routes/users.routes.js";
 import paperRoutes from "./routes/papers.routes.js";
 import documentoRoutes from "./routes/documentos.routes.js";
+import cuentasRoutes from "./routes/cuentas.routes.js";
+
 
 // Middlewares
 app.use(morgan("dev"));
@@ -29,5 +31,6 @@ app.use(
 app.use("/api/users", userRoutes);
 app.use("/api/papers", paperRoutes);
 app.use("/api/documentos", documentoRoutes);
+app.use("/api/cuentas", cuentasRoutes);
 
 export default app;
