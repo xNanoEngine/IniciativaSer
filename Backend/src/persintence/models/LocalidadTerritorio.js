@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { Iniciativa } from "./Iniciativa.js";
 
 export const Localidad_Territorio = sequelize.define(
   "localidad_territorios",
@@ -22,4 +21,4 @@ export const Localidad_Territorio = sequelize.define(
   }
 );
 
-Localidad_Territorio.belongsToMany(Iniciativa, {through: 'localidadterritorio_iniciativa'})
+

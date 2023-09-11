@@ -38,7 +38,10 @@ export const Documento = sequelize.define(
 );
 
 Documento.belongsToMany(ambitodominioarea, {through: 'documento_ambitodominioarea'})
+ambitodominioarea.belongsToMany(Documento, {through: 'documento_ambitodominioarea'})
 
-Documento.belongsToMany(PersonaNatural, {through: 'documento_personanatural'})=
+Documento.belongsToMany(PersonaNatural, {through: 'documento_personanatural'})
+PersonaNatural.belongsToMany(Documento, {through: 'documento_personanatural'})
 
 Documento.belongsToMany(Comuna, {through: 'documento_comuna'})
+Comuna.belongsToMany(Documento, {through: 'documento_comuna'})

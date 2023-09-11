@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { PersonaJuridica } from "./PersonaJuridica.js";
 import { tipoespaciocultural } from "./TipoEspacioCultural.js";
 
 export const EspacioCultural = sequelize.define("espacio_cultural",{
@@ -25,6 +24,7 @@ export const EspacioCultural = sequelize.define("espacio_cultural",{
     timestamps: false,
 });    
 
-EspacioCultural.belongsToMany(PersonaJuridica, {through: 'espaciocultural_personajuridica'})
+
 
 EspacioCultural.belongsToMany(tipoespaciocultural, {through: 'espaciocultural_tipoespaciocultural'})
+tipoespaciocultural.belongsToMany(EspacioCultural, {through: 'espaciocultural_tipoespaciocultural'})
