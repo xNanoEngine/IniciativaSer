@@ -6,15 +6,28 @@ import { close, icon, menu, down, up } from "../../assets";
 function Navbar() {
   const [active, setActive] = useState(window.location.pathname);
   const [toggle, setToggle] = useState(false);
-  const [toggle2, setToggle2] = useState(false);
-  const [activeSub, setActiveSub] = useState(window.location.pathname);
+  const [activeSub, setActiveSub] = useState(null);
 
+  // Create a state for each submenu
+  const subMenuStates = {};
+  navLinks.forEach((nav) => {
+    if (nav.subLinks) {
+      subMenuStates[nav.ref] = false;
+    }
+  });
+
+  // Function to toggle a submenu
   const handleToggleSub = (navRef) => {
     setActiveSub(activeSub === navRef ? null : navRef);
+
+    // Toggle the submenu state
+    if (subMenuStates.hasOwnProperty(navRef)) {
+      subMenuStates[navRef] = !subMenuStates[navRef];
+    }
   };
 
   return (
-    <nav className="w-full flex py-6 justify-between items-center navbar ">
+    <nav className="w-full flex py-6 justify-between items-center navbar">
       <a href="/">
         <img src={icon} alt="hoobank" className="w-[50px] h-[50px]" />
       </a>
@@ -22,36 +35,42 @@ function Navbar() {
         {navLinks.map((nav, index) => (
           <li
             key={nav.id}
-            className={`font-poppins relative font-normal cursor-pointer text-[16px] ${
+            className={`font-custom_Syne relative font-bold cursor-pointer text-[16px] ${
               active === nav.ref ? "text-[#666666]" : "text-[#666666]"
             } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
           >
             {nav.subLinks ? (
               <a
                 href="#"
-                className="flex flex-row "
+                className="flex flex-row font-[10px] p-4 rounded-md hover:bg-[#F5F4FB] hover:ease-in-out"
                 onClick={(e) => {
-                  e.preventDefault(); // Evitar redirección al hacer clic
+                  e.preventDefault();
                   handleToggleSub(nav.ref);
-                  setToggle2(!toggle2);
                 }}
               >
                 {nav.title}
                 <img
-                  src={toggle2 ? up : down}
+                  src={subMenuStates[nav.ref] ? up : down}
                   alt="subLinksMenu"
-                  className="ml-2 w-[20px] h-[20px] object-contain"
+                  className="ml-2 w-[18px] h-[18px] object-contain"
                 />
               </a>
             ) : (
-              <a href={`${nav.ref}`}>{nav.title}</a>
+              <div className="cursor-default">
+                <a
+                  href={`${nav.ref}`}
+                  className=" hover:text-black hover:underline hover:underline-offset-[24px] hover:decoration-2"
+                >
+                  {nav.title}
+                </a>
+              </div>
             )}
             {nav.subLinks && activeSub === nav.ref && (
-              <ul className="sub-links absolute top-full z-50 mt-2 py-2 px-4 bg-white border border-gray-300 shadow-md rounded-lg">
+              <ul className="sub-links absolute top-full w-full z-50 mt-2 py-2 px-4 bg-white border border-gray-300 shadow-md rounded-lg">
                 {nav.subLinks.map((subLink, subIndex) => (
                   <li
                     key={subIndex}
-                    className={`font-poppins font-normal cursor-pointer text-[16px] ${
+                    className={`font-custom_Syne font-normal cursor-pointer text-[16px] ${
                       activeSub === subLink.ref
                         ? "text-[#666666]"
                         : "text-[#666666]"
@@ -83,7 +102,7 @@ function Navbar() {
             {navLinks.map((nav, index) => (
               <li
                 key={nav.id}
-                className={`font-poppins font-medium cursor-pointer text-[16px] ${
+                className={`font-custom_Syne font-medium cursor-pointer text-[16px] ${
                   active === nav.ref ? "text-[#666666]" : "text-[#666666]"
                 } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
               >
@@ -91,7 +110,7 @@ function Navbar() {
                   <a
                     href="#"
                     onClick={(e) => {
-                      e.preventDefault(); // Evitar redirección al hacer clic
+                      e.preventDefault();
                       handleToggleSub(nav.ref);
                     }}
                   >
@@ -105,7 +124,7 @@ function Navbar() {
                     {nav.subLinks.map((subLink, subIndex) => (
                       <li
                         key={subIndex}
-                        className={`font-poppins font-normal cursor-pointer text-[16px] ${
+                        className={`font-custom_Syne font-normal cursor-pointer text-[16px] ${
                           activeSub === subLink.ref
                             ? "text-[#666666]"
                             : "text-[#666666]"

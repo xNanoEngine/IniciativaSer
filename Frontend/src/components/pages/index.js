@@ -1,4 +1,4 @@
-import Navbar from "./Navbar";
+import Navbar from "../imports/Navbar";
 import Home from "./Home";
 import User from "./User";
 import Paper from "./Paper";

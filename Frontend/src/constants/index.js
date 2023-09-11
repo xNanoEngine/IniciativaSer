@@ -3,14 +3,26 @@ import { facebook, instagram, twitter } from "../assets";
 export const navLinks = [
   {
     title: "Inicio",
-    ref: "/home",
+    ref: "/home", // Rutas
   },
   {
     title: "Busqueda de información",
-    ref: "/usuarios",
+    ref: "buscar", // referencia para el navBar, (No es una ruta)
+    subLinks: [
+      // Subelementos para "Indicadores territoriales"
+      {
+        title: "Búsqueda avanzada",
+        ref: "/avanzada",
+      },
+      {
+        title: "Búsqueda de documentos",
+        ref: "/documentos",
+      },
+    ],
   },
   {
     title: "Indicadores territoriales",
+    ref: "indicadores", // referencia para el navBar, (No es una ruta)
     subLinks: [
       // Subelementos para "Indicadores territoriales"
       {
