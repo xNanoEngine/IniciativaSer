@@ -1,6 +1,13 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Documento } from "./Documento.js";
+import { Programa } from "./Programa.js";
+import { PersonaJuridica } from "./PersonaJuridica.js";
+import { ambitodominioarea } from "./ambitodominioarea.js";
+import { PersonaNatural } from "./PersonaNatural.js";
+import { Comuna } from "./Comuna.js";
+import { Localidad_Territorio } from "./LocalidadTerritorio.js";
+import { Objetivo } from "./Objetivo.js";
 
 export const Iniciativa = sequelize.define("iniciativa",{
     id: {
@@ -45,6 +52,20 @@ export const Iniciativa = sequelize.define("iniciativa",{
 }, {
     timestamps: false,
 });
+
+Iniciativa.belongsToMany(Programa, {through: 'programa_iniciativa'})
+
+Iniciativa.belongsToMany(PersonaJuridica, {through: 'personajuridica_iniciativa'})
+
+Iniciativa.belongsToMany(ambitodominioarea, {through: 'ambitodominioarea_iniciativa'})
+
+Iniciativa.belongsToMany(PersonaNatural, {through: 'iniciativa_personanatural'})
+
+Iniciativa.belongsToMany(Comuna, {through: 'iniciativa_comuna'})
+
+Iniciativa.belongsToMany(Localidad_Territorio, {through: 'localidadterritorio_iniciativa'})
+
+Iniciativa.belongsToMany(Objetivo, {through: 'objetivo_iniciativa'})
 
 Iniciativa.hasMany(Documento, {
     foreinkey: "iniciativaId",
