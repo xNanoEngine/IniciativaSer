@@ -8,7 +8,7 @@ export const espaciocultural_personajuridica = sequelize.define("espaciocultural
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        references: {
+        references: { 
             model: 'espacio_cultural', 
             key: 'id', 
         },

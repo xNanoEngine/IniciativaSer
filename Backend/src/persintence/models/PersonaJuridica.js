@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { Programa } from "./Programa.js";
-import { depende_de } from "./depende_de.js";
+//import { depende_de } from "./depende_de.js";
 import { ambitodominioarea } from "./ambitodominioarea.js";
 import { EspacioCultural } from "./EspacioCultural.js";
 
@@ -37,6 +37,7 @@ export const PersonaJuridica = sequelize.define("persona_juridica",{
 });    
 
 //PersonaJuridica.belongsToMany(PersonaJuridica, { through: 'depende_de' , foreignKey: 'id_personajuridicaEncargada', otherKey: 'id_personajuridicaNormal'});
+PersonaJuridica.belongsToMany(PersonaJuridica, { as: 'Dependencias', through: 'depende_de', foreignKey: 'id_personajuridicaEncargada', otherKey: 'id_personajuridicaNormal' });
 
 PersonaJuridica.belongsToMany(ambitodominioarea, {through: 'personajuridica_ambitodominioarea'})
 ambitodominioarea.belongsToMany(PersonaJuridica, {through: 'personajuridica_ambitodominioarea'})
