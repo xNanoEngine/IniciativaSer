@@ -22,6 +22,9 @@ export const documento_comuna = sequelize.define("documento_comuna",{
             key: 'id', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 documento_comuna.belongsTo(Documento, { foreignKey: "documento_id"})

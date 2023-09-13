@@ -34,6 +34,7 @@ export const PersonaJuridica = sequelize.define("persona_juridica",{
     }    
 }, {
     timestamps: false,
+    freezeTableName: true
 });    
 
 //PersonaJuridica.belongsToMany(PersonaJuridica, { through: 'depende_de' , foreignKey: 'id_personajuridicaEncargada', otherKey: 'id_personajuridicaNormal'});

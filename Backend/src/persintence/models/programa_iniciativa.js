@@ -22,6 +22,9 @@ export const programa_iniciativa = sequelize.define("programa_inciativa",{
             key: 'id', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 programa_iniciativa.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})

@@ -44,6 +44,7 @@ export const PersonaNatural = sequelize.define(
   },
   {
     timestamps: false,
+    freezeTableName: true
   }
 );
 

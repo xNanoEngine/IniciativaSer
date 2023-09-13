@@ -19,6 +19,7 @@ export const Programa = sequelize.define("programa",{
     }
 }, {
     timestamps: false,
+    freezeTableName: true
 });
 
 

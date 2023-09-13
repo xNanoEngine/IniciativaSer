@@ -31,9 +31,9 @@ export const Documento = sequelize.define(
         tipo:{
             type: DataTypes.STRING,
         },
-    },
-    {
+    }, {
         timestamps: false,
+        freezeTableName: true
     }
 );
 

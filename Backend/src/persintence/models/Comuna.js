@@ -15,6 +15,7 @@ export const Comuna = sequelize.define("comuna",{
     }    
 }, {
     timestamps: false,
+    freezeTableName: true
 });    
 
 

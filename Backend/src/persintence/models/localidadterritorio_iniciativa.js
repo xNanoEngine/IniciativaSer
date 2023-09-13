@@ -22,6 +22,9 @@ export const localidadterritorio_iniciativa = sequelize.define("localidadterrito
             key: 'id', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 localidadterritorio_iniciativa.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})

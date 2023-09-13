@@ -7,5 +7,6 @@ export const tipoespaciocultural = sequelize.define("tipoespaciocultural",{
     }
 }, {
     timestamps: false,
+    freezeTableName: true
 });    
 

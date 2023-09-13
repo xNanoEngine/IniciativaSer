@@ -22,6 +22,9 @@ export const espaciocultural_personajuridica = sequelize.define("espaciocultural
             key: 'id', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 espaciocultural_personajuridica.belongsTo(EspacioCultural, { foreignKey: "espacio_cultural_id"})

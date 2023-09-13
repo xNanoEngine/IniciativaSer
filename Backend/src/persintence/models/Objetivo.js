@@ -19,6 +19,7 @@ export const Objetivo = sequelize.define("objetivo",{
     },},
     {
     timestamps: false,
+    freezeTableName: true
     }
 );
 

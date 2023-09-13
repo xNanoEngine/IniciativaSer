@@ -8,10 +8,10 @@ export const ambitodominioarea = sequelize.define(
       type: DataTypes.STRING,
       primaryKey: true,
     },
-  },
-  {
+  }, {
     timestamps: false,
-  }
+    freezeTableName: true
+}
 );
 
 

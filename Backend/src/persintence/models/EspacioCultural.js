@@ -22,6 +22,7 @@ export const EspacioCultural = sequelize.define("espacio_cultural",{
     }  
 }, {
     timestamps: false,
+    freezeTableName: true
 });    
 
 

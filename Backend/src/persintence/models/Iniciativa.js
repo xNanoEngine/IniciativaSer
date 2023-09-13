@@ -51,6 +51,7 @@ export const Iniciativa = sequelize.define("iniciativa",{
     
 }, {
     timestamps: false,
+    freezeTableName: true
 });
 
 Iniciativa.belongsToMany(Programa, {through: 'programa_iniciativa'})

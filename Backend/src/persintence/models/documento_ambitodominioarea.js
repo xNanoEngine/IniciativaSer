@@ -22,6 +22,9 @@ export const documento_ambitodominioarea = sequelize.define("documento_ambitodom
             key: 'nombre', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 documento_ambitodominioarea.belongsTo(Documento, { foreignKey: "documento_id"})

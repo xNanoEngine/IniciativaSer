@@ -22,6 +22,9 @@ export const espaciocultural_tipoespaciocultural = sequelize.define("espaciocult
             key: 'tipo', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 espaciocultural_tipoespaciocultural.belongsTo(EspacioCultural, { foreignKey: "espacio_cultural_id"})

@@ -15,10 +15,10 @@ export const Localidad_Territorio = sequelize.define(
     tipo: {
       type: DataTypes.STRING,
     },
-  },
-  {
+  }, {
     timestamps: false,
-  }
+    freezeTableName: true
+}
 );
 
 

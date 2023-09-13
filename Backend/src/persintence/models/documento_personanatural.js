@@ -22,6 +22,9 @@ export const documento_personanatural = sequelize.define("documento_personanatur
             key: 'id', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 documento_personanatural.belongsTo(Documento, { foreignKey: "documento_id"})
