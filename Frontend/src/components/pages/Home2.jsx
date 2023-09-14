@@ -1,42 +1,53 @@
 import React from "react";
 import { socialMedia } from "../../constants";
+import { icon } from "../../assets";
 import BarraNav from "../busqueda/BarraNav";
+import Footer from "../imports/Footer";
 const Home2 = () => {
   return (
-    <div className="h-screen flex flex-col">
-      <section className="sm:py-16 py-6 flex justify-center flex-col bg-slate-100 w-screen border-t-black border-t-2 border-b-black border-b-2">
-        {/* Eliminamos el fondo azul */}
-        <div className="flex justify-center sm:mb-16 mb-6  z-[1] text-center">
-          <h3 className="font-custom_Syne font-bold xs:text-[48px] text-[40px] text-[#1f1f1f] leading-tight">
-            Bienvenido(a) al
-            <br /> Sistema de Información
-            <br /> Cultural de Los Ríos
-          </h3>
-        </div>
-        <div className="flex flex-row justify-center space-x-6 ">
-          <div className="w-2/6">
-            <BarraNav />
+    <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
+      <div className="flex-grow">
+        <section className="sm:py-16 py-6 flex justify-center flex-col bg-slate-100 w-screen border-t-black border-t-2 border-b-black border-b-2">
+          <div className="flex justify-center sm:mb-16 mb-6 z-[1] text-center">
+            <h3 className="title leading-tight">
+              Bienvenido(a) al
+              <br /> Sistema de Información
+              <br /> Cultural de Los Ríos
+            </h3>
           </div>
-          <button className="w-1/12 border-cyan-200 bg-[#E1E4EB] rounded-lg">
-            boton
-          </button>
-          <a className="w-2/12 text-[#666666] font-custom_Syne text-base rounded-lg py-2 cursor-pointer">
-            [+] Búsqueda avanzada
-          </a>
-        </div>
-        {/* <div className="flex flex-wrap sm:justify-start justify-center w-full feedback-container relative z-[1] ">
-          {socialMedia.map((media) => (
-            <div key={media.name} className="px-10">
-              <a href={media.link}>
-                <img src={media.icon} className="h-[90px]" alt={media.name} />
-              </a>
-              <h2 className="font-poppins text-white py-4 text-center">
-                {media.name}
-              </h2>
+          <div className="flex items-center md:items-stretch md:justify-center	flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-6 ">
+            <div className="w-[90%] md:w-2/6">
+              <BarraNav />
             </div>
-          ))}
-        </div> */}
-      </section>
+            <button className="w-1/2 md:w-1/12 border-cyan-200 bg-[#E1E4EB] rounded-lg">
+              boton
+            </button>
+            <a className=" md:w-2/12 text-[#666666] font-custom_Syne text-base rounded-lg py-2 cursor-pointer">
+              [+] Búsqueda avanzada
+            </a>
+          </div>
+        </section>
+        <div className="flex flex-col items-center mt-28 space-y-16">
+          <div className="flex flex-col text-[#1f1f1f] font-custom_Syne space-y-16">
+            <p className="title text-center">Programas SEREMI</p>
+            <p className="text-lg text-center">
+              So I started to walk into the water. I won't lie to you boys, I{" "}
+              <br />
+              was terrified. But I pressed on, and as I made my way past the{" "}
+              <br />
+              breakers a strange calm came over me. I don't know if it was{" "}
+              <br />
+              divine intervention or the kinship of all living things but I tell{" "}
+              <br />
+              you Jerry at that moment, I was a marine biologist. <br />
+            </p>
+          </div>
+          <div>
+            <p>imagenes</p>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };

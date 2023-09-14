@@ -16,6 +16,7 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"],
         custom_Syne: ["./fonts/Syne.ttf"],
       },
+      
     },
     screens: {
       xs: "480px",

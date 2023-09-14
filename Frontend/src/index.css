@@ -3,3 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.title {
+    @apply font-custom_Syne font-bold md:text-[48px] text-[30px] text-[#1f1f1f]
+}

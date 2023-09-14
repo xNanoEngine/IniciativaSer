@@ -3,14 +3,24 @@ import { navLinks } from "../../constants";
 
 import { close, icon, menu, down, up } from "../../assets";
 
-function Navbar() {
+function Navbar({ isAuth }) {
   const [active, setActive] = useState(window.location.pathname);
   const [toggle, setToggle] = useState(false);
   const [activeSub, setActiveSub] = useState(null);
 
+  const filteredLinks = navLinks.filter((nav) => {
+    if (isAuth) {
+      // Si el usuario está logeado, mostrar la opción si isAuth es true
+      return nav.isAuth !== false;
+    } else {
+      // Si el usuario no está logeado, mostrar la opción si isAuth es false o no está definida
+      return nav.isAuth !== true;
+    }
+  });
+
   // Create a state for each submenu
   const subMenuStates = {};
-  navLinks.forEach((nav) => {
+  filteredLinks.forEach((nav) => {
     if (nav.subLinks) {
       subMenuStates[nav.ref] = false;
     }
@@ -32,16 +42,15 @@ function Navbar() {
         <img src={icon} alt="hoobank" className="w-[50px] h-[50px]" />
       </a>
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
-        {navLinks.map((nav, index) => (
+        {filteredLinks.map((nav, index) => (
           <li
             key={nav.id}
             className={`font-custom_Syne relative font-bold cursor-pointer text-[16px] ${
               active === nav.ref ? "text-[#666666]" : "text-[#666666]"
-            } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
+            } ${index === filteredLinks.length - 1 ? "mr-0" : "mr-10"}`}
           >
             {nav.subLinks ? (
               <a
-                href="#"
                 className="flex flex-row font-[10px] p-4 rounded-md hover:bg-[#F5F4FB] hover:ease-in-out"
                 onClick={(e) => {
                   e.preventDefault();
@@ -99,12 +108,12 @@ function Navbar() {
           } p-6 bg-tertiary absolute top-20 right-0 mx-4 my-2 min-w-[140px]  z-10 rounded-xl sidebar`}
         >
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
-            {navLinks.map((nav, index) => (
+            {filteredLinks.map((nav, index) => (
               <li
                 key={nav.id}
                 className={`font-custom_Syne font-medium cursor-pointer text-[16px] ${
                   active === nav.ref ? "text-[#666666]" : "text-[#666666]"
-                } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
+                } ${index === filteredLinks.length - 1 ? "mb-0" : "mb-4"}`}
               >
                 {nav.subLinks ? (
                   <a

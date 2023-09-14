@@ -3,13 +3,12 @@ import { facebook, instagram, twitter } from "../assets";
 export const navLinks = [
   {
     title: "Inicio",
-    ref: "/home", // Rutas
+    ref: "/home",
   },
   {
     title: "Busqueda de información",
-    ref: "buscar", // referencia para el navBar, (No es una ruta)
+    ref: "buscar",
     subLinks: [
-      // Subelementos para "Indicadores territoriales"
       {
         title: "Búsqueda avanzada",
         ref: "/avanzada",
@@ -22,34 +21,56 @@ export const navLinks = [
   },
   {
     title: "Indicadores territoriales",
-    ref: "indicadores", // referencia para el navBar, (No es una ruta)
+    ref: "indicadores",
     subLinks: [
-      // Subelementos para "Indicadores territoriales"
       {
-        title: "Subelemento 1",
-        ref: "/subelemento1",
+        title: "Visor territorial",
+        ref: "/visor",
       },
       {
-        title: "Subelemento 2",
-        ref: "/subelemento2",
+        title: "Estadísticas",
+        ref: "/estadisticas",
       },
     ],
   },
   {
     title: "Registrar Iniciativa",
-    ref: "/usuarios",
+    ref: "/initiative",
+    isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
   },
   {
-    title: "Iniciar Sesion",
+    title: "Iniciar Sesión",
     ref: "/login",
+    isAuth: false, // Esta opción solo se mostrará si el usuario no está logeado
+  },
+  {
+    title: "Mi cuenta",
+    ref: "cuenta",
+    isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
+    subLinks: [
+      {
+        title: "Mis datos",
+        ref: "/subelemento1",
+      },
+      {
+        title: "Mis registros",
+        ref: "/subelemento2",
+      },
+      {
+        title: "Salir",
+        ref: "/logout", // Puedes usar una ruta diferente para cerrar sesión
+      },
+    ],
   },
   {
     title: "Usuario",
     ref: "/usuarios",
+    isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
   },
   {
     title: "Papers",
     ref: "/papers",
+    isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
   },
 ];
 
