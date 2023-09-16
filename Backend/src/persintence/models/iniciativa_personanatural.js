@@ -26,6 +26,9 @@ export const iniciativa_personanatural = sequelize.define("iniciativa_personanat
         type: DataTypes.STRING,
         allowNull: false,
     }
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 iniciativa_personanatural.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})

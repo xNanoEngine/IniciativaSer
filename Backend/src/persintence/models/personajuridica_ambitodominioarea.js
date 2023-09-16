@@ -22,6 +22,9 @@ export const personajuridica_ambitodominioarea = sequelize.define("personajuridi
             key: 'nombre', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 personajuridica_ambitodominioarea.belongsTo(PersonaJuridica, { foreignKey: "persona_juridica_id"})

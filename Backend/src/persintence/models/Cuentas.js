@@ -1,11 +1,9 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { Documento } from "./Documento.js"
+import { Documento } from "./Documento.js";
 
-import bcrypt from 'bcrypt';
-
-
-export  const Cuentas = sequelize.define(
+import bcrypt from "bcrypt";
+export const Cuentas = sequelize.define(
   "cuentas",
   {
     id: {
@@ -23,19 +21,14 @@ export  const Cuentas = sequelize.define(
   {
     timestamps: false,
     freezeTableName: true,
-    
+
     //aplicar hash a la password
-    instanceMethods: {
-        generateHash(password){
-            return bcrypt.hash(password, bcrypt.genSaltSync(8));
-        },
-        validPassword(password) {
-            return bcrypt.compare(password, this.password);
-        }
-    }
   }
 );
 
+Cuentas.prototype.validPassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
 // de esto aun no estoy seguro, asiq lo dejo en models solamente
 Cuentas.hasMany(Documento, {
   foreinkey: "userId",

@@ -22,6 +22,9 @@ export const ambitodominioarea_iniciativa = sequelize.define("ambitodominioarea_
             key: 'nombre', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 ambitodominioarea_iniciativa.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})

@@ -26,6 +26,9 @@ export const personajuridica_iniciativa = sequelize.define("personajuridica_inic
         type: DataTypes.STRING,
         allowNull: false
     }
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 personajuridica_iniciativa.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})

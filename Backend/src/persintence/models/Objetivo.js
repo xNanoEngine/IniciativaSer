@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { Iniciativa } from "./Iniciativa.js";
+
 
 export const Objetivo = sequelize.define("objetivo",{
     id: {
@@ -19,7 +19,8 @@ export const Objetivo = sequelize.define("objetivo",{
     },},
     {
     timestamps: false,
+    freezeTableName: true
     }
 );
 
-Objetivo.belongsToMany(Iniciativa, {through: 'objetivo_iniciativa'})
+

@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { EspacioCultural } from "./EspacioCultural.js";
 
 export const tipoespaciocultural = sequelize.define("tipoespaciocultural",{
     tipo: {
@@ -8,6 +7,6 @@ export const tipoespaciocultural = sequelize.define("tipoespaciocultural",{
     }
 }, {
     timestamps: false,
+    freezeTableName: true
 });    
 
-tipoespaciocultural.belongsToMany(EspacioCultural, {through: 'espaciocultural_tipoespaciocultural'})

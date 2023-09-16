@@ -8,7 +8,7 @@ export const espaciocultural_personajuridica = sequelize.define("espaciocultural
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        references: {
+        references: { 
             model: 'espacio_cultural', 
             key: 'id', 
         },
@@ -22,6 +22,9 @@ export const espaciocultural_personajuridica = sequelize.define("espaciocultural
             key: 'id', 
         },
     },
+}, {
+    timestamps: false,
+    freezeTableName: true
 });
 
 espaciocultural_personajuridica.belongsTo(EspacioCultural, { foreignKey: "espacio_cultural_id"})

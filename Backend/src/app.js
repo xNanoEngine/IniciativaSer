@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 //init
 dotenv.config();
@@ -12,7 +12,8 @@ import userRoutes from "./routes/users.routes.js";
 import paperRoutes from "./routes/papers.routes.js";
 import documentoRoutes from "./routes/documentos.routes.js";
 import cuentasRoutes from "./routes/cuentas.routes.js";
-
+import iniciativaRoutes from "./routes/iniciativasRoutes.js";
+import logginRoutes from "./routes/loggin.routes.js";
 
 // Middlewares
 app.use(morgan("dev"));
@@ -32,5 +33,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/papers", paperRoutes);
 app.use("/api/documentos", documentoRoutes);
 app.use("/api/cuentas", cuentasRoutes);
+app.use("/api/iniciativas", iniciativaRoutes);
+app.use("/api/login", logginRoutes);
 
 export default app;

@@ -1,8 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { Iniciativa } from "./Iniciativa.js";
 import { ambitodominioarea } from "./ambitodominioarea.js";
-import { Documento } from "./Documento.js";
+
 
 export const PersonaNatural = sequelize.define(
   "personanatural",
@@ -45,11 +44,11 @@ export const PersonaNatural = sequelize.define(
   },
   {
     timestamps: false,
+    freezeTableName: true
   }
 );
 
-PersonaNatural.belongsToMany(Iniciativa, {through: 'iniciativa_personanatural'})
-
 PersonaNatural.belongsToMany(ambitodominioarea, {through: 'ambitodominioarea_personanatural'})
+ambitodominioarea.belongsToMany(PersonaNatural, {through: 'ambitodominioarea_personanatural'})
 
-PersonaNatural.belongsToMany(Documento, {through: 'documento_personanatural'})
+

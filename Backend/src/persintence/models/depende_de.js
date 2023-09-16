@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { PersonaJuridica } from "./Comuna.js";
+import { PersonaJuridica } from "./PersonaJuridica.js";
+import { PersonaJuridica } from "./PersonaJuridica.js";
 
 export const depende_de = sequelize.define("depende_de",{
     id_personajuridicaEncargada: {
@@ -23,5 +24,5 @@ export const depende_de = sequelize.define("depende_de",{
     },
 });
 
-depende_de.belongsTo(PersonaJuridica, { foreignKey: "id_personajuridicaEncargada"})
-depende_de.belongsTo(PersonaJuridica, { foreignKey: "id_personajuridicaNormal"})
+//depende_de.belongsTo(PersonaJuridica, { foreignKey: "id_personajuridicaEncargada"})
+//depende_de.belongsTo(PersonaJuridica, { foreignKey: "id_personajuridicaNormal"})
