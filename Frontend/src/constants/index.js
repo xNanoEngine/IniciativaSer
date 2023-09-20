@@ -34,7 +34,7 @@ export const navLinks = [
     ],
   },
   {
-    title: "Registrar Iniciativa",
+    title: "Registrar Información",
     ref: "/initiative",
     isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
   },
@@ -61,16 +61,6 @@ export const navLinks = [
         ref: "/logout", // Puedes usar una ruta diferente para cerrar sesión
       },
     ],
-  },
-  {
-    title: "Usuario",
-    ref: "/usuarios",
-    isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
-  },
-  {
-    title: "Papers",
-    ref: "/papers",
-    isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
   },
 ];
 

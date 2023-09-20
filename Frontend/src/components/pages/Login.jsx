@@ -19,9 +19,7 @@ const Login = () => {
           </div>
           <div className="flex flex-col my-10 mx-10 md:mx-60 md:my-28">
             <div className="text-left border-b-black border-b-2">
-              <h3 className="font-['Syne Bold'] mb-8 font-bold md:text-[48px] text-[30px] text-[#1f1f1f] leading-tight">
-                Iniciar Sesión
-              </h3>
+              <h1 className="mb-8 leading-tight">Iniciar Sesión</h1>
             </div>
             <div className="flex flex-col mt-8 space-y-6 ">
               <LoginForm />

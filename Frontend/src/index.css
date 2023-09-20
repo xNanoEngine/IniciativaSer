@@ -4,6 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
-.title {
-    @apply font-custom_Syne font-bold md:text-[48px] text-[30px] text-[#1f1f1f]
+@layer base {
+    h1 {
+      @apply font-custom_Syne font-bold md:text-[48px] text-[30px] text-[#1f1f1f];
+    }
+    
+}
+
+.initiativeButton {
+  @apply bg-[#2D3648] text-white text-lg font-custom_Syne font-bold justify-start border-black border-2 rounded-md text-left p-6;
+}
+.initiativeContainer {
+  @apply  bg-slate-100 rounded-sm pb-4;
 }

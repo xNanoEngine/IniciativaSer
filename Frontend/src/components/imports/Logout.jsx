@@ -6,6 +6,7 @@ const Logout = ({ isOpen, onClose }) => {
     localStorage.removeItem("token");
     // Cierra el modal de Logout
     onClose();
+    window.location.href = "/home";
     window.location.reload();
     // Recargar la página o redirigir a la página de inicio de sesión, según tu lógica
     // window.location.reload(); // Descomenta esta línea si deseas recargar la página
@@ -21,7 +22,7 @@ const Logout = ({ isOpen, onClose }) => {
                 <h2 className="text-lg font-semibold">
                   ¿Estás seguro de que deseas cerrar sesión?
                 </h2>
-                <div className="mt-4 flex justify-end space-x-2">
+                <div className="mt-4 flex justify-end space-x-4">
                   <button
                     className="text-red-500 hover:text-red-600 font-semibold"
                     onClick={onClose}

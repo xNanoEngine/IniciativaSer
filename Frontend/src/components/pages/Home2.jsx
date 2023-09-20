@@ -9,13 +9,13 @@ const Home2 = () => {
       <div className="flex-grow">
         <section className="sm:py-16 py-6 flex justify-center flex-col bg-slate-100 w-screen border-t-black border-t-2 border-b-black border-b-2">
           <div className="flex justify-center sm:mb-16 mb-6 z-[1] text-center">
-            <h3 className="title leading-tight">
+            <h1 className="leading-tight">
               Bienvenido(a) al
               <br /> Sistema de Información
               <br /> Cultural de Los Ríos
-            </h3>
+            </h1>
           </div>
-          <div className="flex items-center md:items-stretch md:justify-center	flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-6 ">
+          <div className="flex items-center md:items-stretch md:justify-center flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-6 ">
             <div className="w-[90%] md:w-2/6">
               <BarraNav />
             </div>
@@ -29,7 +29,7 @@ const Home2 = () => {
         </section>
         <div className="flex flex-col items-center mt-28 space-y-16">
           <div className="flex flex-col text-[#1f1f1f] font-custom_Syne space-y-16">
-            <p className="title text-center">Programas SEREMI</p>
+            <h1 className="text-center">Programas SEREMI</h1>
             <p className="text-lg text-center">
               So I started to walk into the water. I won't lie to you boys, I{" "}
               <br />
