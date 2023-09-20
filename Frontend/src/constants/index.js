@@ -3,7 +3,7 @@ import { facebook, instagram, twitter } from "../assets";
 export const navLinks = [
   {
     title: "Inicio",
-    ref: "/home",
+    ref: "/",
   },
   {
     title: "Busqueda de información",

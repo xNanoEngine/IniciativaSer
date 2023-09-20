@@ -6,6 +6,7 @@ import {
   getAccounts,
   deleteAccount,
   updateAccount,
+  login,
 } from "../controllers/cuentas.controller.js";
 
 const router = Router();
@@ -16,5 +17,5 @@ router.get("/", getAccounts);
 router.put("/:id", updateAccount);
 router.delete("/:id", deleteAccount);
 router.get("/:id", getAccount);
-
+router.post("/login", login);
 export default router;

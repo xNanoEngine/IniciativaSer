@@ -2,6 +2,7 @@ import React from "react";
 import { icon } from "../../assets";
 import LoginForm from "../imports/LoginForm";
 import Footer from "../imports/Footer";
+
 const Login = () => {
   return (
     <div className="flex flex-col min-h-screen">

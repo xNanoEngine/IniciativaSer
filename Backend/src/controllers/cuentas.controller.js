@@ -1,11 +1,12 @@
 import { Cuentas } from "../persintence/models/Cuentas.js";
-
+import { createToken } from "../persintence/repository/authoritation.repository.js";
 import {
   getAccount_,
   getAccouts_,
   deleteAccount_,
   updateAccount_,
   createAccounts_,
+  login_,
 } from "../persintence/repository/cuentas.repository.js";
 
 export function getAccounts(req, res) {
@@ -75,4 +76,16 @@ export function deleteAccount(req, res) {
       res.status(400).json({ status: false, error: error.message });
     }
   );
+}
+export async function login(req, res) {
+  const { username, password } = req.body;
+  const cuenta = { username, password };
+  try {
+    const user = await login_(cuenta);
+    const token = await createToken(user); // Generar un token JWT aquí
+
+    res.status(200).json({ status: true, token: token });
+  } catch (error) {
+    res.status(400).json({ status: false, error: error.message });
+  }
 }

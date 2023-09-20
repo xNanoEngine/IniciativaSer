@@ -71,3 +71,19 @@ export async function deleteAccount_(id) {
     throw new Error("Error...");
   }
 }
+export async function login_(cuenta) {
+  try {
+    // Buscar al usuario en la base de datos por nombre de usuario
+    const { username, password } = cuenta;
+    const user = await Cuentas.findOne({ name: username });
+
+    // Verificar si el usuario existe y la contraseÃ±a es correcta
+    if (!user || !user.validPassword(password)) {
+      throw new Error("Credenciales incorrectas");
+    }
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}

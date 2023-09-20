@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { navLinks } from "../../constants";
-
+import Logout from "../imports/Logout";
 import { close, icon, menu, down, up } from "../../assets";
 
 function Navbar({ isAuth }) {
   const [active, setActive] = useState(window.location.pathname);
   const [toggle, setToggle] = useState(false);
   const [activeSub, setActiveSub] = useState(null);
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false); // Estado para controlar el modal de cierre de sesión
 
   const filteredLinks = navLinks.filter((nav) => {
     if (isAuth) {
@@ -85,7 +86,20 @@ function Navbar({ isAuth }) {
                         : "text-[#666666]"
                     }`}
                   >
-                    <a href={`${subLink.ref}`}>{subLink.title}</a>
+                    {subLink.title === "Salir" ? ( // Comprueba si el subLink es "Salir"
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleToggleSub(nav.ref);
+                          setLogoutModalOpen(true); // Abre el modal de salida
+                        }}
+                      >
+                        {subLink.title}
+                      </a>
+                    ) : (
+                      <a href={`${subLink.ref}`}>{subLink.title}</a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -139,7 +153,20 @@ function Navbar({ isAuth }) {
                             : "text-[#666666]"
                         }`}
                       >
-                        <a href={`${subLink.ref}`}>{subLink.title}</a>
+                        {subLink.title === "Salir" ? ( // Comprueba si el subLink es "Salir"
+                          <a
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleToggleSub(nav.ref);
+                              setLogoutModalOpen(true); // Abre el modal de salida
+                            }}
+                          >
+                            {subLink.title}
+                          </a>
+                        ) : (
+                          <a href={`${subLink.ref}`}>{subLink.title}</a>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -149,6 +176,12 @@ function Navbar({ isAuth }) {
           </ul>
         </div>
       </div>
+      {
+        <Logout
+          isOpen={isLogoutModalOpen}
+          onClose={() => setLogoutModalOpen(false)}
+        />
+      }
     </nav>
   );
 }

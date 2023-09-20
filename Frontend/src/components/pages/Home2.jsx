@@ -1,7 +1,7 @@
 import React from "react";
 import { socialMedia } from "../../constants";
 import { icon } from "../../assets";
-import BarraNav from "../busqueda/BarraNav";
+import BarraNav from "../imports/BarraNav";
 import Footer from "../imports/Footer";
 const Home2 = () => {
   return (

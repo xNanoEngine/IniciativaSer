@@ -1,44 +1,78 @@
 import React, { useEffect } from "react";
-import { Navbar, Home, User, Paper, Home2, Login } from "./components/pages";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {
+  Navbar,
+  Home,
+  User,
+  Paper,
+  Home2,
+  Login,
+  Logout,
+} from "./components/pages";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
 
-const isLoginPage = location.pathname === "/login";
-const isAuth = false; //localStorage.getItem("token");
+const LoginWithRedirect = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isAuth = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (isAuth && location.pathname === "/login") {
+      navigate("/");
+    }
+  }, [navigate, isAuth, location.pathname]);
+
+  if (isAuth) {
+    return null; // No renderizar nada en lugar de <Login />
+  }
+
+  return <Login />;
+};
 
 const ProtectedRoute = ({ element: Component }) => {
   const navigate = useNavigate();
+  const isAuth = localStorage.getItem("token");
 
   useEffect(() => {
     if (!isAuth) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate, isAuth]);
 
   return isAuth ? <Component /> : null;
 };
 
 const App = () => {
+  const isAuth = localStorage.getItem("token");
+  const loginPath = location.pathname === "/login";
   return (
     <div className="bg-[#ffffff]  overflow-hidden">
-      {!isLoginPage && (
-        <div className="sm:px-16 px-6 flex justify-center items-center">
-          <div className="xl:max-w-[1280px] w-full">
-            <Navbar isAuth={isAuth} />
-          </div>
-        </div>
-      )}
       <Router>
+        {(!loginPath || isAuth) && (
+          <div className="sm:px-16 px-6 flex justify-center items-center">
+            <div className="xl:max-w-[1280px] w-full">
+              <Navbar isAuth={isAuth} />
+            </div>
+          </div>
+        )}
         <Routes>
           <Route
             path="/initiative"
             element={<ProtectedRoute element={User} />}
           />
           <Route path="/usuarios" element={<User />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginWithRedirect />} />
           <Route path="/papers" element={<Paper />} />
-          <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home2 />} />
+
+          {/* Redirigir rutas desconocidas a Home */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </div>
