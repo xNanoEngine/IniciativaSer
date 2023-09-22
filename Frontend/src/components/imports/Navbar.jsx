@@ -31,21 +31,22 @@ function Navbar({ isAuth }) {
   const handleToggleSub = (navRef) => {
     setActiveSub(activeSub === navRef ? null : navRef);
 
-    // Toggle the submenu state
+    // Actualiza el estado del submenú
     if (subMenuStates.hasOwnProperty(navRef)) {
       subMenuStates[navRef] = !subMenuStates[navRef];
+      setToggle(!toggle); // Cambia el estado de toggle para forzar una actualización de la vista
     }
   };
 
   return (
-    <nav className="w-full flex py-6 justify-between items-center navbar  ">
+    <nav className="w-full flex py-6 justify-between items-center navbar select-none ">
       <a href="/">
         <img src={icon} alt="hoobank" className="w-[50px] h-[50px]" />
       </a>
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
         {filteredLinks.map((nav, index) => (
           <li
-            key={nav.id}
+            key={nav.ref || index}
             className={`font-custom_Syne relative font-bold cursor-pointer text-[16px] ${
               active === nav.ref ? "text-[#666666]" : "text-[#666666]"
             } ${index === filteredLinks.length - 1 ? "mr-0" : "mr-10"}`}
@@ -60,7 +61,7 @@ function Navbar({ isAuth }) {
               >
                 {nav.title}
                 <img
-                  src={subMenuStates[nav.ref] ? up : down}
+                  src={activeSub === nav.ref ? up : down}
                   alt="subLinksMenu"
                   className="ml-2 w-[18px] h-[18px] object-contain"
                 />
@@ -124,7 +125,7 @@ function Navbar({ isAuth }) {
           <ul className="list-none flex justify-end items-start flex-1 flex-col">
             {filteredLinks.map((nav, index) => (
               <li
-                key={nav.id}
+                key={nav.ref || index}
                 className={`font-custom_Syne font-medium cursor-pointer text-[16px] ${
                   active === nav.ref ? "text-[#666666]" : "text-[#666666]"
                 } ${index === filteredLinks.length - 1 ? "mb-0" : "mb-4"}`}

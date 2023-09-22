@@ -81,3 +81,18 @@ export const socialMedia = [
     icon: twitter,
   },
 ];
+
+export const typeLegalPersonality = [
+  { name: "Institución pública" },
+  { name: "Organización sin fines de lucro" },
+  { name: "Junta de vecinos" },
+  { name: "Organización con fines de lucro" },
+];
+export const personRole = [
+  { name: "Ejecutor" },
+  { name: "Coejecutor" },
+  { name: "Organizador" },
+  { name: "Financista" },
+  { name: "Evaluador" },
+  { name: "Contraparte" },
+];
