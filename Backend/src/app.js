@@ -18,7 +18,10 @@ import programaRoutes from "./routes/programasRoutes.js";
 import ambitodominioareaRoutes from "./routes/ambitodominioareasRoutes.js";
 import comunaRoutes from "./routes/comunasRoutes.js";
 import personanaturalRoutes from "./routes/personanaturalsRoutes.js";
-
+import localidadterritorioRoutes from "./routes/localidadterritorio.routes.js";
+import espacioculturalRoutes from "./routes/espaciocultural.routes.js"
+import tipoespacioculturalRoutes from "./routes/tipoespaciocultural.routes.js";
+import objetivoRoutes from "./routes/objetivo.routes.js"
 
 
 // Middlewares
@@ -45,5 +48,9 @@ app.use("/api/programas", programaRoutes);
 app.use("/api/ambitodominioareas", ambitodominioareaRoutes);
 app.use("/api/comunas", comunaRoutes);
 app.use("/api/personanaturals", personanaturalRoutes);
+app.use("/api/localidadesterritorio", localidadterritorioRoutes)
+app.use("/api/espaciosculturales", espacioculturalRoutes);
+app.use("/api/tiposespaciocultural", tipoespacioculturalRoutes);
+app.use("/api/objetivos", objetivoRoutes);
 
 export default app;
