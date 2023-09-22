@@ -13,6 +13,12 @@ import paperRoutes from "./routes/papers.routes.js";
 import documentoRoutes from "./routes/documentos.routes.js";
 import cuentasRoutes from "./routes/cuentas.routes.js";
 import iniciativaRoutes from "./routes/iniciativasRoutes.js";
+import personajuridicaRoutes from "./routes/personajuridicaRoutes.js";
+import programaRoutes from "./routes/programasRoutes.js";
+import ambitodominioareaRoutes from "./routes/ambitodominioareasRoutes.js";
+import comunaRoutes from "./routes/comunasRoutes.js";
+import personanaturalRoutes from "./routes/personanaturalsRoutes.js";
+
 
 
 // Middlewares
@@ -34,5 +40,10 @@ app.use("/api/papers", paperRoutes);
 app.use("/api/documentos", documentoRoutes);
 app.use("/api/cuentas", cuentasRoutes);
 app.use("/api/iniciativas", iniciativaRoutes);
+app.use("/api/personajuridicas", personajuridicaRoutes);
+app.use("/api/programas", programaRoutes);
+app.use("/api/ambitodominioareas", ambitodominioareaRoutes);
+app.use("/api/comunas", comunaRoutes);
+app.use("/api/personanaturals", personanaturalRoutes);
 
 export default app;
