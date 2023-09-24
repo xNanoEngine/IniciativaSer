@@ -13,12 +13,16 @@
 }
 
 .initiativeButton {
-  @apply w-full bg-[#2D3648] text-white text-lg font-custom_Syne font-bold justify-start border-black border-2 rounded-md text-left p-6;
+  @apply w-full bg-[#2D3648] text-white text-xl flex items-center font-custom_Syne font-bold justify-start border-black border-2 rounded-md text-left p-6;
 }
 .initiativeContainer {
-  @apply  bg-slate-100 rounded-sm py-4;
+  @apply  bg-slate-100 rounded-sm pt-2 pb-4;
 }
 
 .boton{
   @apply border-2 border-black rounded-md hover:shadow-xl px-14 py-2 font-custom_Syne font-bold
+}
+
+.boton2{
+  @apply border-2 border-black rounded-md hover:shadow-md px-6 font-custom_Syne font-bold 
 }

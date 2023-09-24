@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { upWhite, downWhite } from "../../../assets";
 const TargetAudiences = () => {
   const [mostrarSeccion, setMostrarSeccion] = useState(false);
   return (
@@ -9,6 +9,11 @@ const TargetAudiences = () => {
         onClick={() => setMostrarSeccion(!mostrarSeccion)}
       >
         Público Objetivo
+        <img
+          src={mostrarSeccion ? upWhite : downWhite}
+          alt="arrow"
+          className="w-10 h-10 object-contain ml-auto"
+        />
       </button>
       {mostrarSeccion && (
         <div className="initiativeContainer  ">

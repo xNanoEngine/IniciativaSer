@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { up, down } from "../../assets";
-const Combobox = ({ data, label, weight }) => {
+const Combobox = ({ data, label, prop }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -14,7 +14,7 @@ const Combobox = ({ data, label, weight }) => {
   };
 
   return (
-    <div className={`relative py-2 mt-4 ${weight}`}>
+    <div className={`relative ${prop}`}>
       <div
         className="bg-white border border-gray-300 rounded-md p-2 cursor-pointer flex flex-row"
         onClick={toggleDropdown}

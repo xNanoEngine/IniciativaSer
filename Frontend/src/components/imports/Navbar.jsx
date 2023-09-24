@@ -9,6 +9,10 @@ function Navbar({ isAuth }) {
   const [activeSub, setActiveSub] = useState(null);
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false); // Estado para controlar el modal de cierre de sesión
 
+  const handleToggleSub2 = (navRef) => {
+    setActiveSub(activeSub === navRef ? null : navRef);
+  };
+
   const filteredLinks = navLinks.filter((nav) => {
     if (isAuth) {
       // Si el usuario está logeado, mostrar la opción si isAuth es true
@@ -53,18 +57,24 @@ function Navbar({ isAuth }) {
           >
             {nav.subLinks ? (
               <a
-                className="flex flex-row font-[10px] p-4 rounded-md hover:bg-[#F5F4FB] hover:ease-in-out"
+                className={`flex flex-row items-center font-[10px] p-4 space-x-3 rounded-md hover:bg-[#F5F4FB] hover:ease-in-out`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleToggleSub(nav.ref);
                 }}
               >
-                {nav.title}
-                <img
-                  src={activeSub === nav.ref ? up : down}
-                  alt="subLinksMenu"
-                  className="ml-2 w-[18px] h-[18px] object-contain"
-                />
+                <span className="mr-auto">{nav.title}</span>
+                <span
+                  className={`ml-auto float-right transform ${
+                    activeSub === nav.ref ? "scale-y-[-1]" : "scale-y-[1]"
+                  } transition-transform duration-300`}
+                >
+                  <img
+                    src={down}
+                    alt="subLinksMenu"
+                    className="w-4 h-4 object-contain"
+                  />
+                </span>
               </a>
             ) : (
               <div className="cursor-default">
@@ -132,10 +142,9 @@ function Navbar({ isAuth }) {
               >
                 {nav.subLinks ? (
                   <a
-                    href="#"
                     onClick={(e) => {
                       e.preventDefault();
-                      handleToggleSub(nav.ref);
+                      handleToggleSub2(nav.ref);
                     }}
                   >
                     {nav.title}
@@ -156,10 +165,9 @@ function Navbar({ isAuth }) {
                       >
                         {subLink.title === "Salir" ? ( // Comprueba si el subLink es "Salir"
                           <a
-                            href="#"
                             onClick={(e) => {
                               e.preventDefault();
-                              handleToggleSub(nav.ref);
+                              handleToggleSub2(nav.ref);
                               setLogoutModalOpen(true); // Abre el modal de salida
                             }}
                           >
