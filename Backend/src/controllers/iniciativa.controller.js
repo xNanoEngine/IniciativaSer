@@ -43,7 +43,7 @@ export async function createIniciativa(req, res) {
       res.status(400).json({status : false, error2 : error.message })
     })
 
-    res.status(200).json({status : true, data1 : data1, data2: data2})
+    res.status(200).json({status : true, data : data1})
     
   } catch (error) {
     res.status(400).json({status : false, error : error.message })
