@@ -2,6 +2,7 @@ import { Iniciativa } from "../models/Iniciativa.js";
 
 export async function createIniciativa_(iniciativa){
     const { id, idInterno, nombre, tipo, descripcion, componente, presupuesto, formaFinanciamiento, tipoPublicoObjetivo, cantPublico, fechaInicio, fechaFin } = iniciativa
+    
     try {
         const newIniciativa = await Iniciativa.create({
             id,
