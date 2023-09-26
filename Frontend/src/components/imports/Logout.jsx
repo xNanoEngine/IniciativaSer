@@ -2,14 +2,12 @@ import React from "react";
 
 const Logout = ({ isOpen, onClose }) => {
   const handleLogout = () => {
-    // Realiza aquí la lógica de cierre de sesión, por ejemplo, borra el token de autenticación
+    // Remover el token del localStorage
     localStorage.removeItem("token");
     // Cierra el modal de Logout
     onClose();
     window.location.href = "/home";
     window.location.reload();
-    // Recargar la página o redirigir a la página de inicio de sesión, según tu lógica
-    // window.location.reload(); // Descomenta esta línea si deseas recargar la página
   };
   return (
     <>

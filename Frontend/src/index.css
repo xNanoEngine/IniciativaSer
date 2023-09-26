@@ -13,7 +13,7 @@
 }
 
 .initiativeButton {
-  @apply w-full bg-[#2D3648] text-white text-xl flex items-center font-custom_Syne font-bold justify-start border-black border-2 rounded-md text-left p-6;
+  @apply w-full bg-[#2D3648] text-white text-xl flex items-center font-custom_Syne font-bold justify-start rounded-md text-left p-6;
 }
 .initiativeContainer {
   @apply  bg-slate-100 rounded-sm pt-2 pb-4;

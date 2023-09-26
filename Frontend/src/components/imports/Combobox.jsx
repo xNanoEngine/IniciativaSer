@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { up, down } from "../../assets";
-const Combobox = ({ data, label, prop }) => {
+
+const Combobox = ({ data, label, prop, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleOptionClick = (option) => {
     setSelectedOption(option.name);
     setIsOpen(false);
+    onChange(option.name); // Llama a la función de devolución de llamada con la opción seleccionada
   };
 
   const toggleDropdown = () => {
@@ -27,7 +29,7 @@ const Combobox = ({ data, label, prop }) => {
         />
       </div>
       {isOpen && (
-        <div className="absolute bg-white border border-gray-300 mt-2 py-2 rounded-md shadow-lg w-full">
+        <div className="absolute bg-white border border-gray-300 mt-2 py-2 rounded-md shadow-lg w-fit max-h-[200px] overflow-y-auto">
           {data.map((option, index) => (
             <div
               key={option.name || index}

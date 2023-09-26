@@ -17,7 +17,11 @@ const Accordion = (props) => {
           />
         </span>
       </button>
-      {props.isOpen && <div className="initiativeContainer">{props.data}</div>}
+      {props.isOpen && (
+        <div className="initiativeContainer">
+          {React.cloneElement(props.data, { onSubmit: props.onSubmit })}
+        </div>
+      )}
     </div>
   );
 };

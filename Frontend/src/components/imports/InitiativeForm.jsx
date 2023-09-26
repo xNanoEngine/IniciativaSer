@@ -4,6 +4,8 @@ import Accordion from "./InitiativeFormComponents/Accordion";
 
 const InitiativeForm = () => {
   const [accordions, setAccordion] = useState(titles);
+  const [formResults, setFormResults] = useState({});
+
   const toggleAccordion = (accordionkey) => {
     const updatedAccordions = accordions.map((accord) => {
       if (accord.key === accordionkey) {
@@ -15,6 +17,14 @@ const InitiativeForm = () => {
 
     setAccordion(updatedAccordions);
   };
+  const handleFormSubmit = (key, formData) => {
+    setFormResults((prevResults) => ({ ...prevResults, [key]: formData }));
+  };
+
+  const handleSubmitAll = () => {
+    console.log(formResults);
+    // Aquí puedes manejar los resultados de todos los formularios como necesites
+  };
   return (
     <div className="p-4 mt-5 flex flex-col select-none">
       {accordions.map((accordion) => (
@@ -24,10 +34,13 @@ const InitiativeForm = () => {
           data={accordion.data}
           isOpen={accordion.isOpen}
           toggleAccordion={() => toggleAccordion(accordion.key)}
+          onSubmit={(formData) => handleFormSubmit(accordion.key, formData)}
         />
       ))}
       <div className="mt-4 flex justify-center">
-        <button className="boton">Enviar Iniciativa</button>
+        <button onClick={handleSubmitAll} className="boton">
+          Enviar Iniciativa
+        </button>
       </div>
     </div>
   );
