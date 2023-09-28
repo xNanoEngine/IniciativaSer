@@ -5,20 +5,55 @@ import {
   initiativeConcurseLine,
   initiativeType,
 } from "../../../constants";
+import { InitiativeSchema } from "../../validations/InitiativeValidation";
 import Combobox from "../Combobox";
 
 const Initiative = ({ onSubmit }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [errors, setErrors] = useState({});
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    // Agrega las opciones seleccionadas del Combobox a los datos del formulario
-    data.selectedOptions = selectedOptions;
-    onSubmit(data);
+
+    try {
+      // Valida los datos con el esquema Yup importado
+      await InitiativeSchema.validate(
+        {
+          initiativeName: document
+            .getElementById("initiativeName")
+            .value.trim(),
+          initiativeType: selectedOptions.initiativeType,
+          initiativeComponent: selectedOptions.initiativeComponent,
+          initiativeConcurseLine: selectedOptions.initiativeConcurseLine,
+          initiativeArea: selectedOptions.initiativeArea,
+          initiativeDescription: document
+            .getElementById("initiativeDescription")
+            .value.trim(),
+          initiativeInitDate:
+            document.getElementsByName("initiativeInitDate")[0].value,
+          initiativeEndDate:
+            document.getElementsByName("initiativeEndDate")[0].value,
+        },
+        { abortEarly: false }
+      );
+
+      // Si la validación es exitosa, continúa con el envío del formulario
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+      // Agrega las opciones seleccionadas del Combobox a los datos del formulario
+      data.selectedOptions = selectedOptions;
+      onSubmit(data);
+      setErrors({});
+    } catch (validationErrors) {
+      // Manejar el error de validación aquí
+      const newErrors = {};
+      validationErrors.inner.forEach((error) => {
+        newErrors[error.path] = error.message;
+      });
+      setErrors(newErrors); // Establecer los errores de validación
+    }
   };
 
   return (
@@ -31,15 +66,21 @@ const Initiative = ({ onSubmit }) => {
               type="text"
               id="initiativeName"
               name="initiativeName"
-              className="w-80 px-4 py-2 rounded-md border"
+              className={`w-80 px-4 py-2 rounded-md border ${
+                errors.initiativeName ? "border-red-500" : ""
+              }`}
               placeholder="Respuesta..."
             />
+            {errors.initiativeName && (
+              <span className="text-red-500">{errors.initiativeName}</span>
+            )}
           </div>
           <Combobox
             data={initiativeType}
             label={"Tipo de iniciativa"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("initiativeType", option)}
+            error={errors.initiativeType}
           />
           <Combobox
             data={initiativeComponent}
@@ -48,6 +89,7 @@ const Initiative = ({ onSubmit }) => {
             onChange={(option) =>
               handleOptionChange("initiativeComponent", option)
             }
+            error={errors.initiativeComponent}
           />
           <Combobox
             data={initiativeConcurseLine}
@@ -56,12 +98,14 @@ const Initiative = ({ onSubmit }) => {
             onChange={(option) =>
               handleOptionChange("initiativeConcurseLine", option)
             }
+            error={errors.initiativeConcurseLine}
           />
           <Combobox
             data={initiativeArea}
             label={"Disciplina-Área"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("initiativeArea", option)}
+            error={errors.initiativeArea}
           />
         </div>
         <div className="flex flex-col md:ml-6 md:justify-left">
@@ -70,9 +114,14 @@ const Initiative = ({ onSubmit }) => {
             type="text"
             id="initiativeDescription"
             name="initiativeDescription"
-            className="w-3/4 h-44 px-4 py-2 rounded-md border resize-none"
+            className={`w-3/4 h-44 px-4 py-2 rounded-md border resize-none${
+              errors.initiativeDescription ? "border-red-500" : ""
+            }`}
             placeholder="Respuesta..."
-          />{" "}
+          />
+          {errors.initiativeDescription && (
+            <span className="text-red-500">{errors.initiativeDescription}</span>
+          )}
         </div>
         <div className="flex flex-row justify-left space-x-4">
           <div className="flex flex-col md:ml-6 md:justify-left">
@@ -80,16 +129,26 @@ const Initiative = ({ onSubmit }) => {
             <input
               type="date"
               name="initiativeInitDate"
-              className="rounded-md p-2 border border-gray-300"
+              className={`rounded-md p-2 border border-gray-300 ${
+                errors.initiativeInitDate ? "border-red-500" : ""
+              }`}
             />
+            {errors.initiativeInitDate && (
+              <span className="text-red-500">{errors.initiativeInitDate}</span>
+            )}
           </div>
           <div className="flex flex-col md:ml-6 md:justify-left">
             <label className="block ml-1">Fecha de fin:</label>
             <input
               type="date"
               name="initiativeEndDate"
-              className="rounded-md p-2 border border-gray-300"
+              className={`rounded-md p-2 border border-gray-300 ${
+                errors.initiativeEndDate ? "border-red-500" : ""
+              }`}
             />
+            {errors.initiativeEndDate && (
+              <span className="text-red-500">{errors.initiativeEndDate}</span>
+            )}
           </div>
           <button
             type="submit"

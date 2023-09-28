@@ -17,11 +17,15 @@ const Accordion = (props) => {
           />
         </span>
       </button>
-      {props.isOpen && (
-        <div className="initiativeContainer">
-          {React.cloneElement(props.data, { onSubmit: props.onSubmit })}
-        </div>
-      )}
+      <div
+        className={` transition-all duration-300 ease-in-out ${
+          props.isOpen
+            ? "max-h-screen opacity-100 initiativeContainer"
+            : "max-h-0 opacity-0 overflow-hidden"
+        }`}
+      >
+        {React.cloneElement(props.data, { onSubmit: props.onSubmit })}
+      </div>
     </div>
   );
 };

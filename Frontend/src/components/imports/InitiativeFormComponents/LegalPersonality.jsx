@@ -1,19 +1,80 @@
 import React, { useState } from "react";
 import { personRole, typeLegalPersonality } from "../../../constants";
 import Combobox from "../Combobox";
-
+import { LegalPersonalitySchema } from "../../validations/LegalPersonalityValidation";
 const LegalPersonality = ({ onSubmit }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [errors, setErrors] = useState({});
+  const [rut, setRut] = useState("");
+
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
-  const handleSubmit = (event) => {
+
+  const handleRutChange = (event) => {
+    let value = event.target.value;
+
+    // Eliminar cualquier carácter que no sea un dígito o la letra 'k' (para RUTs válidos)
+    value = value.replace(/[^\dkK]/g, "");
+
+    // Formatear el RUT con puntos y guión
+    if (value.length >= 2) {
+      if (value.length <= 8) {
+        // RUT de 8 dígitos (1.234.567-8)
+        value = value.replace(
+          /^(\d{1})(\d{0,3})(\d{0,3})([\dkK])?$/,
+          (_, p1, p2, p3, p4) =>
+            `${p1}${p2 ? "." + p2 : ""}${p3 ? "." + p3 : ""}${
+              p4 ? "-" + p4 : ""
+            }`
+        );
+      } else {
+        // RUT de 9 dígitos (12.345.678-9)
+        value = value.replace(
+          /^(\d{1,2})(\d{0,3})(\d{0,3})([\dkK])?$/,
+          (_, p1, p2, p3, p4) =>
+            `${p1}${p2 ? "." + p2 : ""}${p3 ? "." + p3 : ""}${
+              p4 ? "-" + p4 : ""
+            }`
+        );
+      }
+    }
+
+    // Actualizar el estado del RUT
+    setRut(value);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    // Agrega las opciones seleccionadas del Combobox a los datos del formulario
-    data.selectedOptions = selectedOptions;
-    onSubmit(data);
+
+    try {
+      // Valida los datos con el esquema Yup importado
+      await LegalPersonalitySchema.validate(
+        {
+          name: document.getElementById("name").value.trim(),
+          rut: rut.trim(),
+          typeLegalPersonality: selectedOptions.typeLegalPersonality,
+          juridicPersonRole: selectedOptions.juridicPersonRole,
+        },
+        { abortEarly: false }
+      );
+
+      // Si la validación es exitosa, continúa con el envío del formulario
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+      data.selectedOptions = selectedOptions;
+      data.rut = rut;
+      onSubmit(data);
+      setErrors({});
+    } catch (validationErrors) {
+      // Si hay errores de validación, actualiza el estado de errores
+
+      const newErrors = {};
+      validationErrors.inner.forEach((error) => {
+        newErrors[error.path] = error.message;
+      });
+      setErrors(newErrors);
+    }
   };
 
   return (
@@ -27,6 +88,7 @@ const LegalPersonality = ({ onSubmit }) => {
             onChange={(option) =>
               handleOptionChange("typeLegalPersonality", option)
             }
+            error={errors.typeLegalPersonality}
           />
           <div className="flex flex-col mt-6 md:mt-0">
             <label className="block ml-1">Nombre:</label>
@@ -34,9 +96,12 @@ const LegalPersonality = ({ onSubmit }) => {
               type="text"
               id="name"
               name="name"
-              className="w-72 px-4 py-2 rounded-md border"
+              className={`w-72 px-4 py-2 rounded-md border ${
+                errors.name ? "border-red-500" : ""
+              }`}
               placeholder="Respuesta..."
             />
+            {errors.name && <span className="text-red-500">{errors.name}</span>}
           </div>
           <div className="flex flex-col mt-6 md:mt-0">
             <label className="block ml-1">Rut:</label>
@@ -44,9 +109,13 @@ const LegalPersonality = ({ onSubmit }) => {
               type="text"
               id="rut"
               name="rut"
-              className="w-72 px-4 py-2 rounded-md border"
-              placeholder="Respuesta..."
+              value={rut} // Usar el valor formateado del RUT
+              onChange={handleRutChange}
+              className={`w-72 px-4 py-2 rounded-md border ${
+                errors.rut ? "border-red-500" : ""
+              }`}
             />
+            {errors.rut && <span className="text-red-500">{errors.rut}</span>}
           </div>
           <Combobox
             data={personRole}
@@ -55,6 +124,7 @@ const LegalPersonality = ({ onSubmit }) => {
             onChange={(option) =>
               handleOptionChange("juridicPersonRole", option)
             }
+            error={errors.juridicPersonRole}
           />
           <button
             type="submit"

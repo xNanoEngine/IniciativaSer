@@ -34,4 +34,6 @@ app.use("/api/documentos", documentoRoutes);
 app.use("/api/cuentas", cuentasRoutes);
 app.use("/api/iniciativas", iniciativaRoutes);
 
+// cuenta de prueba
+
 export default app;

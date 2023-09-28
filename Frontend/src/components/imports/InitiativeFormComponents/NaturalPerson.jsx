@@ -1,19 +1,84 @@
 import React, { useState } from "react";
 import { personRole, gender, country } from "../../../constants";
+import { NaturalPersonSchema } from "../../validations/NaturalPersonValidation";
 import Combobox from "../Combobox";
 
 const NaturalPerson = ({ onSubmit }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
+  const [errors, setErrors] = useState({});
+  const [rutPerson, setRut] = useState("");
+
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
-  const handleSubmit = (event) => {
+
+  const handleRutChange = (event) => {
+    let value = event.target.value;
+
+    // Eliminar cualquier carácter que no sea un dígito o la letra 'k' (para RUTs válidos)
+    value = value.replace(/[^\dkK]/g, "");
+
+    // Formatear el RUT con puntos y guión
+    if (value.length >= 2) {
+      if (value.length <= 8) {
+        // RUT de 8 dígitos (1.234.567-8)
+        value = value.replace(
+          /^(\d{1})(\d{0,3})(\d{0,3})([\dkK])?$/,
+          (_, p1, p2, p3, p4) =>
+            `${p1}${p2 ? "." + p2 : ""}${p3 ? "." + p3 : ""}${
+              p4 ? "-" + p4 : ""
+            }`
+        );
+      } else {
+        // RUT de 9 dígitos (12.345.678-9)
+        value = value.replace(
+          /^(\d{1,2})(\d{0,3})(\d{0,3})([\dkK])?$/,
+          (_, p1, p2, p3, p4) =>
+            `${p1}${p2 ? "." + p2 : ""}${p3 ? "." + p3 : ""}${
+              p4 ? "-" + p4 : ""
+            }`
+        );
+      }
+    }
+
+    // Actualizar el estado del RUT
+    setRut(value);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData);
-    // Agrega las opciones seleccionadas del Combobox a los datos del formulario
-    data.selectedOptions = selectedOptions;
-    onSubmit(data);
+
+    try {
+      // Valida los datos con el esquema Yup importado
+      await NaturalPersonSchema.validate(
+        {
+          namePerson: document.getElementById("namePerson").value.trim(),
+          lastNamePerson: document
+            .getElementById("lastNamePerson")
+            .value.trim(),
+          rutPerson: rutPerson.trim(),
+          personRole: selectedOptions.personRole,
+          gender: selectedOptions.gender,
+          country: selectedOptions.country,
+        },
+        { abortEarly: false }
+      );
+
+      // Si la validación es exitosa, continúa con el envío del formulario
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+      data.selectedOptions = selectedOptions;
+      data.rutPerson = rutPerson;
+      onSubmit(data);
+      setErrors({});
+    } catch (validationErrors) {
+      // Si hay errores de validación, actualiza el estado de errores
+      const newErrors = {};
+      validationErrors.inner.forEach((error) => {
+        newErrors[error.path] = error.message;
+      });
+      setErrors(newErrors);
+    }
   };
   return (
     <form onSubmit={handleSubmit} className="initiativeContainer h-full">
@@ -25,19 +90,31 @@ const NaturalPerson = ({ onSubmit }) => {
               type="text"
               id="rutPerson"
               name="rutPerson"
-              className="w-72 px-4 py-2 rounded-md border"
+              value={rutPerson}
+              onChange={handleRutChange}
+              className={`w-72 px-4 py-2 rounded-md border ${
+                errors.rutPerson ? "border-red-500" : ""
+              }`}
               placeholder="Respuesta..."
             />
+            {errors.rutPerson && (
+              <span className="text-red-500">{errors.rutPerson}</span>
+            )}
           </div>
           <div className="flex flex-col mt-6 md:mt-0">
             <label className="block ml-1">Nombre de la persona Natural:</label>
             <input
               type="text"
               id="namePerson"
-              name="rutPerson"
-              className="w-72 px-4 py-2 rounded-md border"
+              name="namePerson"
+              className={`w-72 px-4 py-2 rounded-md border ${
+                errors.namePerson ? "border-red-500" : ""
+              }`}
               placeholder="Respuesta..."
             />
+            {errors.namePerson && (
+              <span className="text-red-500">{errors.namePerson}</span>
+            )}
           </div>
           <div className="flex flex-col mt-6 md:mt-0">
             <label className="block ml-1">
@@ -47,9 +124,14 @@ const NaturalPerson = ({ onSubmit }) => {
               type="text"
               id="lastNamePerson"
               name="lastNamePerson"
-              className="w-72 px-4 py-2 rounded-md border"
+              className={`w-72 px-4 py-2 rounded-md border ${
+                errors.lastNamePerson ? "border-red-500" : ""
+              }`}
               placeholder="Respuesta..."
             />
+            {errors.lastNamePerson && (
+              <span className="text-red-500">{errors.lastNamePerson}</span>
+            )}
           </div>
           <button
             type="submit"
@@ -63,23 +145,22 @@ const NaturalPerson = ({ onSubmit }) => {
             data={personRole}
             label={"Rol Persona Natural"}
             prop={"w-52 mt-6"}
-            onChange={(option) =>
-              handleOptionChange("naturalPersonRole", option)
-            }
+            onChange={(option) => handleOptionChange("personRole", option)}
+            error={errors.personRole}
           />
           <Combobox
             data={gender}
             label={"Genero"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("gender", option)}
+            error={errors.gender}
           />
           <Combobox
             data={country}
-            label={"Rol Persona Natural"}
+            label={"País de origen"}
             prop={"w-52 mt-6"}
-            onChange={(option) =>
-              handleOptionChange("Rol Persona Natural", option)
-            }
+            onChange={(option) => handleOptionChange("country", option)}
+            error={errors.country}
           />
         </div>
       </div>

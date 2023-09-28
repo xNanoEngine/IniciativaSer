@@ -22,9 +22,24 @@ const InitiativeForm = () => {
   };
 
   const handleSubmitAll = () => {
-    console.log(formResults);
-    // Aquí puedes manejar los resultados de todos los formularios como necesites
+    // Verificar si al menos un campo de algún formulario está lleno
+    const anyFormFilled = accordions.some((accordion) => {
+      return Object.values(formResults[accordion.key] || {}).some(
+        (value) => value.trim() !== ""
+      );
+    });
+
+    if (anyFormFilled) {
+      // Al menos un formulario tiene campos llenos, puedes proceder con el envío de la iniciativa
+      console.log(formResults);
+    } else {
+      // Ningún formulario tiene campos llenos
+      alert(
+        "Llene al menos un campo en uno de los formularios antes de enviar la iniciativa."
+      );
+    }
   };
+
   return (
     <div className="p-4 mt-5 flex flex-col select-none">
       {accordions.map((accordion) => (

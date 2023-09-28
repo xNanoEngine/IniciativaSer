@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { up, down } from "../../assets";
+import { down } from "../../assets";
 
-const Combobox = ({ data, label, prop, onChange }) => {
+const Combobox = ({ data, label, prop, onChange, error }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -18,16 +18,25 @@ const Combobox = ({ data, label, prop, onChange }) => {
   return (
     <div className={`relative ${prop}`}>
       <div
-        className="bg-white border border-gray-300 rounded-md p-2 cursor-pointer flex flex-row"
+        className={`bg-white border items-center ${
+          error ? "border-red-500" : "border-gray-300"
+        } rounded-md p-2 cursor-pointer flex flex-row`}
         onClick={toggleDropdown}
       >
         {selectedOption || label}
-        <img
-          src={isOpen ? up : down}
-          alt="subLinksMenu"
-          className="w-[18px] h-[18px] object-contain ml-auto"
-        />
+        <span
+          className={`ml-auto float-right transform ${
+            isOpen ? "scale-y-[-1]" : "scale-y-[1]"
+          } transition-transform duration-300`}
+        >
+          <img
+            src={down}
+            alt="subLinksMenu"
+            className="w-4 h-4 object-contain"
+          />
+        </span>
       </div>
+      {error && <div className="text-red-500 mt-1 text-sm">{error}</div>}
       {isOpen && (
         <div className="absolute bg-white border border-gray-300 mt-2 py-2 rounded-md shadow-lg w-fit max-h-[200px] overflow-y-auto">
           {data.map((option, index) => (
