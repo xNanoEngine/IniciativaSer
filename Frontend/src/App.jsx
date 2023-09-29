@@ -1,12 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Navbar,
-  User,
-  Paper,
-  Home2,
-  Login,
-  Initiative,
-} from "./components/pages";
+import { Navbar, Home2, Login, Initiative } from "./components/pages";
 import {
   BrowserRouter as Router,
   Routes,
@@ -65,10 +58,7 @@ const App = () => {
             path="/initiative"
             element={<ProtectedRoute element={Initiative} />}
           />
-
-          {/* <Route path="/usuarios" element={<User />} /> */}
           <Route path="/login" element={<LoginWithRedirect />} />
-
           <Route path="/" element={<Home2 />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -26,7 +26,7 @@ const TargetAudiences = ({ onSubmit }) => {
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
       data.selectedOptions = selectedOptions;
-      onSubmit(data);
+      onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
       // Si hay errores de validación, actualiza el estado de errores
@@ -35,6 +35,7 @@ const TargetAudiences = ({ onSubmit }) => {
         newErrors[error.path] = error.message;
       });
       setErrors(newErrors);
+      onSubmit({}, false);
     }
   };
   return (

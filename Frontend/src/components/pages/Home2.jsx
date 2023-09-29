@@ -1,6 +1,4 @@
 import React from "react";
-import { socialMedia } from "../../constants";
-import { icon } from "../../assets";
 import BarraNav from "../imports/BarraNav";
 import Footer from "../imports/Footer";
 const Home2 = () => {

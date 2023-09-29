@@ -69,7 +69,7 @@ const NaturalPerson = ({ onSubmit }) => {
       const data = Object.fromEntries(formData);
       data.selectedOptions = selectedOptions;
       data.rutPerson = rutPerson;
-      onSubmit(data);
+      onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
       // Si hay errores de validación, actualiza el estado de errores
@@ -78,6 +78,7 @@ const NaturalPerson = ({ onSubmit }) => {
         newErrors[error.path] = error.message;
       });
       setErrors(newErrors);
+      onSubmit({}, false);
     }
   };
   return (

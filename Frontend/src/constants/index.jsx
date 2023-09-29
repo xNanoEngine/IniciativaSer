@@ -1,4 +1,3 @@
-import { facebook, instagram, twitter } from "../assets";
 import {
   Document,
   CulturalSpace,
@@ -69,24 +68,6 @@ export const navLinks = [
         ref: "/logout", // Puedes usar una ruta diferente para cerrar sesión
       },
     ],
-  },
-];
-
-export const socialMedia = [
-  {
-    name: "Facebook",
-    link: "https://www.facebook.com/",
-    icon: facebook,
-  },
-  {
-    name: "Instagram",
-    link: "https://www.instagram.com/",
-    icon: instagram,
-  },
-  {
-    name: "Twitter",
-    link: "https://twitter.com/",
-    icon: twitter,
   },
 ];
 

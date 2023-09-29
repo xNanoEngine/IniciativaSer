@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { titles } from "../../constants";
 import Accordion from "./InitiativeFormComponents/Accordion";
 
@@ -17,26 +18,25 @@ const InitiativeForm = () => {
 
     setAccordion(updatedAccordions);
   };
-  const handleFormSubmit = (key, formData) => {
+  const handleFormSubmit = (key, formData, val) => {
     setFormResults((prevResults) => ({ ...prevResults, [key]: formData }));
   };
 
   const handleSubmitAll = () => {
-    // Verificar si al menos un campo de algún formulario está lleno
-    const anyFormFilled = accordions.some((accordion) => {
+    // Verificar si TODOS los campos de TODOS los formularios están llenos
+
+    const allFormFilled = accordions.every((accordion) => {
       return Object.values(formResults[accordion.key] || {}).some(
         (value) => value.trim() !== ""
       );
     });
-
-    if (anyFormFilled) {
-      // Al menos un formulario tiene campos llenos, puedes proceder con el envío de la iniciativa
+    if (allFormFilled) {
       console.log(formResults);
+      toast.success("Iniciativa enviada con éxito");
+
+      setFormResults({});
     } else {
-      // Ningún formulario tiene campos llenos
-      alert(
-        "Llene al menos un campo en uno de los formularios antes de enviar la iniciativa."
-      );
+      toast.error("Llene cada formulario antes de enviar la iniciativa");
     }
   };
 
@@ -52,11 +52,13 @@ const InitiativeForm = () => {
           onSubmit={(formData) => handleFormSubmit(accordion.key, formData)}
         />
       ))}
+
       <div className="mt-4 flex justify-center">
         <button onClick={handleSubmitAll} className="boton">
           Enviar Iniciativa
         </button>
       </div>
+      <Toaster />
     </div>
   );
 };

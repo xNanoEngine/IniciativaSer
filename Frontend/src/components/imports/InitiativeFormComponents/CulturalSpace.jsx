@@ -30,7 +30,7 @@ const CulturalSpace = ({ onSubmit }) => {
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
       data.selectedOptions = selectedOptions;
-      onSubmit(data);
+      onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
       // Si hay errores de validación, actualiza el estado de errores
@@ -39,6 +39,7 @@ const CulturalSpace = ({ onSubmit }) => {
         newErrors[error.path] = error.message;
       });
       setErrors(newErrors);
+      onSubmit({}, false);
     }
   };
 
@@ -81,7 +82,7 @@ const CulturalSpace = ({ onSubmit }) => {
             label={"Tipo de espacio cultural"}
             prop={"w-52 mt-6"}
             onChange={(option) =>
-              handleOptionChange("culturalSpaceType", option)
+              handleOptionChange("culturalSpaceTypes", option)
             }
             error={errors.culturalSpaceTypes}
           />

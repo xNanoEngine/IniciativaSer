@@ -23,7 +23,9 @@ const Combobox = ({ data, label, prop, onChange, error }) => {
         } rounded-md p-2 cursor-pointer flex flex-row`}
         onClick={toggleDropdown}
       >
-        {selectedOption || label}
+        <span className="whitespace-nowrap truncate">
+          {selectedOption || label}
+        </span>
         <span
           className={`ml-auto float-right transform ${
             isOpen ? "scale-y-[-1]" : "scale-y-[1]"

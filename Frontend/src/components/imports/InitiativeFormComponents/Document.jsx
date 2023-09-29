@@ -32,7 +32,7 @@ const Document = ({ onSubmit }) => {
       const data = Object.fromEntries(formData);
       // Agrega las opciones seleccionadas del Combobox a los datos del formulario
       data.selectedOptions = selectedOptions;
-      onSubmit(data);
+      onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
       // Manejar el error de validación aquí
@@ -41,6 +41,7 @@ const Document = ({ onSubmit }) => {
         newErrors[error.path] = error.message;
       });
       setErrors(newErrors); // Establecer los errores de validación
+      onSubmit({}, false);
     }
   };
   return (

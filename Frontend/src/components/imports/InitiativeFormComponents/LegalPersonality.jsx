@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { personRole, typeLegalPersonality } from "../../../constants";
 import Combobox from "../Combobox";
 import { LegalPersonalitySchema } from "../../validations/LegalPersonalityValidation";
-const LegalPersonality = ({ onSubmit }) => {
+
+const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [rut, setRut] = useState("");
-
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
@@ -64,16 +64,17 @@ const LegalPersonality = ({ onSubmit }) => {
       const data = Object.fromEntries(formData);
       data.selectedOptions = selectedOptions;
       data.rut = rut;
-      onSubmit(data);
+      onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
       // Si hay errores de validación, actualiza el estado de errores
 
       const newErrors = {};
-      validationErrors.inner.forEach((error) => {
+      validationErrors.inner?.forEach((error) => {
         newErrors[error.path] = error.message;
       });
       setErrors(newErrors);
+      onSubmit({}, false);
     }
   };
 
