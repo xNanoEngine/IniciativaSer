@@ -1,13 +1,35 @@
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
 import { createIniciativa_, getIniciativas_, updateIniciativa_, deleteIniciativa_,getIniciativa_} from "../persintence/repository/iniciativas.repository.js";
 import { createComuna_, getComunas_, updateComuna_, deleteComuna_,getComuna_} from "../persintence/repository/comunas.repository.js";
+import { createambitodominioarea_, getambitodominioareas_, deleteambitodominioarea_,getambitodominioarea_} from "../persintence/repository/ambitodominioareas.repository.js";
+import { createDocumento_, getDocumentos_, updateDocumento_, deleteDocumento_,getDocumento_} from "../persintence/repository/documentos.repository.js";
+import { createEspacioCultural_, getEspaciosCulturales_, updateEspacioCultural_, deleteEspacioCultural_,getEspacioCultural_} from "../persintence/repository/espaciocultural.repository.js";
+import { createLocalidadterritorio_, getLocalidadesterritorio_, updateLocalidadterritorio_, deleteLocalidadterritorio_,getLocalidadterritorio_} from "../persintence/repository/localidadterritorio.repository.js";
+import { createObjetivo_, getObjetivos_, updateObjetivo_, deleteObjetivo_,getObjetivo_} from "../persintence/repository/objetivo.repository.js";
+import { createPersonajuridica_, getPersonajuridicas_, updatePersonajuridica_, deletePersonajuridica_,getPersonajuridica_} from "../persintence/repository/personasjuridicas.repository.js";
+import { createPersonanatural_, getPersonanaturals_, updatePersonanatural_, deletePersonanatural_,getPersonanatural_} from "../persintence/repository/personanaturals.repository.js";
+import { createPrograma_, getProgramas_, updatePrograma_, deletePrograma_,getPrograma_} from "../persintence/repository/programas.repository.js";
+import { createTipoespaciocultural_, getTiposespaciocultural_, updateTipoespaciocultural_, deleteTipoespaciocultural_,getTipoespaciocultural_} from "../persintence/repository/tipoespaciocultural.repository.js";
+
 
 export async function createIniciativa(req, res) {
   let data1;
   let data2;
+
+
   const { Iniciativa_id, Iniciativa_idInterno, Iniciativa_nombre, Iniciativa_tipo, Iniciativa_descripcion, Iniciativa_componente, Iniciativa_presupuesto, Iniciativa_formaFinanciamiento, Iniciativa_tipoPublicoObjetivo, Iniciativa_cantPublico, Iniciativa_fechaInicio, Iniciativa_fechaFin, 
-    Comuna_id, Comuna_nombre, Comuna_cantHabitantes
+    Comuna_id, Comuna_nombre, Comuna_cantHabitantes,
+    AmbitoDominioArea_nombre,
+    Documento_id, Documento_titulo, Documento_fecha_publicacion, Documento_enlace, Documento_materia, Documento_fuente, Documento_tipo,
+    EspacioCultural_id, EspacioCultural_nombre, EspacioCultural_direccion, EspacioCultural_correo, EspacioCultural_telefono,
+    LocalidadTerritorio_id, LocalidadTerritorio_nombre, LocalidadTerritorio_tipo,
+    Objetivo_id, Objetivo_nombre_objetivo, Objetivo_numero, Objetivo_nivel,
+    PersonaJuridica_id, PersonaJuridica_nombre, PersonaJuridica_rut, PersonaJuridica_tipo, PersonaJuridica_url, PersonaJuridica_telefono, PersonaJuridica_IG, PersonaJuridica_correo,
+    PersonaNatural_id, PersonaNatural_rut, PersonaNatural_ig, PersonaNatural_sitio_web, PersonaNatural_nombre, PersonaNatural_correo, PersonaNatural_telefono, PersonaNatural_apellido, PersonaNatural_genero, PersonaNatural_pais_origen, PersonaNatural_pueblo_originario,
+    Programa_id, Programa_nombre, Programa_descripcion, Programa_url,
+    TipoEspacioCultural_tipo
   } = req.body;
+
   const Iniciativa_ = {
     id : Iniciativa_id,
     idInterno : Iniciativa_idInterno,
@@ -28,6 +50,77 @@ export async function createIniciativa(req, res) {
     nombre : Comuna_nombre,
     cantHabitantes : Comuna_cantHabitantes,
   }
+
+  const ambitodominioarea_ = { 
+    nombre : AmbitoDominioArea_nombre,
+  }
+
+  const documento_ = { 
+    id: Documento_id,
+    titulo: Documento_titulo, 
+    fecha_publicacion: Documento_fecha_publicacion, 
+    enlace: Documento_enlace,
+    materia: Documento_materia,
+    fuente: Documento_fuente,
+    tipo: Documento_tipo
+  }
+
+  const espacio_cultural_ = { 
+    id: EspacioCultural_id, 
+    nombre: EspacioCultural_nombre, 
+    direccion: EspacioCultural_direccion,  
+    correo: EspacioCultural_correo,  
+    telefono: EspacioCultural_telefono
+  }
+
+  const localidad_territorio_ = { 
+    id: LocalidadTerritorio_id,
+    nombre: LocalidadTerritorio_nombre,
+    tipo: LocalidadTerritorio_tipo
+  }
+
+  const objetivo_ = { 
+    id: Objetivo_id,
+    nombre_objetivo: Objetivo_nombre_objetivo,
+    numero: Objetivo_numero,
+    nivel: Objetivo_nivel
+  }
+
+  const persona_juridica_ = { 
+    id: PersonaJuridica_id,
+    nombre: PersonaJuridica_nombre, 
+    rut: PersonaJuridica_rut, 
+    tipo: PersonaJuridica_tipo,
+    url: PersonaJuridica_url,
+    telefono: PersonaJuridica_telefono,
+    IG: PersonaJuridica_IG,
+    correo: PersonaJuridica_correo
+  }
+
+  const personanatural_ = { 
+    id: PersonaNatural_id,
+    rut: PersonaNatural_rut, 
+    ig: PersonaNatural_ig,
+    sitio_web: PersonaNatural_sitio_web,
+    nombre: PersonaNatural_nombre,
+    correo: PersonaNatural_correo,
+    telefono: PersonaNatural_telefono,
+    apellido: PersonaNatural_apellido,
+    genero: PersonaNatural_genero,
+    pais_origen: PersonaNatural_pais_origen,
+    pueblo_originario: PersonaNatural_pueblo_originario
+  }
+  const programa_ = { 
+    id: Programa_id,
+    nombre: Programa_nombre, 
+    descripcion: Programa_descripcion,
+    url: Programa_url
+  }
+
+  const tipoespaciocultural_ = { 
+    tipo: TipoEspacioCultural_tipo
+  }
+
   try {
 
     createIniciativa_(Iniciativa_).then(data => {
@@ -38,9 +131,54 @@ export async function createIniciativa(req, res) {
     })
     createComuna_(Comuna_).then(data => {
       data2 = data
-    // res.status(200).json({status : true, data : data})
+      // res.status(200).json({status : true, data : data})
     }, error => {
       res.status(400).json({status : false, error2 : error.message })
+    })
+    createambitodominioarea_(ambitodominioarea_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+      res.status(400).json({status : false, error3 : error.message })
+    })
+    createDocumento_(documento_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+      res.status(400).json({status : false, error4 : error.message })
+    })
+    createEspacioCultural_(espacio_cultural_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+        res.status(400).json({status : false, error5 : error.message })
+    })
+    createLocalidadterritorio_(localidad_territorio_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+        res.status(400).json({status : false, error6 : error.message })
+    })
+    createObjetivo_(objetivo_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+      res.status(400).json({status : false, error7 : error.message })
+    })
+    createPersonajuridica_(persona_juridica_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+      res.status(400).json({status : false, error8 : error.message })
+    })
+    createPersonanatural_(personanatural_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+      res.status(400).json({status : false, error9 : error.message })
+    })
+    createPrograma_(programa_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+      res.status(400).json({status : false, error10 : error.message })
+    })
+    createTipoespaciocultural_(tipoespaciocultural_).then(data => {
+      //res.status(200).json({status : true, data : data})
+    }, error => {
+      res.status(400).json({status : false, error : error.message })
     })
 
     res.status(200).json({status : true, data : data1})
