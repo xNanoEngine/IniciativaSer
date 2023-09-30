@@ -13,7 +13,18 @@ export const InitiativeSchema = Yup.object().shape({
   ),
   initiativeInitDate: Yup.date()
     .typeError("La fecha de inicio es obligatoria")
-    .required("La fecha de inicio es obligatoria"),
+    .required("La fecha de inicio es obligatoria")
+    .test(
+      "initiativeInitDate",
+      "La fecha de inicio debe ser menor que la fecha de fin",
+      function (initDate) {
+        const endDate = this.parent.initiativeEndDate; // Obtenemos la fecha de fin
+        if (!initDate || !endDate) {
+          return true; // Si alguna de las fechas está vacía, no realizamos la validación
+        }
+        return new Date(initDate) < new Date(endDate);
+      }
+    ),
   initiativeEndDate: Yup.date()
     .typeError("La fecha de fin es obligatoria")
     .required("La fecha de fin es obligatoria"),

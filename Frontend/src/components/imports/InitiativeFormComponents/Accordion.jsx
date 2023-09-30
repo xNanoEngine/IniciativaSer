@@ -16,7 +16,7 @@ const Accordion = (props) => {
           {props.title}{" "}
           <CheckIcon
             className={`h-8 w-8 ml-4 transition-all ${
-              isValid //falta
+              isValid
                 ? "traslate-y-100 opacity-100 duration-300"
                 : "traslate-y-0 opacity-0 overflow-hidden"
             }`}
