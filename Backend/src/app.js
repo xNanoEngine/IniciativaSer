@@ -27,7 +27,7 @@ app.use(
 // Routes
 app.use("/api/cuentas", accountsRoutes);
 app.use("/api/iniciativas", initiativesRoutes);
-app.use("/api/authorizationRoutes", authoritationRoutes);
+app.use("/api/authoritation", authoritationRoutes);
 // cuenta de prueba
 
 export default app;

@@ -2,6 +2,7 @@ import { tokenValidator } from "../persintence/repository/authoritation.reposito
 
 export async function tokenVerification(req, res) {
   const { token } = req.body;
+  console.log(token);
   try {
     const decoded = await tokenValidator(token);
     res.status(200).json({ status: true, userId: decoded.userId });
