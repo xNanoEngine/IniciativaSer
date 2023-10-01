@@ -56,7 +56,7 @@ const InitiativeForm = () => {
       Iniciativa_nombre: formResults[3].initiativeName,
       Iniciativa_tipo: formResults[3].selectedOptions.initiativeType,
       Iniciativa_descripcion: formResults[3].initiativeDescription,
-      Iniciativa_componente: formResults[3].initiativeComponent,
+      Iniciativa_componente: formResults[3].selectedOptions.initiativeComponent,
       Iniciativa_fechaInicio: formResults[3].initiativeInitDate,
       Iniciativa_fechaFin: formResults[3].initiativeEndDate,
       Iniciativa_presupuesto: formResults[6].budget,
