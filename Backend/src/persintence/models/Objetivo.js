@@ -15,7 +15,7 @@ export const Objetivo = sequelize.define("objetivo",{
         type: DataTypes.INTEGER,
     },
     nivel: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
     },},
     {
     timestamps: false,

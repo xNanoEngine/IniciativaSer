@@ -7,7 +7,7 @@ import {
   deleteAccount,
   updateAccount,
   login,
-} from "../controllers/cuentas.controller.js";
+} from "../controllers/accounts.controller.js";
 
 const router = Router();
 

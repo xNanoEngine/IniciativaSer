@@ -5,7 +5,7 @@ import {
   updateIniciativa,
   deleteIniciativa,
   getIniciativas,
-} from "../controllers/iniciativa.controller.js";
+} from "../controllers/initiatives.controller.js";
 
 const router = Router();
 

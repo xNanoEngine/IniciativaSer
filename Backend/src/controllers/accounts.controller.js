@@ -7,7 +7,7 @@ import {
   updateAccount_,
   createAccounts_,
   login_,
-} from "../persintence/repository/cuentas.repository.js";
+} from "../persintence/repository/accounts.repository.js";
 
 export function getAccounts(req, res) {
   getAccouts_().then(

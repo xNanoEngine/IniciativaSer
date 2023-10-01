@@ -8,12 +8,9 @@ dotenv.config();
 const app = express();
 
 // Import routes
-import userRoutes from "./routes/users.routes.js";
-import paperRoutes from "./routes/papers.routes.js";
-import documentoRoutes from "./routes/documentos.routes.js";
-import cuentasRoutes from "./routes/cuentas.routes.js";
-import iniciativaRoutes from "./routes/iniciativasRoutes.js";
-
+import accountsRoutes from "./routes/accounts.routes.js";
+import initiativesRoutes from "./routes/initiatives.routes.js";
+import authoritationRoutes from "./routes/authoritation.routes.js";
 // Middlewares
 app.use(morgan("dev"));
 app.use(express.json());
@@ -28,12 +25,9 @@ app.use(
 );
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/papers", paperRoutes);
-app.use("/api/documentos", documentoRoutes);
-app.use("/api/cuentas", cuentasRoutes);
-app.use("/api/iniciativas", iniciativaRoutes);
-
+app.use("/api/cuentas", accountsRoutes);
+app.use("/api/iniciativas", initiativesRoutes);
+app.use("/api/authorizationRoutes", authoritationRoutes);
 // cuenta de prueba
 
 export default app;
