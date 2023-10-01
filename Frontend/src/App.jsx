@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Navbar, Home2, Login, Initiative } from "./components/pages";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,19 +28,6 @@ const LoginWithRedirect = () => {
   return <Login />;
 };
 
-const ProtectedRoute = ({ element: Component }) => {
-  const navigate = useNavigate();
-  const isAuth = localStorage.getItem("token");
-
-  useEffect(() => {
-    if (!isAuth) {
-      navigate("/");
-    }
-  }, [navigate, isAuth]);
-
-  return isAuth ? <Component /> : null;
-};
-
 const App = () => {
   const isAuth = localStorage.getItem("token");
   const loginPath = location.pathname === "/login";
@@ -56,7 +44,11 @@ const App = () => {
         <Routes>
           <Route
             path="/initiative"
-            element={<ProtectedRoute element={Initiative} />}
+            element={
+              <ProtectedRoute>
+                <Initiative />
+              </ProtectedRoute>
+            }
           />
           <Route path="/login" element={<LoginWithRedirect />} />
           <Route path="/" element={<Home2 />} />

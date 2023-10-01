@@ -5,7 +5,7 @@ export async function createToken(user) {
   });
   return token;
 }
-export async function tokenValidator(user) {
+export async function tokenValidator(token) {
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   return decoded;
 }
