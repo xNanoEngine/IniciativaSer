@@ -73,17 +73,26 @@ export async function deleteAccount_(id) {
 }
 export async function login_(cuenta) {
   try {
-    // Buscar al usuario en la base de datos por nombre de usuario
-    const { username, password } = cuenta;
-    const user = await Cuentas.findOne({ name: username });
+    const { name, password } = cuenta;
+    console.log(name);
+    const user = await Cuentas.findOne({ where: { name: name } });
 
-    // Verificar si el usuario existe y la contraseÃ±a es correcta
-    if (!user || !user.validPassword(password)) {
+    if (!user) {
+      console.log("Usuario no encontrado");
+      throw new Error("Credenciales incorrectas");
+    }
+
+    // Compara la contraseña proporcionada con la contraseña encriptada del usuario
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      console.log("Contraseña incorrecta");
       throw new Error("Credenciales incorrectas");
     }
 
     return user;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 }

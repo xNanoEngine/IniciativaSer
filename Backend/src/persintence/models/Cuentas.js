@@ -26,12 +26,9 @@ export const Cuentas = sequelize.define(
   }
 );
 
-Cuentas.prototype.validPassword = function (password) {
-  return bcrypt.compare(password, this.password);
-};
 Cuentas.afterSync(async () => {
   const nombreUsuario = "user";
-  const contraseñaUsuario = "user"; // Asegúrate de aplicar el hash a la contraseña
+  const contraseñaUsuario = "userS3r3mi119";
 
   try {
     // Verifica si ya existe un usuario con el nombre "admin"
@@ -57,7 +54,7 @@ Cuentas.afterSync(async () => {
     );
   }
 });
-// de esto aun no estoy seguro, asiq lo dejo en models solamente
+//de esto aun no estoy seguro, asiq lo dejo en models solamente
 Cuentas.hasMany(Documento, {
   foreinkey: "userId",
   sourceKey: "id",

@@ -78,12 +78,11 @@ export function deleteAccount(req, res) {
   );
 }
 export async function login(req, res) {
-  const { username, password } = req.body;
-  const cuenta = { username, password };
+  const { name, password } = req.body;
+  const cuenta = { name, password };
   try {
     const user = await login_(cuenta);
     const token = await createToken(user); // Generar un token JWT aquí
-
     res.status(200).json({ status: true, token: token });
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
