@@ -1,14 +1,14 @@
 import { ambitodominioarea } from "../models/ambitodominioarea.js";
 
-export async function createambitodominioarea_(ambitodominioarea){
-    const { nombre} = ambitodominioarea
+export async function createambitodominioarea_(ambito_dominio_area){
+    const { nombre } = ambito_dominio_area
     try {
         const newambitodominioarea = await ambitodominioarea.create({
-            nombre
-          });
-          return newambitodominioarea
+            nombre,
+        });
+        return newambitodominioarea;
     } catch (error) {
-        throw new Error("Sucedio un error......")
+        throw new Error("Sucedio un error en ambito dominio area......")
     }
 
 }

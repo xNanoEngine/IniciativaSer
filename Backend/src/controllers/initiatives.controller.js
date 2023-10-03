@@ -1,4 +1,5 @@
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
+import { iniciativa_comuna } from "../persintence/models/iniciativa_comuna.js";
 import {
   createIniciativa_,
   getIniciativas_,
@@ -234,31 +235,36 @@ export async function createIniciativa(req, res) {
   };
 
   try {
-    const promises = [
-      createIniciativa_(Iniciativa_),
-      createComuna_(Comuna_),
-      createambitodominioarea_(ambitodominioarea_),
-      createDocumento_(documento_),
-      createEspacioCultural_(espacio_cultural_),
-      createLocalidadterritorio_(localidad_territorio_),
-      createObjetivo_(objetivo_),
-      createPersonajuridica_(persona_juridica_),
-      createPersonanatural_(personanatural_),
-      createPrograma_(programa_),
-      createTipoespaciocultural_(tipoespaciocultural_),
-    ];
+      const iniciativa = await createIniciativa_(Iniciativa_);
+      const comuna = await createComuna_(Comuna_);
+      const documento = await createDocumento_(documento_);
+      const espacio_cultural = await createEspacioCultural_(espacio_cultural_);
+      const localidad_territorio = await createLocalidadterritorio_(localidad_territorio_);
+      const objetivo = await createObjetivo_(objetivo_);
+      const persona_juridica = await createPersonajuridica_(persona_juridica_);
+      const persona_natural = await createPersonanatural_(personanatural_);
+      const programa = await createPrograma_(programa_);
+      const tipo_espacio_cultural = await createTipoespaciocultural_(tipoespaciocultural_);
+      const ambito_dominio_area = await createambitodominioarea_(ambitodominioarea_);
 
-    Promise.all(promises)
-      .then((data) => {
-        res.status(200).json({ status: true, data });
-      })
-      .catch((error) => {
-        res.status(400).json({ status: false, error: error.message });
-      });
+      // 1 x n
+      await iniciativa.addDocumento(documento);
+      // n x m
+      await persona_natural.addDocumento(documento);
+      await comuna.addDocumento(documento);
+      await persona_juridica.addEspacioCultural(espacio_cultural);
+      await tipo_espacio_cultural.addEspacioCultural(espacio_cultural);
+      await comuna.addIniciativa(iniciativa);
+      await persona_natural.addIniciativa(iniciativa);
+      await localidad_territorio.addIniciativa(iniciativa);
+      await objetivo.addIniciativa(iniciativa);
+      await persona_juridica.addIniciativa(iniciativa);
+      await programa.addIniciativa(iniciativa);
+      
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }
-
+  
   // createComuna_(Comuna_).then(data => {
   //   res.status(200).json({status : true, data : data})
   // }, error => {
