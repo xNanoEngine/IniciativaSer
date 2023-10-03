@@ -6,13 +6,13 @@ import {
   deleteIniciativa,
   getIniciativas,
 } from "../controllers/initiatives.controller.js";
-
+import checkAuth from "../middleware/checkAuth.js";
 const router = Router();
 
 // Routes
-router.post("/", createIniciativa);
-router.put("/:id", updateIniciativa);
-router.delete("/:id", deleteIniciativa);
+router.post("/", checkAuth, createIniciativa);
+router.put("/:id", checkAuth, updateIniciativa);
+router.delete("/:id", checkAuth, deleteIniciativa);
 router.get("/", getIniciativas);
 router.get("/:id", getIniciativa);
 

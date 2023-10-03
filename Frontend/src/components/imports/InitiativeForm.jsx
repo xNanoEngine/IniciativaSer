@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { titles } from "../../constants";
 import clientAxios from "../config/clienteAxios";
+import getConfigAuth from "../../utils/configToken";
 import Accordion from "./InitiativeFormComponents/Accordion";
 
 const InitiativeForm = () => {
@@ -42,6 +43,8 @@ const InitiativeForm = () => {
   };
 
   const handleSubmit = async (e) => {
+    const config = getConfigAuth(localStorage.getItem("token"));
+
     const formData = {
       PersonaJuridica_nombre: formResults[1].name,
       PersonaJuridica_rut: formResults[1].rut,
@@ -76,7 +79,7 @@ const InitiativeForm = () => {
       Documento_tipo: formResults[7].selectedOptions.documentType,
     };
     try {
-      const { data } = await clientAxios.post(`/iniciativas`, formData);
+      const { data } = await clientAxios.post(`/iniciativas`, formData, config);
     } catch (error) {
       console.log(error);
     }

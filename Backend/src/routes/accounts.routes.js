@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import {
   getAccount,
   createAccount,
@@ -8,14 +7,14 @@ import {
   updateAccount,
   login,
 } from "../controllers/accounts.controller.js";
-
+import checkAuth from "../middleware/checkAuth.js";
 const router = Router();
 
 // Routes
-router.post("/", createAccount);
-router.get("/", getAccounts);
-router.put("/:id", updateAccount);
-router.delete("/:id", deleteAccount);
-router.get("/:id", getAccount);
+router.post("/", checkAuth, createAccount);
+router.get("/", checkAuth, getAccounts);
+router.put("/:id", checkAuth, updateAccount);
+router.delete("/:id", checkAuth, deleteAccount);
+router.get("/:id", checkAuth, getAccount);
 router.post("/login", login);
 export default router;
