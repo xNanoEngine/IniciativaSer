@@ -235,36 +235,41 @@ export async function createIniciativa(req, res) {
   };
 
   try {
-      const iniciativa = await createIniciativa_(Iniciativa_);
-      const comuna = await createComuna_(Comuna_);
-      const documento = await createDocumento_(documento_);
-      const espacio_cultural = await createEspacioCultural_(espacio_cultural_);
-      const localidad_territorio = await createLocalidadterritorio_(localidad_territorio_);
-      const objetivo = await createObjetivo_(objetivo_);
-      const persona_juridica = await createPersonajuridica_(persona_juridica_);
-      const persona_natural = await createPersonanatural_(personanatural_);
-      const programa = await createPrograma_(programa_);
-      const tipo_espacio_cultural = await createTipoespaciocultural_(tipoespaciocultural_);
-      const ambito_dominio_area = await createambitodominioarea_(ambitodominioarea_);
+    const iniciativa = await createIniciativa_(Iniciativa_);
+    const comuna = await createComuna_(Comuna_);
+    const documento = await createDocumento_(documento_);
+    const espacio_cultural = await createEspacioCultural_(espacio_cultural_);
+    const localidad_territorio = await createLocalidadterritorio_(
+      localidad_territorio_
+    );
+    const objetivo = await createObjetivo_(objetivo_);
+    const persona_juridica = await createPersonajuridica_(persona_juridica_);
+    const persona_natural = await createPersonanatural_(personanatural_);
+    const programa = await createPrograma_(programa_);
+    const tipo_espacio_cultural = await createTipoespaciocultural_(
+      tipoespaciocultural_
+    );
+    const ambito_dominio_area = await createambitodominioarea_(
+      ambitodominioarea_
+    );
 
-      // 1 x n
-      await iniciativa.addDocumento(documento);
-      // n x m
-      await persona_natural.addDocumento(documento);
-      await comuna.addDocumento(documento);
-      await persona_juridica.addEspacioCultural(espacio_cultural);
-      await tipo_espacio_cultural.addEspacioCultural(espacio_cultural);
-      await comuna.addIniciativa(iniciativa);
-      await persona_natural.addIniciativa(iniciativa);
-      await localidad_territorio.addIniciativa(iniciativa);
-      await objetivo.addIniciativa(iniciativa);
-      await persona_juridica.addIniciativa(iniciativa);
-      await programa.addIniciativa(iniciativa);
-      
+    // 1 x n
+    await iniciativa.addDocumento(documento);
+    // n x m
+    await persona_natural.addDocumento(documento);
+    await comuna.addDocumento(documento);
+    // await persona_juridica.addEspacioCultural(espacio_cultural);
+    // await tipo_espacio_cultural.addEspacioCultural(espacio_cultural);
+    // await comuna.addIniciativa(iniciativa);
+    // await persona_natural.addIniciativa(iniciativa);
+    // await localidad_territorio.addIniciativa(iniciativa);
+    // await objetivo.addIniciativa(iniciativa);
+    // await persona_juridica.addIniciativa(iniciativa);
+    // await programa.addIniciativa(iniciativa);
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }
-  
+
   // createComuna_(Comuna_).then(data => {
   //   res.status(200).json({status : true, data : data})
   // }, error => {

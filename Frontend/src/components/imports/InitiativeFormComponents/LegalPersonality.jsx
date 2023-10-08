@@ -97,7 +97,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
               type="text"
               id="name"
               name="name"
-              className={`w-72 px-4 py-2 rounded-md border ${
+              className={`w-full px-4 py-2 rounded-md border ${
                 errors.name ? "border-red-500" : ""
               }`}
               placeholder="Respuesta..."
@@ -112,7 +112,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
               name="rut"
               value={rut} // Usar el valor formateado del RUT
               onChange={handleRutChange}
-              className={`w-72 px-4 py-2 rounded-md border ${
+              className={`w-full px-4 py-2 rounded-md border ${
                 errors.rut ? "border-red-500" : ""
               }`}
             />

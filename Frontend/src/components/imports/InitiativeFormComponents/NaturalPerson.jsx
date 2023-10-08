@@ -93,7 +93,7 @@ const NaturalPerson = ({ onSubmit }) => {
               name="rutPerson"
               value={rutPerson}
               onChange={handleRutChange}
-              className={`w-72 px-4 py-2 rounded-md border ${
+              className={`w-full px-4 py-2 rounded-md border ${
                 errors.rutPerson ? "border-red-500" : ""
               }`}
               placeholder="Respuesta..."
@@ -108,7 +108,7 @@ const NaturalPerson = ({ onSubmit }) => {
               type="text"
               id="namePerson"
               name="namePerson"
-              className={`w-72 px-4 py-2 rounded-md border ${
+              className={`w-full px-4 py-2 rounded-md border ${
                 errors.namePerson ? "border-red-500" : ""
               }`}
               placeholder="Respuesta..."
@@ -125,7 +125,7 @@ const NaturalPerson = ({ onSubmit }) => {
               type="text"
               id="lastNamePerson"
               name="lastNamePerson"
-              className={`w-72 px-4 py-2 rounded-md border ${
+              className={`w-full px-4 py-2 rounded-md border ${
                 errors.lastNamePerson ? "border-red-500" : ""
               }`}
               placeholder="Respuesta..."

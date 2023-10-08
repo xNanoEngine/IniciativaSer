@@ -53,7 +53,7 @@ const CulturalSpace = ({ onSubmit }) => {
               type="text"
               id="culturalSpaceName"
               name="culturalSpaceName"
-              className={`w-72 px-4 py-2 rounded-md border ${
+              className={`w-full px-4 py-2 rounded-md border ${
                 errors.culturalSpaceName ? "border-red-500" : ""
               }`}
               placeholder="Respuesta..."

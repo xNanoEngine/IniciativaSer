@@ -67,7 +67,7 @@ const Initiative = ({ onSubmit }) => {
               type="text"
               id="initiativeName"
               name="initiativeName"
-              className={`w-80 px-4 py-2 rounded-md border ${
+              className={`w-full px-4 py-2 rounded-md border ${
                 errors.initiativeName ? "border-red-500" : ""
               }`}
               placeholder="Respuesta..."
