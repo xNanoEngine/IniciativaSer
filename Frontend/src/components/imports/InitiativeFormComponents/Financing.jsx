@@ -6,30 +6,35 @@ import Combobox from "../Combobox";
 const Financing = ({ onSubmit }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
+  const [budgetNumber, setbudgetNumber] = useState(0);
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
+  const handleNumberChange = (event) => {
+    let value = event.target.value;
+    value = value.replace(/\D/g, "");
+    if (value.length > 1 && value.startsWith("0")) {
+      value = value.slice(1);
+    }
+    setbudgetNumber(value);
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       // Valida los datos con el esquema Yup importado
       await FinancingSchema.validate(
         {
-          budget: document.getElementById("budget").value.trim(),
+          budget: parseInt(document.getElementById("budget").value),
           financing: selectedOptions.financing,
         },
         { abortEarly: false }
       );
-
-      // Si la validación es exitosa, continúa con el envío del formulario
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
       data.selectedOptions = selectedOptions;
       onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
-      // Si hay errores de validación, actualiza el estado de errores
       const newErrors = {};
       validationErrors.inner.forEach((error) => {
         newErrors[error.path] = error.message;
@@ -52,9 +57,11 @@ const Financing = ({ onSubmit }) => {
           <div className="flex flex-col mt-6 md:mt-0">
             <label className="block ml-1">Presupuesto:</label>
             <input
-              type="text"
+              type="number"
               id="budget"
               name="budget"
+              value={budgetNumber}
+              onChange={handleNumberChange}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.budget ? "border-red-500" : ""
               }`}

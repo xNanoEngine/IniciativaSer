@@ -26,16 +26,16 @@ const Document = ({ onSubmit }) => {
         },
         { abortEarly: false }
       );
-
-      // Si la validación es exitosa, continúa con el envío del formulario
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
-      // Agrega las opciones seleccionadas del Combobox a los datos del formulario
+      data.documentName = data.documentName.trim();
+      data.institutionName = data.institutionName.trim();
+      data.keyWords = data.keyWords.trim();
+      data.documentUrl = data.documentUrl.trim();
       data.selectedOptions = selectedOptions;
       onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
-      // Manejar el error de validación aquí
       const newErrors = {};
       validationErrors.inner.forEach((error) => {
         newErrors[error.path] = error.message;

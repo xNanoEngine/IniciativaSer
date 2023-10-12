@@ -6,22 +6,37 @@ import Combobox from "../Combobox";
 const TargetAudiences = ({ onSubmit }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
+  const [targetAmountNumber, setTargetAmountNumber] = useState(0);
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
+
+  const handleNumberChange = (event) => {
+    let value = event.target.value;
+
+    // Eliminar cualquier carácter que no sea un dígito
+    value = value.replace(/\D/g, "");
+
+    // Verificar si el número comienza con cero y eliminarlos
+    if (value.length > 1 && value.startsWith("0")) {
+      value = value.slice(1);
+    }
+
+    // Actualizar el estado con el valor formateado
+    setTargetAmountNumber(value);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       // Valida los datos con el esquema Yup importado
       await TargetAudiencesSchema.validate(
         {
-          targetAmount: document.getElementById("targetAmount").value.trim(),
+          targetAmount: targetAmountNumber,
           targetType: selectedOptions.targetType,
         },
         { abortEarly: false }
       );
-
       // Si la validación es exitosa, continúa con el envío del formulario
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
@@ -54,9 +69,11 @@ const TargetAudiences = ({ onSubmit }) => {
               Público objetivo de la iniciativa (cantidad de personas):
             </label>
             <input
-              type="text"
+              type="number"
               id="targetAmount"
               name="targetAmount"
+              value={targetAmountNumber}
+              onChange={handleNumberChange}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.targetAmount ? "border-red-500" : ""
               }`}

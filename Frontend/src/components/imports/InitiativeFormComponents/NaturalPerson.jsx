@@ -14,10 +14,8 @@ const NaturalPerson = ({ onSubmit }) => {
 
   const handleRutChange = (event) => {
     let value = event.target.value;
-
     // Eliminar cualquier carácter que no sea un dígito o la letra 'k' (para RUTs válidos)
     value = value.replace(/[^\dkK]/g, "");
-
     // Formatear el RUT con puntos y guión
     if (value.length >= 2) {
       if (value.length <= 8) {
@@ -40,8 +38,6 @@ const NaturalPerson = ({ onSubmit }) => {
         );
       }
     }
-
-    // Actualizar el estado del RUT
     setRut(value);
   };
 
@@ -63,16 +59,14 @@ const NaturalPerson = ({ onSubmit }) => {
         },
         { abortEarly: false }
       );
-
-      // Si la validación es exitosa, continúa con el envío del formulario
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
+      data.namePerson = data.namePerson.trim();
+      data.lastNamePerson = data.lastNamePerson.trim();
       data.selectedOptions = selectedOptions;
-      data.rutPerson = rutPerson;
       onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
-      // Si hay errores de validación, actualiza el estado de errores
       const newErrors = {};
       validationErrors.inner.forEach((error) => {
         newErrors[error.path] = error.message;

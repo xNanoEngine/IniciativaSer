@@ -12,7 +12,6 @@ const CulturalSpace = ({ onSubmit }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       // Valida los datos con el esquema Yup importado
       await CulturalSpaceSchema.validate(
@@ -25,15 +24,14 @@ const CulturalSpace = ({ onSubmit }) => {
         },
         { abortEarly: false }
       );
-
-      // Si la validación es exitosa, continúa con el envío del formulario
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
+      data.culturalSpaceName = data.culturalSpaceName.trim();
+      data.address = data.address.trim();
       data.selectedOptions = selectedOptions;
       onSubmit(data, true);
       setErrors({});
     } catch (validationErrors) {
-      // Si hay errores de validación, actualiza el estado de errores
       const newErrors = {};
       validationErrors.inner.forEach((error) => {
         newErrors[error.path] = error.message;
