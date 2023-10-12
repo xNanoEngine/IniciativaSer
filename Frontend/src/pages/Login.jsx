@@ -1,7 +1,7 @@
 import React from "react";
-import { icon } from "../../assets";
-import LoginForm from "../imports/LoginForm";
-import Footer from "../imports/Footer";
+import { icon } from "../assets";
+import LoginForm from "../components/imports/LoginForm";
+import Footer from "../components/imports/Footer";
 
 const Login = () => {
   return (

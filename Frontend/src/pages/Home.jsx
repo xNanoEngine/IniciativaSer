@@ -1,6 +1,6 @@
 import React from "react";
-import BarraNav from "../imports/BarraNav";
-import Footer from "../imports/Footer";
+import BarraNav from "../components/imports/BarraNav";
+import Footer from "../components/imports/Footer";
 const Home2 = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">

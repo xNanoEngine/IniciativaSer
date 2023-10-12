@@ -1,6 +1,6 @@
 import React from "react";
-import Footer from "../imports/Footer";
-import InitiativeForm from "../imports/InitiativeForm";
+import Footer from "../components/imports/Footer";
+import InitiativeForm from "../components/imports/InitiativeForm";
 
 const Initiative = () => {
   return (
