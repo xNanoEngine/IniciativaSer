@@ -106,6 +106,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.rut ? "border-red-500" : ""
               }`}
+              placeholder="Respuesta..."
             />
             {errors.rut && <span className="text-red-500">{errors.rut}</span>}
           </div>
