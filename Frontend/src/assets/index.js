@@ -10,7 +10,7 @@ import aproved3 from "./aproved3.svg";
 import refused from "./refused.svg";
 import refused2 from "./refused2.svg";
 import icon from "./icon.svg";
-
+import blankImage from "./blankImage.jpg";
 export {
   menu,
   close,
@@ -24,4 +24,5 @@ export {
   refused,
   refused2,
   aproved3,
+  blankImage,
 };

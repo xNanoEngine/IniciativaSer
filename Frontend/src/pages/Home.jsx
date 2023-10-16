@@ -1,10 +1,11 @@
 import React from "react";
 import BarraNav from "../components/imports/BarraNav";
 import Footer from "../components/imports/Footer";
+import ProgramSeremi from "../components/imports/ProgramSeremi";
 const Home2 = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
-      <div className="flex-grow">
+      <div className="flex-grow mb-10">
         <section className="sm:py-16 py-6 flex justify-center flex-col bg-slate-100 w-screen border-t-black border-t-2 border-b-black border-b-2">
           <div className="flex justify-center sm:mb-16 mb-6 z-[1] text-center">
             <h1 className="leading-tight">
@@ -25,23 +26,19 @@ const Home2 = () => {
             </a>
           </div>
         </section>
-        <div className="flex flex-col items-center mt-28 space-y-16">
-          <div className="flex flex-col text-[#1f1f1f] font-custom_Syne space-y-16">
+        <div className="flex flex-col items-center mt-28 space-y-16 h-full w-full">
+          <div className="flex flex-col text-[#1f1f1f] font-custom_Syne space-y-14">
             <h1 className="text-center">Programas SEREMI</h1>
-            <p className="text-lg text-center">
-              So I started to walk into the water. I won't lie to you boys, I{" "}
-              <br />
-              was terrified. But I pressed on, and as I made my way past the{" "}
-              <br />
-              breakers a strange calm came over me. I don't know if it was{" "}
-              <br />
-              divine intervention or the kinship of all living things but I tell{" "}
-              <br />
-              you Jerry at that moment, I was a marine biologist. <br />
-            </p>
+            <div className="mx-auto text-center w-2/5 line-clamp-6 text-lg">
+              Bienvenido al apartado de programas del Seremi de cultura de los
+              rios. Aquí podras encontrar las diferentes iniciativas que son
+              ingresadas en el sistema, estas son las ultimas actualizadas a la
+              fecha de hoy. Puedes leer y visualizar cualquiera de ellas. Si te
+              interesa alguna de estas, no dudes en dar ¡click!.
+            </div>
           </div>
-          <div>
-            <p>imagenes</p>
+          <div className="">
+            <ProgramSeremi />
           </div>
         </div>
       </div>

@@ -26,3 +26,7 @@
 .boton2{
   @apply border-2 border-black rounded-md hover:shadow-md px-6 font-custom_Syne font-bold 
 }
+
+.programDescription {
+  @apply font-custom_Syne font-bold text-slate-500 text-sm
+}
