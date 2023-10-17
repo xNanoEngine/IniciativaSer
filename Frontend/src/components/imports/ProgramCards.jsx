@@ -1,6 +1,6 @@
 import React from "react";
 import blankImage from "../../assets/blankImage.jpg";
-const ProgramCards = () => {
+const ProgramCards = (props) => {
   return (
     <div className="flex flex-col w-56 h-full shadow-lg rounded-md border-2 border-black md:transition-all md:ease-in-out md:hover:scale-110 ">
       <div className="">
@@ -11,7 +11,7 @@ const ProgramCards = () => {
         </div>
         <div className="flex flex-col mx-4 my-2 space-y-5">
           <div className="mt-5">
-            <h1 className="text-lg">Acciona</h1>
+            <h1 className="text-lg">{props.ind}</h1>
             {/* Aquí ira el programa */}
           </div>
           <div className="programDescription">

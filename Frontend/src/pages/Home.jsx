@@ -15,21 +15,13 @@ const Home2 = () => {
             </h1>
           </div>
           <div className="flex items-center md:items-stretch md:justify-center flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-6 ">
-            <div className="w-[90%] md:w-2/6">
-              <BarraNav />
-            </div>
-            <button className="w-1/2 md:w-1/12 border-cyan-200 bg-[#E1E4EB] rounded-lg">
-              boton
-            </button>
-            <a className=" md:w-2/12 text-[#666666] font-custom_Syne text-base rounded-lg py-2 cursor-pointer">
-              [+] Búsqueda avanzada
-            </a>
+            <BarraNav />
           </div>
         </section>
-        <div className="flex flex-col items-center mt-28 space-y-16 h-full w-full">
-          <div className="flex flex-col text-[#1f1f1f] font-custom_Syne space-y-14">
+        <div className="flex flex-col items-center mt-20 md:mt-28 space-y-16 h-full w-full">
+          <div className="flex flex-col text-[#1f1f1f] font-custom_Syne space-y-6 md:space-y-14">
             <h1 className="text-center">Programas SEREMI</h1>
-            <div className="mx-auto text-center w-2/5 line-clamp-6 text-lg">
+            <div className="mx-auto text-center text-sm w-full line-clamp-6 md:w-2/5 md:line-clamp-6 md:text-lg">
               Bienvenido al apartado de programas del Seremi de cultura de los
               rios. Aquí podras encontrar las diferentes iniciativas que son
               ingresadas en el sistema, estas son las ultimas actualizadas a la
