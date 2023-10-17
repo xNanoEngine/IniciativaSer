@@ -15,11 +15,7 @@ const ProgramCards = (props) => {
             {/* Aquí ira el programa */}
           </div>
           <div className="programDescription">
-            <div className="line-clamp-6 text-justify	">
-              Acciona es uno de los programas mas reconocidos a nivel pais, en
-              el se pueden destacar diferentes proyectos como por ejemplo:
-              Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.
-            </div>
+            <div className="line-clamp-6 text-justify	">{props.desc}</div>
             {/* Aqui ira la descripción */}
           </div>
         </div>

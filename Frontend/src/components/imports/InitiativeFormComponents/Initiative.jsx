@@ -4,6 +4,7 @@ import {
   initiativeComponent,
   initiativeConcurseLine,
   initiativeType,
+  initiativeProgram,
 } from "../../../constants";
 import { InitiativeSchema } from "../../validations/InitiativeValidation";
 import Combobox from "../Combobox";
@@ -23,6 +24,7 @@ const Initiative = ({ onSubmit }) => {
           initiativeName: document
             .getElementById("initiativeName")
             .value.trim(),
+          initiativeProgram: selectedOptions.initiativeProgram,
           initiativeType: selectedOptions.initiativeType,
           initiativeComponent: selectedOptions.initiativeComponent,
           initiativeConcurseLine: selectedOptions.initiativeConcurseLine,
@@ -73,6 +75,15 @@ const Initiative = ({ onSubmit }) => {
               <span className="text-red-500">{errors.initiativeName}</span>
             )}
           </div>
+          <Combobox
+            data={initiativeProgram}
+            label={"Programa"}
+            prop={"w-52 mt-6"}
+            onChange={(option) =>
+              handleOptionChange("initiativeProgram", option)
+            }
+            error={errors.initiativeProgram}
+          />
           <Combobox
             data={initiativeType}
             label={"Tipo de iniciativa"}

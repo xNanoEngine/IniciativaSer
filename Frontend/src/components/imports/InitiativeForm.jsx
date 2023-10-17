@@ -57,6 +57,7 @@ const InitiativeForm = () => {
       PersonaNatural_pais_origen: formResults[2].selectedOptions.country,
       PersonaNatural_rol: formResults[2].selectedOptions.personRole,
       Iniciativa_nombre: formResults[3].initiativeName,
+      Iniciativa_programa: formResults[3].selectedOptions.initiativeProgram,
       Iniciativa_tipo: formResults[3].selectedOptions.initiativeType,
       Iniciativa_descripcion: formResults[3].initiativeDescription,
       Iniciativa_componente: formResults[3].selectedOptions.initiativeComponent,
@@ -81,7 +82,7 @@ const InitiativeForm = () => {
     try {
       const { data } = await clientAxios.post(`/iniciativas`, formData, config);
     } catch (error) {
-      console.log(error);
+      console.log(error); //Falta borrar
     }
   };
 

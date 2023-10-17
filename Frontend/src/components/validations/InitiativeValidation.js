@@ -6,6 +6,9 @@ export const InitiativeSchema = Yup.object().shape({
     .required("El nombre de la iniciativa es obligatorio")
     .min(1, "El nombre de la iniciativa debe tener al menos un carácter")
     .max(100, "El nombre de la iniciativa no puede superar los 100 carácteres"),
+  initiativeProgram: Yup.string().required(
+    "El tipo de programa es obligatorio"
+  ),
   initiativeType: Yup.string().required("El tipo de iniciativa es obligatorio"),
   initiativeComponent: Yup.string().required("Este campo es obligatorio"),
   initiativeConcurseLine: Yup.string().required("Este campo es obligatorio"),
