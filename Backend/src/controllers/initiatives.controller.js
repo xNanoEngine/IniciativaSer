@@ -263,14 +263,16 @@ export async function createIniciativa(req, res) {
     // n x m
     await persona_natural.addDocumento(documento);
     await comuna.addDocumento(documento);
-    // await persona_juridica.addEspacioCultural(espacio_cultural);
-    // await tipo_espacio_cultural.addEspacioCultural(espacio_cultural);
-    // await comuna.addIniciativa(iniciativa);
-    // await persona_natural.addIniciativa(iniciativa);
-    // await localidad_territorio.addIniciativa(iniciativa);
-    // await objetivo.addIniciativa(iniciativa);
-    // await persona_juridica.addIniciativa(iniciativa);
-    // await programa.addIniciativa(iniciativa);
+    await persona_juridica.addEspacio_cultural(espacio_cultural);
+    await tipo_espacio_cultural.addEspacio_cultural(espacio_cultural);
+    await comuna.addIniciativa(iniciativa);
+    await persona_natural.addIniciativa(iniciativa);
+    await localidad_territorio.addIniciativa(iniciativa);
+    await objetivo.addIniciativa(iniciativa);
+    await persona_juridica.addIniciativa(iniciativa);
+    await programa.addIniciativa(iniciativa);
+    //console.log(Object.keys(comuna.__proto__));
+    console.log("TERMINO");
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }
