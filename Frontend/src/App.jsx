@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navbar, Home, Login, Initiative } from "./pages";
+import { Navbar, Home, Login, Initiative, AdvancedSearch } from "./pages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {
   BrowserRouter as Router,
@@ -52,6 +52,7 @@ const App = () => {
           />
           <Route path="/login" element={<LoginWithRedirect />} />
           <Route path="/" element={<Home />} />
+          <Route path="/search" element={<AdvancedSearch />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

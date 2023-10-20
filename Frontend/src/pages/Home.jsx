@@ -1,8 +1,8 @@
-import React from "react";
-import BarraNav from "../components/imports/BarraNav";
+import React, { useState } from "react";
 import Footer from "../components/imports/Footer";
 import ProgramSeremi from "../components/imports/ProgramSeremi";
 const Home2 = () => {
+  const [busqueda, setBusqueda] = useState("");
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
       <div className="flex-grow mb-10">
@@ -15,7 +15,28 @@ const Home2 = () => {
             </h1>
           </div>
           <div className="flex items-center md:items-stretch md:justify-center flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-6 ">
-            <BarraNav />
+            <form className="flex flex-col w-full items-center space-y-4 md:space-y-0 md:flex-row md:justify-center md:space-x-4">
+              <input
+                type="text"
+                id="busqueda"
+                className="w-3/4 md:w-2/5 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500"
+                placeholder="Buscar Información"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
+              <button
+                className="w-1/2 h-10 bg-white border-black border-2 rounded-lg md:w-1/12"
+                onClick={""}
+              >
+                Buscar
+              </button>
+              <a
+                href="/search"
+                className=" md:w-2/12 text-[#666666] font-custom_Syne text-base rounded-lg py-2 cursor-pointer"
+              >
+                [+] Búsqueda avanzada
+              </a>
+            </form>
           </div>
         </section>
         <div className="flex flex-col items-center mt-20 md:mt-28 space-y-16 h-full w-full">

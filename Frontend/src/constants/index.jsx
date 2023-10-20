@@ -18,7 +18,7 @@ export const navLinks = [
     subLinks: [
       {
         title: "Búsqueda avanzada",
-        ref: "/avanzada",
+        ref: "/search",
       },
       {
         title: "Búsqueda de documentos",

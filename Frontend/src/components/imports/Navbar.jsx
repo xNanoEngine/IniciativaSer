@@ -87,11 +87,11 @@ function Navbar({ isAuth }) {
               </div>
             )}
             {nav.subLinks && activeSub === nav.ref && (
-              <ul className="sub-links absolute top-full w-full z-50 mt-2 py-2 px-4 bg-white border border-gray-300 shadow-md rounded-lg">
+              <ul className="sub-links absolute top-full w-full z-50 mt-2 py-2 px-4 space-y-2 bg-white border border-gray-300 shadow-md rounded-lg">
                 {nav.subLinks.map((subLink, subIndex) => (
                   <li
                     key={subIndex}
-                    className={`font-custom_Syne font-normal cursor-pointer text-[16px] ${
+                    className={`font-custom_Syne font-normal cursor-pointer text-[16px] hover:font-bold ${
                       activeSub === subLink.ref
                         ? "text-[#666666]"
                         : "text-[#666666]"
