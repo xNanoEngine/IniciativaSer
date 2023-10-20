@@ -9,7 +9,7 @@ Este cuenta con un inicio de sesion para los usuarios del seremi, e interfaces p
 -  Docker
 -  TailwindCss
 ## Integrantes: 
--  Matias Martinez
+-  Matias Martinez #@xnanoengine
 -  Sebastian Paredes
 -  Javier Mansilla
 -  Tomas Manriquez
