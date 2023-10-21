@@ -285,14 +285,35 @@ export async function createIniciativa(req, res) {
 }
 
 export async function getIniciativas(req, res) {
-  getIniciativas_().then(
-    (data) => {
-      res.status(200).json({ status: true, data: data });
-    },
-    (error) => {
-      res.status(400).json({ status: false, error: error.message });
+  const { filtroNombre } = req.body;
+  try {
+    let results;
+    if (filtroNombre) {
+      results = await Iniciativa.findAll({
+        where: {
+          [Op.or]:[ 
+          {nombre: {[Op.regexp]: filtroNombre}},
+          {descripcion: {[Op.regexp]: filtroNombre}}
+          ]
+          //nombre: {[Op.regexp]: filtro}
+          //[Op.or]:[ 
+          //{nombre: {[Op.like]: `%${filtro}%`}},
+          //{descripcion: {[Op.like]: `%${filtro}%`}},
+        //  
+        },
+        attributes: ['id'],
+      });
+    } else {
+      results = await Iniciativa.findAll({
+        attributes: ['id'],
+      });
     }
-  );
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error al realizar la consulta: ', error);
+    res.status(500).json({ error: 'Error al realizar la consulta' });
+  }
 }
 
 export async function updateIniciativa(req, res) {
