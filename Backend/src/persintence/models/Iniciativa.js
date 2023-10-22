@@ -9,7 +9,7 @@ import { Comuna } from "./Comuna.js";
 import { Localidad_Territorio } from "./LocalidadTerritorio.js";
 import { Objetivo } from "./Objetivo.js";
 
-export const Iniciativa = sequelize.define("iniciativa",{
+export const Iniciativa = await sequelize.define("iniciativa",{
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -50,7 +50,7 @@ export const Iniciativa = sequelize.define("iniciativa",{
     }
     
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

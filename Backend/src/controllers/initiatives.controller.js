@@ -258,8 +258,8 @@ export async function createIniciativa(req, res) {
     await persona_juridica.addPrograma(programa);
     await comuna.addEspacio_cultural(espacio_cultural);
     await comuna.addLocalidad_territorio(localidad_territorio);
-    await comuna.addPersona_juridica(persona_juridica);
-    await comuna.addPersona_natural(persona_natural);
+    await comuna.addPersona_juridica(persona_juridica); 
+    await comuna.addPersonanatural(persona_natural);
     // n x m
     await persona_natural.addDocumento(documento);
     await comuna.addDocumento(documento);
