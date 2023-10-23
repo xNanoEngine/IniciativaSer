@@ -1,5 +1,5 @@
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
-import { iniciativa_comuna } from "../persintence/models/iniciativa_comuna.js";
+
 import {
   createIniciativa_,
   getIniciativas_,
@@ -76,6 +76,8 @@ import {
   deleteTipoespaciocultural_,
   getTipoespaciocultural_,
 } from "../persintence/repository/tipoespaciocultural.repository.js";
+import { Programa } from "../persintence/models/Programa.js";
+import { Comuna } from "../persintence/models/Comuna.js";
 
 export async function createIniciativa(req, res) {
   let data1;
@@ -141,6 +143,7 @@ export async function createIniciativa(req, res) {
     Programa_descripcion,
     Programa_url,
     TipoEspacioCultural_tipo,
+    cuentaId
   } = req.body;
 
   const Iniciativa_ = {
@@ -234,6 +237,8 @@ export async function createIniciativa(req, res) {
     tipo: TipoEspacioCultural_tipo,
   };
 
+  const cuenta = await Cuentas.findOne({where: {id: cuentaId}})
+
   try {
     const iniciativa = await createIniciativa_(Iniciativa_);
     const comuna = await createComuna_(Comuna_);
@@ -260,6 +265,7 @@ export async function createIniciativa(req, res) {
     await comuna.addLocalidad_territorio(localidad_territorio);
     await comuna.addPersona_juridica(persona_juridica); 
     await comuna.addPersonanatural(persona_natural);
+    await cuenta.addIniciativas(iniciativa);
     // n x m
     await persona_natural.addDocumento(documento);
     await comuna.addDocumento(documento);
@@ -285,27 +291,48 @@ export async function createIniciativa(req, res) {
 }
 
 export async function getIniciativas(req, res) {
-  const { filtroNombre } = req.body;
+  const { filtroNombre, filtroTipo, filtroComuna} = req.body;
   try {
     let results;
+    //Limpieza de filtros
+    //
+    //
     if (filtroNombre) {
       results = await Iniciativa.findAll({
+        include: [
+          {
+            model: Programa,
+            attributes: ['titulo'], // Especifica los atributos que deseas incluir de la tabla Programa
+          },
+          // {
+          //   model: Comuna,
+          //   attributes: ['nombre'], 
+          // }
+        ],
         where: {
-          [Op.or]:[ 
-          {nombre: {[Op.regexp]: filtroNombre}},
-          {descripcion: {[Op.regexp]: filtroNombre}}
-          ]
+            [Op.or]:[ 
+            {nombre: {[Op.regexp]: filtroNombre}},
+            {descripcion: {[Op.regexp]: filtroNombre}}
+            ]
           //nombre: {[Op.regexp]: filtro}
           //[Op.or]:[ 
           //{nombre: {[Op.like]: `%${filtro}%`}},
           //{descripcion: {[Op.like]: `%${filtro}%`}},
         //  
         },
-        attributes: ['id'],
+        attributes: ['id', 'titulo', 'nombre', 'descripcion', 'presupuesto'],
+        order: [["titulo", "DESC"]],
       });
     } else {
       results = await Iniciativa.findAll({
-        attributes: ['id'],
+        include: [
+          {
+            model: Programa,
+            attributes: ['titulo'], // Especifica los atributos que deseas incluir de la tabla Rol
+          },
+        ],
+        attributes: ['id', 'titulo', 'nombre', 'descripcion', 'presupuesto'],
+        order: [["titulo", "DESC"]],
       });
     }
 
@@ -377,4 +404,36 @@ export async function getIniciativa(req, res) {
       res.status(400).json({ status: false, error: error.message });
     }
   );
+}
+
+export async function getPrograma(req, res) {
+  const { id } = req.body;
+  try {
+    console.log("getPrograma por id");
+    const programa = await Programa.findOne({
+      where: { id },
+    });
+    return programa;
+  } catch (error) {
+    throw new Error("Sucedio un error obteniendo programa por id......");
+  }
+}
+
+export async function getProgramas(req, res) {
+  try {
+    console.log("getProgramas");
+    const programas = await Programa.findAll({
+      attributes: [
+        "id",
+        "nombre",
+        "descripcion",
+        "url",
+        //"imagen"
+      ],
+      order: [["nombre", "DESC"]],
+    });
+    return programas;
+  } catch (error) {
+    throw new Error("Sucedio un error obteniendo programas......");
+  }
 }
