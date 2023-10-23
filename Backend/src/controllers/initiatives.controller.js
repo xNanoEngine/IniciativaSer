@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
 import { iniciativa_comuna } from "../persintence/models/iniciativa_comuna.js";
 import {
