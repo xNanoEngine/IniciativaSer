@@ -23,7 +23,7 @@ export const ambitodominioarea_iniciativa = sequelize.define("ambitodominioarea_
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

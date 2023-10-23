@@ -23,7 +23,7 @@ export const documento_personanatural = sequelize.define("documento_personanatur
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

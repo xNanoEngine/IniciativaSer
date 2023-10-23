@@ -11,6 +11,8 @@ const app = express();
 import accountsRoutes from "./routes/accounts.routes.js";
 import initiativesRoutes from "./routes/initiatives.routes.js";
 import authoritationRoutes from "./routes/authoritation.routes.js";
+import programsRoutes from "./routes/programs.routes.js";
+
 // Middlewares
 app.use(morgan("dev"));
 app.use(express.json());
@@ -28,6 +30,7 @@ app.use(
 app.use("/api/cuentas", accountsRoutes);
 app.use("/api/iniciativas", initiativesRoutes);
 app.use("/api/authoritation", authoritationRoutes);
+app.use("/api/programas", programsRoutes);
 // cuenta de prueba
 
 export default app;

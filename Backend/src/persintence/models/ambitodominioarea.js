@@ -9,7 +9,7 @@ export const ambitodominioarea = sequelize.define(
       primaryKey: true,
     },
   }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 }
 );

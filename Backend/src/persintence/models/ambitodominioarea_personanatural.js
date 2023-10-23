@@ -23,7 +23,7 @@ export const ambitodominioarea_personanatural = sequelize.define("ambitodominioa
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

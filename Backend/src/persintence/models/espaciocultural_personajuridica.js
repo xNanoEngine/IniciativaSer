@@ -23,7 +23,7 @@ export const espaciocultural_personajuridica = sequelize.define("espaciocultural
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

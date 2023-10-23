@@ -149,7 +149,6 @@ export async function createIniciativa(req, res) {
   } = req.body;
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const cuentaId = decoded.userId;
-  console.log(userId);
   const Iniciativa_ = {
     id: Iniciativa_id,
     idInterno: Iniciativa_idInterno,

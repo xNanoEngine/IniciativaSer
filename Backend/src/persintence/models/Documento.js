@@ -32,7 +32,7 @@ export const Documento = sequelize.define(
             type: DataTypes.STRING,
         },
     }, {
-        timestamps: false,
+        timestamps: true,
         freezeTableName: true
     }
 );

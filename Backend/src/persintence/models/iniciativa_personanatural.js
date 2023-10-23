@@ -27,7 +27,7 @@ export const iniciativa_personanatural = sequelize.define("iniciativa_personanat
         allowNull: false,
     }
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 
