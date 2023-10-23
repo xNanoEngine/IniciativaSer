@@ -44,7 +44,7 @@ const InitiativeForm = () => {
 
   const handleSubmit = async (e) => {
     const config = getConfigAuth(localStorage.getItem("token"));
-
+    const token = localStorage.getItem("token");
     const formData = {
       PersonaJuridica_nombre: formResults[1].name,
       PersonaJuridica_rut: formResults[1].rut,
@@ -78,6 +78,7 @@ const InitiativeForm = () => {
       Documento_materia: formResults[7].keyWords,
       Documento_fuente: formResults[7].institutionName,
       Documento_tipo: formResults[7].selectedOptions.documentType,
+      token: token,
     };
     try {
       const { data } = await clientAxios.post(`/iniciativas`, formData, config);

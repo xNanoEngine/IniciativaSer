@@ -4,6 +4,7 @@ const Logout = ({ isOpen, onClose }) => {
   const handleLogout = () => {
     // Remover el token del localStorage
     localStorage.removeItem("token");
+
     // Cierra el modal de Logout
     onClose();
     window.location.href = "/home";

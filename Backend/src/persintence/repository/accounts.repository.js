@@ -74,11 +74,9 @@ export async function deleteAccount_(id) {
 export async function login_(cuenta) {
   try {
     const { name, password } = cuenta;
-    console.log(name);
     const user = await Cuentas.findOne({ where: { name: name } });
 
     if (!user) {
-      console.log("Usuario no encontrado");
       throw new Error("Credenciales incorrectas");
     }
 
@@ -86,13 +84,11 @@ export async function login_(cuenta) {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      console.log("Contraseña incorrecta");
       throw new Error("Credenciales incorrectas");
     }
 
     return user;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

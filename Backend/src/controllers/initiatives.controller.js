@@ -1,5 +1,6 @@
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
 import { iniciativa_comuna } from "../persintence/models/iniciativa_comuna.js";
+import jwt from "jsonwebtoken";
 import {
   createIniciativa_,
   getIniciativas_,
@@ -141,8 +142,11 @@ export async function createIniciativa(req, res) {
     Programa_descripcion,
     Programa_url,
     TipoEspacioCultural_tipo,
+    token,
   } = req.body;
-
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = decoded.userId;
+  console.log(userId);
   const Iniciativa_ = {
     id: Iniciativa_id,
     idInterno: Iniciativa_idInterno,
@@ -291,28 +295,28 @@ export async function getIniciativas(req, res) {
     if (filtroNombre) {
       results = await Iniciativa.findAll({
         where: {
-          [Op.or]:[ 
-          {nombre: {[Op.regexp]: filtroNombre}},
-          {descripcion: {[Op.regexp]: filtroNombre}}
-          ]
+          [Op.or]: [
+            { nombre: { [Op.regexp]: filtroNombre } },
+            { descripcion: { [Op.regexp]: filtroNombre } },
+          ],
           //nombre: {[Op.regexp]: filtro}
-          //[Op.or]:[ 
+          //[Op.or]:[
           //{nombre: {[Op.like]: `%${filtro}%`}},
           //{descripcion: {[Op.like]: `%${filtro}%`}},
-        //  
+          //
         },
-        attributes: ['id'],
+        attributes: ["id"],
       });
     } else {
       results = await Iniciativa.findAll({
-        attributes: ['id'],
+        attributes: ["id"],
       });
     }
 
     res.json(results);
   } catch (error) {
-    console.error('Error al realizar la consulta: ', error);
-    res.status(500).json({ error: 'Error al realizar la consulta' });
+    console.error("Error al realizar la consulta: ", error);
+    res.status(500).json({ error: "Error al realizar la consulta" });
   }
 }
 
