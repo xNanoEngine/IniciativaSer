@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { Cuentas } from "../persintence/models/Cuentas.js";
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
 import { iniciativa_comuna } from "../persintence/models/iniciativa_comuna.js";
 import {
@@ -147,7 +148,7 @@ export async function createIniciativa(req, res) {
     token,
   } = req.body;
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const userId = decoded.userId;
+  const cuentaId = decoded.userId;
   console.log(userId);
   const Iniciativa_ = {
     id: Iniciativa_id,
