@@ -112,22 +112,25 @@ export async function deleteIniciativa_(id) {
 
 export async function getIniciativa_(id) {
   try {
+    console.log("getIniciativa");
     const iniciativa = await Iniciativa.findOne({
       where: { id },
-      attributes: [
-        "id",
-        "idInterno",
-        "nombre",
-        "tipo",
-        "descripcion",
-        "componente",
-        "presupuesto",
-        "formaFinanciamiento",
-        "tipoPublicoObjetivo",
-        "cantPublico",
-        "fechaInicio",
-        "fechaFin",
-      ],
+      include: 'documentos',
+      // attributes: [
+      //   "id",
+      //   "idInterno",
+      //   "nombre",
+      //   "tipo",
+      //   "descripcion",
+      //   "componente",
+      //   "presupuesto",
+      //   "formaFinanciamiento",
+      //   "tipoPublicoObjetivo",
+      //   "cantPublico",
+      //   "fechaInicio",
+      //   "fechaFin",
+      //   'documento.titulo'
+      // ],
     });
     return iniciativa;
   } catch (error) {

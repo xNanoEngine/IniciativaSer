@@ -23,7 +23,7 @@ export const iniciativa_comuna = sequelize.define("iniciativa_comuna",{
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

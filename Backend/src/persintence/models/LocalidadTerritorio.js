@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 
 export const Localidad_Territorio = sequelize.define(
-  "localidad_territorios",
+  "localidad_territorio",
   {
     id: {
       type: DataTypes.INTEGER,

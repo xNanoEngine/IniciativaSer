@@ -3,6 +3,7 @@ import { sequelize } from "../database/database.js";
 import { Documento } from "./Documento.js";
 
 import bcrypt from "bcrypt";
+import { Iniciativa } from "./Iniciativa.js";
 export const Cuentas = sequelize.define(
   "cuentas",
   {
@@ -54,9 +55,16 @@ Cuentas.afterSync(async () => {
     );
   }
 });
+
 //de esto aun no estoy seguro, asiq lo dejo en models solamente
-Cuentas.hasMany(Documento, {
-  foreinkey: "userId",
+// Cuentas.hasMany(Documento, {
+//   foreinkey: "userId",
+//   sourceKey: "id",
+// });
+// Documento.belongsTo(Cuentas, { foreinkey: "userId", targetId: "id" });
+
+Cuentas.hasMany(Iniciativa, {
+  foreinkey: "cuentaId",
   sourceKey: "id",
 });
-Documento.belongsTo(Cuentas, { foreinkey: "userId", targetId: "id" });
+Iniciativa.belongsTo(Cuentas, { foreinkey: "cuentaId", targetId: "id" });
