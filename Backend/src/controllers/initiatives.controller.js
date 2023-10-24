@@ -294,50 +294,44 @@ export async function createIniciativa(req, res) {
 }
 
 export async function getIniciativas(req, res) {
-  const { filtroNombre, filtroTipo, filtroComuna } = req.body;
+    const { filtroNombre, filtroTipo, filtroComuna} = req.body;
   try {
     let results;
     //Limpieza de filtros
     //
     //
-    if (filtroNombre) {
-      results = await Iniciativa.findAll({
-        include: [
-          {
-            model: Programa,
-            attributes: ["titulo"], // Especifica los atributos que deseas incluir de la tabla Programa
-          },
-          // {
-          //   model: Comuna,
-          //   attributes: ['nombre'],
-          // }
-        ],
-        where: {
-          [Op.or]: [
-            { nombre: { [Op.regexp]: filtroNombre } },
-            { descripcion: { [Op.regexp]: filtroNombre } },
-          ],
-          //nombre: {[Op.regexp]: filtro}
-          //[Op.or]:[
-          //{nombre: {[Op.like]: `%${filtro}%`}},
-          //{descripcion: {[Op.like]: `%${filtro}%`}},
-          //
+    //if (filtroNombre) {
+    results = await Iniciativa.findAll({
+      include: [
+        {
+          model: Programa,
+          attributes: ['nombre'], // Especifica los atributos que deseas incluir de la tabla Programa
+          as: 'programas'
         },
-        attributes: ["id", "titulo", "nombre", "descripcion", "presupuesto"],
-        order: [["titulo", "DESC"]],
-      });
-    } else {
-      results = await Iniciativa.findAll({
-        include: [
-          {
-            model: Programa,
-            attributes: ["titulo"], // Especifica los atributos que deseas incluir de la tabla Rol
-          },
-        ],
-        attributes: ["id", "titulo", "nombre", "descripcion", "presupuesto"],
-        order: [["titulo", "DESC"]],
-      });
-    }
+      ],
+      where: {
+        [Op.and] : [
+          {[Op.or]:[ 
+          {nombre: {[Op.regexp]: filtroNombre}},
+          {descripcion: {[Op.regexp]: filtroNombre}}
+          ]},
+          {tipo: {[Op.regexp]: filtroTipo}},
+        ]  
+      },
+      attributes: ['id', [sequelize.col('programas.nombre'), 'nombre_programa'], "nombre", "componente", "descripcion", "presupuesto"],
+    });
+    // } else {
+    //   results = await Iniciativa.findAll({
+    //     include: [
+    //       {
+    //         model: Programa,
+    //         attributes: ['titulo'], // Especifica los atributos que deseas incluir de la tabla Rol
+    //       },
+    //     ],
+    //     attributes: ['id'],
+    //     //order: [["titulo", "DESC"]] ,
+    //   });
+    //}
 
     res.json(results);
   } catch (error) {
