@@ -23,7 +23,7 @@ export const espaciocultural_tipoespaciocultural = sequelize.define("espaciocult
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

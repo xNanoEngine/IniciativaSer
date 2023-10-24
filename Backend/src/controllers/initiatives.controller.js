@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
+import { Op } from "sequelize";
+import sequelize from "sequelize";
 import { Cuentas } from "../persintence/models/Cuentas.js";
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
-import { iniciativa_comuna } from "../persintence/models/iniciativa_comuna.js";
+
 import {
   createIniciativa_,
   getIniciativas_,
@@ -82,9 +84,6 @@ import { Programa } from "../persintence/models/Programa.js";
 import { Comuna } from "../persintence/models/Comuna.js";
 
 export async function createIniciativa(req, res) {
-  let data1;
-  let data2;
-
   const {
     Iniciativa_id,
     Iniciativa_idInterno,
@@ -149,7 +148,6 @@ export async function createIniciativa(req, res) {
   } = req.body;
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const cuentaId = decoded.userId;
-  console.log(userId);
   const Iniciativa_ = {
     id: Iniciativa_id,
     idInterno: Iniciativa_idInterno,
@@ -283,6 +281,7 @@ export async function createIniciativa(req, res) {
     await programa.addIniciativa(iniciativa);
     //console.log(Object.keys(comuna.__proto__));
     console.log("TERMINO");
+    res.status(200).json({status : true})
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }
@@ -295,51 +294,57 @@ export async function createIniciativa(req, res) {
 }
 
 export async function getIniciativas(req, res) {
-  const { filtroNombre, filtroTipo, filtroComuna } = req.body;
+  const { filtroNombre, filtroFinanciamiento, filtroComuna, filtroPrograma} = req.body;
   try {
     let results;
-    //Limpieza de filtros
-    //
-    //
-    if (filtroNombre) {
-      results = await Iniciativa.findAll({
-        include: [
-          {
-            model: Programa,
-            attributes: ["titulo"], // Especifica los atributos que deseas incluir de la tabla Programa
+    results = await Iniciativa.findAll({
+      include: [
+        {
+          model: Programa,
+          attributes: ['nombre'], // Especifica los atributos que deseas incluir de la tabla Programa
+          as: 'programas',
+          where: {
+            nombre: {
+              [Op.or]: filtroPrograma.map((nombre) => ({
+                [Op.regexp]: nombre,    
+              })),
+            },},
           },
-          // {
-          //   model: Comuna,
-          //   attributes: ['nombre'],
-          // }
-        ],
-        where: {
-          [Op.or]: [
-            { nombre: { [Op.regexp]: filtroNombre } },
-            { descripcion: { [Op.regexp]: filtroNombre } },
-          ],
-          //nombre: {[Op.regexp]: filtro}
-          //[Op.or]:[
-          //{nombre: {[Op.like]: `%${filtro}%`}},
-          //{descripcion: {[Op.like]: `%${filtro}%`}},
-          //
+        {
+          model: Comuna,
+          attributes: ['nombre'],
+          as: "comunas",
+          where: {
+            nombre: {
+            [Op.or]: filtroComuna.map((nombre) => ({
+              [Op.regexp]: nombre,    
+            })),
+          },}
         },
-        attributes: ["id", "titulo", "nombre", "descripcion", "presupuesto"],
-        order: [["titulo", "DESC"]],
-      });
-    } else {
-      results = await Iniciativa.findAll({
-        include: [
-          {
-            model: Programa,
-            attributes: ["titulo"], // Especifica los atributos que deseas incluir de la tabla Rol
-          },
-        ],
-        attributes: ["id", "titulo", "nombre", "descripcion", "presupuesto"],
-        order: [["titulo", "DESC"]],
-      });
-    }
-
+      ],
+      where: {
+        [Op.and] : [
+          {[Op.or]:[ 
+          {nombre: {
+            [Op.or]: filtroNombre.map((nombre) => ({
+              [Op.regexp]: nombre,    
+            })),
+          }},
+          {descripcion: {
+            [Op.or]: filtroNombre.map((nombre) => ({
+              [Op.regexp]: nombre,    
+            })),
+          }}
+          ]},
+          {formaFinanciamiento: {
+            [Op.or]: filtroFinanciamiento.map((nombre) => ({
+              [Op.regexp]: nombre,    
+            })),
+          }},
+        ]  
+      },
+      attributes: ['id', [sequelize.col('programas.nombre'), 'nombre_programa'], "nombre", "componente", "descripcion", "formaFinanciamiento"],
+    });
     res.json(results);
   } catch (error) {
     console.error("Error al realizar la consulta: ", error);
@@ -411,7 +416,7 @@ export async function getIniciativa(req, res) {
 }
 
 export async function getPrograma(req, res) {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
     console.log("getPrograma por id");
     const programa = await Programa.findOne({

@@ -20,7 +20,7 @@ export const Cuentas = sequelize.define(
     },
   },
   {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true,
 
     //aplicar hash a la password

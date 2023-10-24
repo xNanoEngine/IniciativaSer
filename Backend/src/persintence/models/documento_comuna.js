@@ -23,7 +23,7 @@ export const documento_comuna = sequelize.define("documento_comuna",{
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 

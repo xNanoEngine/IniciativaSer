@@ -21,7 +21,7 @@ export const EspacioCultural = sequelize.define("espacio_cultural",{
         type: DataTypes.INTEGER,
     }  
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });    
 
