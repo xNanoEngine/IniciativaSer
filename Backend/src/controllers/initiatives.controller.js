@@ -415,7 +415,7 @@ export async function getIniciativa(req, res) {
 }
 
 export async function getPrograma(req, res) {
-  const { id } = req.body;
+  const { id } = req.params;
   try {
     console.log("getPrograma por id");
     const programa = await Programa.findOne({
