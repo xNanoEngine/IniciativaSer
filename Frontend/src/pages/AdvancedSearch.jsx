@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import Footer from "../components/imports/Footer";
 import ChecklistSearch from "../components/imports/InitiativeFormComponents/ChecklistSearch";
 import TablesInitiatives from "../components/imports/TablesInitiatives";
-
+import { useFilter } from "../hook/useFilter";
 const AdvancedSearch = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const { busqueda, setBusqueda } = useFilter();
+  busqueda !== "" ? console.log(busqueda) : null;
+
+  const handleSumbit = () => {
+    console.log(busqueda);
+  };
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
       <div className="flex-grow mb-10">
@@ -32,7 +37,7 @@ const AdvancedSearch = () => {
             />
             <button
               className="w-1/2 h-10 md:w-1/12 bg-yellow-200 border-black border-2 rounded-lg hover:opacity-50"
-              onClick={""}
+              type="submit"
             >
               Buscar
             </button>

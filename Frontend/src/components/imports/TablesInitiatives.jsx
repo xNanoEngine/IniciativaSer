@@ -394,10 +394,7 @@ const TablesInitiatives = () => {
         </thead>
         <tbody>
           {displayedRows.map(
-            (
-              { name, amount, date, status, account, accountNumber, expiry },
-              index
-            ) => {
+            ({ name, amount, date, account, accountNumber, expiry }, index) => {
               const isLast = index === displayedRows.length - 1;
               const classes = isLast
                 ? "p-4"

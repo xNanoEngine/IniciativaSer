@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import Footer from "../components/imports/Footer";
 import ProgramSeremi from "../components/imports/ProgramSeremi";
-
+import { useFilter } from "../hook/useFilter";
+import { useNavigate, Navigate } from "react-router-dom";
 const Home2 = () => {
-  const [busqueda, setBusqueda] = useState("");
+  const navigate = useNavigate();
+  const { busqueda, setBusqueda } = useFilter();
+  const handleSubmit = () => {
+    busqueda !== "" ? navigate("/search") : null;
+  };
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
       <div className="flex-grow mb-10">
@@ -16,7 +21,10 @@ const Home2 = () => {
             </h1>
           </div>
           <div className="flex items-center md:items-stretch md:justify-center flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-6 ">
-            <form className="flex flex-col w-full items-center space-y-4 md:space-y-0 md:flex-row md:justify-center md:space-x-4">
+            <form
+              className="flex flex-col w-full items-center space-y-4 md:space-y-0 md:flex-row md:justify-center md:space-x-4"
+              onSubmit={handleSubmit}
+            >
               <input
                 type="text"
                 id="busqueda"
@@ -27,7 +35,7 @@ const Home2 = () => {
               />
               <button
                 className="w-1/2 h-10 md:w-1/12 bg-yellow-200 border-black border-2 rounded-lg hover:opacity-50"
-                onClick={""}
+                type="submit"
               >
                 Buscar
               </button>
