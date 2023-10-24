@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
+import { Op } from "sequelize";
+import sequelize from "sequelize";
 import { Cuentas } from "../persintence/models/Cuentas.js";
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
-import { iniciativa_comuna } from "../persintence/models/iniciativa_comuna.js";
+
 import {
   createIniciativa_,
   getIniciativas_,
@@ -82,9 +84,6 @@ import { Programa } from "../persintence/models/Programa.js";
 import { Comuna } from "../persintence/models/Comuna.js";
 
 export async function createIniciativa(req, res) {
-  let data1;
-  let data2;
-
   const {
     Iniciativa_id,
     Iniciativa_idInterno,
@@ -282,6 +281,7 @@ export async function createIniciativa(req, res) {
     await programa.addIniciativa(iniciativa);
     //console.log(Object.keys(comuna.__proto__));
     console.log("TERMINO");
+    res.status(200).json({status : true})
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }
@@ -308,6 +308,11 @@ export async function getIniciativas(req, res) {
           attributes: ['nombre'], // Especifica los atributos que deseas incluir de la tabla Programa
           as: 'programas'
         },
+        {
+          model: Comuna,
+          attributes: ['nombre'],
+          as: "comunas"
+        }
       ],
       where: {
         [Op.and] : [
