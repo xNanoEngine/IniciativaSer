@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Footer from "../components/imports/Footer";
 import ProgramSeremi from "../components/imports/ProgramSeremi";
+
 const Home2 = () => {
   const [busqueda, setBusqueda] = useState("");
   return (
@@ -19,20 +20,20 @@ const Home2 = () => {
               <input
                 type="text"
                 id="busqueda"
-                className="w-3/4 md:w-2/5 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500"
+                className="w-3/4 md:w-2/5 px-4 py-2 rounded-md border-black border-2 focus:outline-none"
                 placeholder="Buscar Información"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
               />
               <button
-                className="w-1/2 h-10 bg-white border-black border-2 rounded-lg md:w-1/12"
+                className="w-1/2 h-10 md:w-1/12 bg-yellow-200 border-black border-2 rounded-lg hover:opacity-50"
                 onClick={""}
               >
                 Buscar
               </button>
               <a
                 href="/search"
-                className=" md:w-2/12 text-[#666666] font-custom_Syne text-base rounded-lg py-2 cursor-pointer"
+                className=" md:w-2/12 text-gray-400 font-custom_Syne text-base rounded-lg py-2 cursor-pointer hover:text-black"
               >
                 [+] Búsqueda avanzada
               </a>

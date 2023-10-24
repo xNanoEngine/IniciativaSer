@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Footer from "../components/imports/Footer";
 import ChecklistSearch from "../components/imports/InitiativeFormComponents/ChecklistSearch";
 import TablesInitiatives from "../components/imports/TablesInitiatives";
+
 const AdvancedSearch = () => {
   const [busqueda, setBusqueda] = useState("");
   return (
@@ -24,13 +25,13 @@ const AdvancedSearch = () => {
             <input
               type="text"
               id="busqueda"
-              className="w-3/4 md:w-2/5 px-4 py-2 rounded-md border focus:outline-none focus:border-blue-500"
+              className="w-3/4 md:w-2/5 px-4 py-2 rounded-md border-black border-2 focus:outline-none"
               placeholder="Buscar Información"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
             />
             <button
-              className="w-1/2 h-10 md:w-1/12 bg-white border-black border-2 rounded-lg"
+              className="w-1/2 h-10 md:w-1/12 bg-yellow-200 border-black border-2 rounded-lg hover:opacity-50"
               onClick={""}
             >
               Buscar

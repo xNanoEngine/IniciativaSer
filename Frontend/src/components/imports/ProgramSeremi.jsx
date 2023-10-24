@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import ProgramCards from "./ProgramCards";
 import { initiativeProgram } from "../../constants";
+import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/solid";
 
 const ProgramSeremi = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const cardsPerPage = window.innerWidth <= 768 ? 1 : 10;
+  const cardsPerPage = 10; // Número fijo de tarjetas por página
+
+  // Calcular el número total de páginas
+  const totalPages = Math.ceil(initiativeProgram.length / cardsPerPage);
 
   const nextCard = () => {
-    setCurrentPage((prevPage) => (prevPage + 1) % Math.ceil(20 / cardsPerPage));
+    setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
   };
 
   const prevCard = () => {
-    setCurrentPage(
-      (prevPage) =>
-        (prevPage - 1 + Math.ceil(20 / cardsPerPage)) %
-        Math.ceil(20 / cardsPerPage)
-    );
+    setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
   };
 
   return (
@@ -29,16 +29,46 @@ const ProgramSeremi = () => {
               index < (currentPage + 1) * cardsPerPage
                 ? "block"
                 : "hidden"
-            } `}
+            }`}
           >
             <ProgramCards ind={program.name} desc={program.description} />
           </div>
         ))}
       </div>
-
-      <div className="flex justify-center mt-4 space-x-4">
-        <button onClick={prevCard}>Prev</button>
-        <button onClick={nextCard}>Sig</button>
+      <div className="w-full flex flex-row mt-10 items-center justify-between select-none">
+        <div className="flex justify-center w-8 h-8 hover:bg-gray-100 hover:rounded-lg">
+          <ChevronLeftIcon className="w-7" stroke="black" onClick={prevCard} />
+        </div>
+        <div className="flex items-center gap-2 ">
+          {[...Array(totalPages)].map((_, page) => (
+            <button
+              key={page}
+              className={`w-8 h-8 ${
+                page === currentPage
+                  ? " text-white bg-black rounded-md shadow-md text-lg scale-110 transition-transform "
+                  : "text-black scale-100 hover:shadow-md hover:rounded-md"
+              }`}
+              onClick={() => setCurrentPage(page)}
+            >
+              {page + 1}
+            </button>
+          ))}
+        </div>
+        <div
+          className={`flex justify-center w-8 h-8 ${
+            currentPage >= totalPages
+              ? ""
+              : "hover:bg-gray-100 hover:rounded-lg"
+          }`}
+        >
+          <ChevronRightIcon
+            className={`w-7 ${
+              currentPage >= totalPages ? "opacity-20" : "opacity-100"
+            }`}
+            stroke="black"
+            onClick={nextCard}
+          />
+        </div>
       </div>
     </div>
   );
