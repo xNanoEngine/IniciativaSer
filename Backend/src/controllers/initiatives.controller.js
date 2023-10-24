@@ -294,7 +294,7 @@ export async function createIniciativa(req, res) {
 }
 
 export async function getIniciativas(req, res) {
-    const { filtroNombre, filtroTipo, filtroComuna} = req.body;
+    const { filtroNombre, filtroFinanciamiento, filtroComuna, filtroPrograma} = req.body;
   try {
     let results;
     //Limpieza de filtros
@@ -306,12 +306,18 @@ export async function getIniciativas(req, res) {
         {
           model: Programa,
           attributes: ['nombre'], // Especifica los atributos que deseas incluir de la tabla Programa
-          as: 'programas'
+          as: 'programas',
+          where: {
+            nombre: {[Op.regexp]: filtroPrograma},
+          },
         },
         {
           model: Comuna,
           attributes: ['nombre'],
-          as: "comunas"
+          as: "comunas",
+          where: {
+            nombre: {[Op.regexp]: filtroComuna},
+          },
         }
       ],
       where: {
@@ -320,10 +326,10 @@ export async function getIniciativas(req, res) {
           {nombre: {[Op.regexp]: filtroNombre}},
           {descripcion: {[Op.regexp]: filtroNombre}}
           ]},
-          {tipo: {[Op.regexp]: filtroTipo}},
+          {formaFinanciamiento: {[Op.regexp]: filtroFinanciamiento}},
         ]  
       },
-      attributes: ['id', [sequelize.col('programas.nombre'), 'nombre_programa'], "nombre", "componente", "descripcion", "presupuesto"],
+      attributes: ['id', [sequelize.col('programas.nombre'), 'nombre_programa'], "nombre", "componente", "descripcion", "formaFinanciamiento"],
     });
     // } else {
     //   results = await Iniciativa.findAll({
