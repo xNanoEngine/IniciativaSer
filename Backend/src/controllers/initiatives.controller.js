@@ -297,6 +297,8 @@ export async function getIniciativas(req, res) {
   const { filtroNombre, filtroFinanciamiento, filtroComuna, filtroPrograma} = req.body;
   try {
     let results;
+    const limit = 2;
+    const offset = 2;
     results = await Iniciativa.findAll({
       include: [
         {
@@ -344,6 +346,9 @@ export async function getIniciativas(req, res) {
         ]  
       },
       attributes: ['id', [sequelize.col('programas.nombre'), 'nombre_programa'], "nombre", "componente", "descripcion", "formaFinanciamiento"],
+      limit: limit,
+      offset: offset,
+      subQuery: false
     });
     res.json(results);
   } catch (error) {
