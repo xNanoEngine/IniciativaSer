@@ -4,4 +4,13 @@ import Home from "./Home";
 import Login from "./Login";
 import Initiative from "./Initiative";
 import AdvancedSearch from "./AdvancedSearch";
-export { Navbar, Logout, Home, Login, Initiative, AdvancedSearch };
+import ViewInitiative from "./ViewInitiative";
+export {
+  Navbar,
+  Logout,
+  Home,
+  Login,
+  Initiative,
+  AdvancedSearch,
+  ViewInitiative,
+};

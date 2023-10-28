@@ -26,7 +26,10 @@ const AdvancedSearch = () => {
           </div>
         </section>
         <div className="mt-10">
-          <form className="flex flex-col w-full h-full items-center space-y-4 md:space-y-0 md:flex-row md:justify-center md:space-x-4">
+          <form
+            className="flex flex-col w-full h-full items-center space-y-4 md:space-y-0 md:flex-row md:justify-center md:space-x-4"
+            onSubmit={handleSumbit}
+          >
             <input
               type="text"
               id="busqueda"

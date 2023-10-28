@@ -5,10 +5,30 @@ import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/solid";
 
 const ProgramSeremi = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const cardsPerPage = 10; // Número fijo de tarjetas por página
+  let cardsPerPage;
+  if (window.innerWidth <= 768) {
+    cardsPerPage = 1;
+  } else {
+    cardsPerPage = 10;
+  }
 
-  // Calcular el número total de páginas
   const totalPages = Math.ceil(initiativeProgram.length / cardsPerPage);
+
+  const pagesToShow = 2; // Cantidad de páginas a mostrar en la paginación
+
+  // Calcular los índices de inicio y fin del rango de páginas
+  let startPage = currentPage - pagesToShow;
+  let endPage = currentPage + pagesToShow;
+
+  if (startPage < 0) {
+    startPage = 0;
+    endPage = Math.min(2 * pagesToShow, totalPages - 1);
+  }
+
+  if (endPage >= totalPages) {
+    endPage = totalPages - 1;
+    startPage = Math.max(totalPages - 2 * pagesToShow, 0);
+  }
 
   const nextCard = () => {
     setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
@@ -40,19 +60,21 @@ const ProgramSeremi = () => {
           <ChevronLeftIcon className="w-7" stroke="black" onClick={prevCard} />
         </div>
         <div className="flex items-center gap-2 ">
-          {[...Array(totalPages)].map((_, page) => (
-            <button
-              key={page}
-              className={`w-8 h-8 ${
-                page === currentPage
-                  ? " text-white bg-black rounded-md shadow-md text-lg scale-110 transition-transform "
-                  : "text-black scale-100 hover:shadow-md hover:rounded-md"
-              }`}
-              onClick={() => setCurrentPage(page)}
-            >
-              {page + 1}
-            </button>
-          ))}
+          {[...Array(totalPages).keys()]
+            .slice(startPage, endPage + 1)
+            .map((page) => (
+              <button
+                key={page}
+                className={`w-8 h-8 ${
+                  page === currentPage
+                    ? " text-white bg-black rounded-md shadow-md text-lg scale-110 transition-transform "
+                    : "text-black scale-100 hover:shadow-md hover:rounded-md"
+                }`}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page + 1}
+              </button>
+            ))}
         </div>
         <div
           className={`flex justify-center w-8 h-8 ${
