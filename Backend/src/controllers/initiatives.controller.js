@@ -294,12 +294,11 @@ export async function createIniciativa(req, res) {
 }
 
 export async function getIniciativas(req, res) {
-  const { filtroNombre, filtroFinanciamiento, filtroComuna, filtroPrograma} = req.body;
+  const { filtroNombre, filtroFinanciamiento, filtroComuna, filtroPrograma, currentPage, perPage} = req.body;
   try {
-    let results;
-    const limit = 2;
-    const offset = 2;
-    results = await Iniciativa.findAll({
+    //const perPage = 5;
+    const offset = (currentPage-1)*perPage;
+    const {counts, results} = await Iniciativa.findAndCountAll({
       include: [
         {
           model: Programa,
@@ -346,11 +345,18 @@ export async function getIniciativas(req, res) {
         ]  
       },
       attributes: ['id', [sequelize.col('programas.nombre'), 'nombre_programa'], "nombre", "componente", "descripcion", "formaFinanciamiento"],
-      limit: limit,
+      limit: perPage,
       offset: offset,
       subQuery: false
     });
-    res.json(results);
+    const totalPages = Math.ceil(counts / perPage);
+    res.json({
+      totalItems: counts,     // Total de artículos
+      totalPages: totalPages, // Número total de páginas
+      currentPage: currentPage,     // Página actual
+      data: results,
+    });
+    //res.json(counts, results);
   } catch (error) {
     console.error("Error al realizar la consulta: ", error);
     res.status(500).json({ error: "Error al realizar la consulta" });
@@ -434,9 +440,11 @@ export async function getPrograma(req, res) {
 }
 
 export async function getProgramas(req, res) {
+  const {currentPage, perPage} = req.body;
+  const offset = (currentPage-1)*perPage;
   try {
     console.log("getProgramas");
-    const programas = await Programa.findAll({
+    const {counts, programas} = await Programa.findAndCountAll({
       attributes: [
         "id",
         "nombre",
@@ -445,8 +453,18 @@ export async function getProgramas(req, res) {
         //"imagen"
       ],
       order: [["nombre", "DESC"]],
+      limit: perPage,
+      offset: offset,
+      subQuery: false,
     });
-    return programas;
+    const totalPages = Math.ceil(counts / perPage);
+    res.json({
+      totalItems: counts,     // Total de artículos
+      totalPages: totalPages, // Número total de páginas
+      currentPage: currentPage,     // Página actual
+      data: programas,
+    });
+    //return programas;
   } catch (error) {
     throw new Error("Sucedio un error obteniendo programas......");
   }
