@@ -326,3 +326,12 @@ export const initiativeProgram = [
       "Red Cultural es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
   },
 ];
+
+export const initiativeFilters = [
+  { name: "Nombre" },
+  { name: "Descripcion" },
+  { name: "Programa" },
+  { name: "Financiamiento" },
+];
+
+export const comuneFilters = [{ name: "Valdivia" }, { name: "Paillaco" }];

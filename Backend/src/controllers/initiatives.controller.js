@@ -281,7 +281,7 @@ export async function createIniciativa(req, res) {
     await programa.addIniciativa(iniciativa);
     //console.log(Object.keys(comuna.__proto__));
     console.log("TERMINO");
-    res.status(200).json({status : true})
+    res.status(200).json({ status: true });
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }
@@ -293,73 +293,154 @@ export async function createIniciativa(req, res) {
   // })
 }
 
+// export async function getIniciativas(req, res) {
+//   const {
+//     filtroNombre,
+//     filtroFinanciamiento,
+//     filtroComuna,
+//     filtroPrograma,
+//     currentPage,
+//     perPage,
+//   } = req.body;
+//   try {
+//     //const perPage = 5;
+//     const offset = (currentPage - 1) * perPage;
+//     const { counts, results } = await Iniciativa.findAndCountAll({
+//       include: [
+//         {
+//           model: Programa,
+//           attributes: ["nombre"], // Especifica los atributos que deseas incluir de la tabla Programa
+//           as: "programas",
+//           where: {
+//             nombre: {
+//               [Op.or]: filtroPrograma.map((nombre) => ({
+//                 [Op.regexp]: nombre,
+//               })),
+//             },
+//           },
+//         },
+//         {
+//           model: Comuna,
+//           attributes: ["nombre"],
+//           as: "comunas",
+//           where: {
+//             nombre: {
+//               [Op.or]: filtroComuna.map((nombre) => ({
+//                 [Op.regexp]: nombre,
+//               })),
+//             },
+//           },
+//         },
+//       ],
+//       where: {
+//         [Op.and]: [
+//           {
+//             [Op.or]: [
+//               {
+//                 nombre: {
+//                   [Op.or]: filtroNombre.map((nombre) => ({
+//                     [Op.regexp]: nombre,
+//                   })),
+//                 },
+//               },
+//               {
+//                 descripcion: {
+//                   [Op.or]: filtroNombre.map((nombre) => ({
+//                     [Op.regexp]: nombre,
+//                   })),
+//                 },
+//               },
+//             ],
+//           },
+//           {
+//             formaFinanciamiento: {
+//               [Op.or]: filtroFinanciamiento.map((nombre) => ({
+//                 [Op.regexp]: nombre,
+//               })),
+//             },
+//           },
+//         ],
+//       },
+//       attributes: [
+//         "id",
+//         [sequelize.col("programas.nombre"), "nombre_programa"],
+//         "nombre",
+//         "componente",
+//         "descripcion",
+//         "formaFinanciamiento",
+//       ],
+//       limit: perPage,
+//       offset: offset,
+//       subQuery: false,
+//     });
+//     const totalPages = Math.ceil(counts / perPage);
+//     res.json({
+//       totalItems: counts, // Total de artículos
+//       totalPages: totalPages, // Número total de páginas
+//       currentPage: currentPage, // Página actual
+//       data: results,
+//     });
+//     //res.json(counts, results);
+//   } catch (error) {
+//     console.error("Error al realizar la consulta: ", error);
+//     res.status(500).json({ error: "Error al realizar la consulta" });
+//   }
+// }
+
 export async function getIniciativas(req, res) {
-  const { filtroNombre, filtroFinanciamiento, filtroComuna, filtroPrograma, currentPage, perPage} = req.body;
+  const { Filtro_Iniciativa, Filtro_Comuna, Busqueda, Page, PerPage } =
+    req.query;
+  const limit = parseInt(PerPage, 10);
+  const page = parseInt(Page, 10);
+  const offset = (page - 1) * limit;
+  const whereConditions = {}; // Objeto de condiciones
+
+  if (Filtro_Iniciativa) {
+    if (Filtro_Iniciativa === "Nombre") {
+      whereConditions.nombre = {
+        [Op.like]: `%${Busqueda}%`,
+      };
+    } else if (Filtro_Iniciativa === "Programa") {
+      whereConditions.programa = {
+        [Op.like]: `%${Busqueda}%`,
+      };
+    } else if (Filtro_Iniciativa === "Descripcion") {
+      whereConditions.descripcion = {
+        [Op.like]: `%${Busqueda}%`,
+      };
+    } else if (Filtro_Iniciativa === "Componente") {
+      whereConditions.componente = {
+        [Op.like]: `%${Busqueda}%`,
+      };
+    } else if (Filtro_Iniciativa === "Financiamiento") {
+      whereConditions.formaFinanciamiento = {
+        [Op.like]: `%${Busqueda}%`,
+      };
+    }
+  }
+
+  if (Filtro_Comuna) {
+    const comunas = Filtro_Comuna.split(",");
+    if (comunas.length > 0) {
+      whereConditions.comuna = { [Op.or]: comunas };
+    }
+  }
+
   try {
-    //const perPage = 5;
-    const offset = (currentPage-1)*perPage;
-    const {counts, results} = await Iniciativa.findAndCountAll({
-      include: [
-        {
-          model: Programa,
-          attributes: ['nombre'], // Especifica los atributos que deseas incluir de la tabla Programa
-          as: 'programas',
-          where: {
-            nombre: {
-              [Op.or]: filtroPrograma.map((nombre) => ({
-                [Op.regexp]: nombre,    
-              })),
-            },},
-          },
-        {
-          model: Comuna,
-          attributes: ['nombre'],
-          as: "comunas",
-          where: {
-            nombre: {
-            [Op.or]: filtroComuna.map((nombre) => ({
-              [Op.regexp]: nombre,    
-            })),
-          },}
-        },
-      ],
-      where: {
-        [Op.and] : [
-          {[Op.or]:[ 
-          {nombre: {
-            [Op.or]: filtroNombre.map((nombre) => ({
-              [Op.regexp]: nombre,    
-            })),
-          }},
-          {descripcion: {
-            [Op.or]: filtroNombre.map((nombre) => ({
-              [Op.regexp]: nombre,    
-            })),
-          }}
-          ]},
-          {formaFinanciamiento: {
-            [Op.or]: filtroFinanciamiento.map((nombre) => ({
-              [Op.regexp]: nombre,    
-            })),
-          }},
-        ]  
-      },
-      attributes: ['id', [sequelize.col('programas.nombre'), 'nombre_programa'], "nombre", "componente", "descripcion", "formaFinanciamiento"],
-      limit: perPage,
+    const { count, rows } = await Iniciativa.findAndCountAll({
+      where: whereConditions,
+      limit: limit,
       offset: offset,
-      subQuery: false
     });
-    const totalPages = Math.ceil(counts / perPage);
-    res.json({
-      totalItems: counts,     // Total de artículos
-      totalPages: totalPages, // Número total de páginas
-      currentPage: currentPage,     // Página actual
-      data: results,
+    const totalPages = Math.ceil(count / PerPage);
+    res.status(200).json({
+      counts: count,
+      results: rows,
+      totalPages: totalPages,
     });
-    //res.json(counts, results);
   } catch (error) {
-    console.error("Error al realizar la consulta: ", error);
-    res.status(500).json({ error: "Error al realizar la consulta" });
+    console.log(error);
+    res.status(500).json({ message: "Error al obtener las iniciativas." });
   }
 }
 
@@ -440,11 +521,11 @@ export async function getPrograma(req, res) {
 }
 
 export async function getProgramas(req, res) {
-  const {currentPage, perPage} = req.body;
-  const offset = (currentPage-1)*perPage;
+  const { currentPage, perPage } = req.body;
+  const offset = (currentPage - 1) * perPage;
   try {
     console.log("getProgramas");
-    const {counts, programas} = await Programa.findAndCountAll({
+    const { counts, programas } = await Programa.findAndCountAll({
       attributes: [
         "id",
         "nombre",
@@ -459,9 +540,9 @@ export async function getProgramas(req, res) {
     });
     const totalPages = Math.ceil(counts / perPage);
     res.json({
-      totalItems: counts,     // Total de artículos
+      totalItems: counts, // Total de artículos
       totalPages: totalPages, // Número total de páginas
-      currentPage: currentPage,     // Página actual
+      currentPage: currentPage, // Página actual
       data: programas,
     });
     //return programas;

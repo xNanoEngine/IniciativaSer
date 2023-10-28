@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../components/imports/Footer";
 import ProgramSeremi from "../components/imports/ProgramSeremi";
 import { useFilter } from "../hook/useFilter";
@@ -6,8 +6,14 @@ import { useNavigate, Navigate } from "react-router-dom";
 const Home2 = () => {
   const navigate = useNavigate();
   const { busqueda, setBusqueda } = useFilter();
+  const [inputValue, setInputValue] = useState("");
+  const handleInputChange = (e) => {
+    // Actualizar el estado local del valor del input
+    setInputValue(e.target.value);
+  };
   const handleSubmit = () => {
-    busqueda !== "" ? navigate("/search") : null;
+    setBusqueda(inputValue);
+    inputValue !== "" ? navigate("/search") : null;
   };
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
@@ -30,8 +36,8 @@ const Home2 = () => {
                 id="busqueda"
                 className="w-3/4 md:w-2/5 px-4 py-2 rounded-md border-black border-2 focus:outline-none"
                 placeholder="Buscar Información"
-                value={busqueda}
-                onChange={(e) => setBusqueda(e.target.value)}
+                value={inputValue} // Enlazar el valor del input al estado local
+                onChange={(e) => handleInputChange(e)} // Manejador de cambios para actualizar el estado local
               />
               <button
                 className="w-1/2 h-10 md:w-1/12 bg-yellow-200 border-black border-2 rounded-lg hover:opacity-50"

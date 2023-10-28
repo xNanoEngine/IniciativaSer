@@ -7,7 +7,12 @@ import {
 
 import clientAxios from "../config/clienteAxios";
 
-const TablesInitiatives = ({ busqueda, currentPage, setCurrentPage }) => {
+const TablesInitiatives = ({
+  busqueda,
+  currentPage,
+  setCurrentPage,
+  filters,
+}) => {
   const TABLE_HEAD = [
     "Programa",
     "Titulo",
@@ -24,29 +29,38 @@ const TablesInitiatives = ({ busqueda, currentPage, setCurrentPage }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true); // Establece isLoading en true antes de la solicitud.
+      setIsLoading(true);
+      const Filtro_Iniciativa = filters.Iniciativa
+        ? `${filters.Iniciativa}`
+        : null;
+      const Filtro_Comuna = filters.Comuna ? `${filters.Comuna}` : null;
       try {
         const response = await clientAxios.get(`/iniciativas`, {
           params: {
-            page: currentPage,
-            perPage: RowsPerPage,
-            busqueda: busqueda,
+            Page: currentPage,
+            PerPage: RowsPerPage,
+            Busqueda: busqueda,
+            Filtro_Iniciativa,
+            Filtro_Comuna,
           },
         });
 
         if (response.status === 200) {
           const data = response.data;
           setTotalPages(data.totalPages);
-          setDisplayedRows(data.data);
+          setDisplayedRows(data.results);
           setIsLoading(false);
         }
       } catch (error) {
-        console.error(error);
+        console.log(filters);
       }
     };
 
-    fetchData();
-  }, [busqueda, currentPage]);
+    // Verificar si filters no está vacío antes de realizar la solicitud
+    if (Object.keys(filters).length > 0) {
+      fetchData();
+    }
+  }, [busqueda, currentPage, filters]);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -119,68 +133,59 @@ const TablesInitiatives = ({ busqueda, currentPage, setCurrentPage }) => {
               </tr>
             </thead>
             <tbody>
-              {displayedRows.map(
-                (
-                  { id, name, amount, date, account, accountNumber, expiry },
-                  index
-                ) => {
-                  const isLast = index === displayedRows.length - 1;
-                  const classes = isLast
-                    ? "p-4"
-                    : "p-4 border-b border-blue-gray-50";
-                  return (
-                    <tr
-                      key={index}
-                      className={`${index % 2 == 0 ? "bg-yellow-200" : ""}`}
-                    >
-                      <td className={classes}>
-                        <div className="flex items-center gap-3">
-                          <span className="font-normal text-gray-600 text-sm">
-                            {name}
-                          </span>
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <span className="font-normal text-gray-600 text-sm">
-                          {amount}
-                        </span>
-                      </td>
-                      <td className={classes}>
-                        <span className="font-normal text-gray-600 text-sm">
-                          {date}
-                        </span>
-                      </td>
-                      <td className={classes}>
-                        <div className="w-max">a</div>
-                      </td>
-                      <td className={classes}>
-                        <div className="flex items-center gap-3">
-                          <div className="flex flex-col">
-                            <span className="font-normal text-gray-600 text-sm capitalize">
-                              {account.split("-").join(" ")} {accountNumber}
-                            </span>
-                            <span className="font-normal text-gray-600 text-sm opacity-70">
-                              {expiry}
+              {displayedRows &&
+                displayedRows.map(
+                  ({ id, nombre, componente, descripcion }, index) => {
+                    const isLast = index === displayedRows.length - 1;
+                    const classes = isLast
+                      ? "p-4"
+                      : "p-4 border-b border-blue-gray-50";
+                    return (
+                      <tr
+                        key={index}
+                        className={`${index % 2 == 0 ? "bg-yellow-200" : ""}`}
+                      >
+                        <td className={classes}>
+                          <div className="flex items-center gap-3">
+                            <span className="font-normal text-gray-600 text-sm">
+                              {nombre}
                             </span>
                           </div>
-                        </div>
-                      </td>
-                      <td className={classes}>
-                        <a href={`/view?id=${id}`} className="text-blue-500">
-                          Leer iniciativa
-                        </a>
-                      </td>
-                      <td className={classes}>
-                        <div content="Edit User">
-                          <button variant="text">
-                            <PencilIcon className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
+                        </td>
+                        <td className={classes}>
+                          <span className="font-normal text-gray-600 text-sm">
+                            {nombre}
+                          </span>
+                        </td>
+                        <td className={classes}>
+                          <span className="font-normal text-gray-600 text-sm">
+                            {componente}
+                          </span>
+                        </td>
+                        <td className={classes}>
+                          <div className="w-max">a</div>
+                        </td>
+                        <td className={classes}>
+                          <span className="font-normal text-gray-600 text-sm capitalize">
+                            {descripcion}
+                          </span>
+                        </td>
+                        <td className={classes}>
+                          <a href={`/view?id=${id}`} className="text-blue-500">
+                            Leer iniciativa
+                          </a>
+                        </td>
+                        <td className={classes}>
+                          <div content="Edit User">
+                            <button variant="text">
+                              <PencilIcon className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
             </tbody>
           </table>
           <div className="w-full flex flex-row items-center justify-between border-t border-blue-gray-50 p-4 select-none">
