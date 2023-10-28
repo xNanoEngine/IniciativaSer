@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Footer from "../components/imports/Footer";
 import ChecklistSearch from "../components/imports/InitiativeFormComponents/ChecklistSearch";
 import TablesInitiatives from "../components/imports/TablesInitiatives";
 import { useFilter } from "../hook/useFilter";
 const AdvancedSearch = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const { busqueda, setBusqueda } = useFilter();
-  busqueda !== "" ? console.log(busqueda) : null;
-
-  const handleSumbit = () => {
-    console.log(busqueda);
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+    setBusqueda(busqueda);
+    setCurrentPage(1); // Restablece la página a 1 para mostrar los primeros resultados.
   };
+
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
       <div className="flex-grow mb-10">
@@ -28,7 +30,7 @@ const AdvancedSearch = () => {
         <div className="mt-10">
           <form
             className="flex flex-col w-full h-full items-center space-y-4 md:space-y-0 md:flex-row md:justify-center md:space-x-4"
-            onSubmit={handleSumbit}
+            onSubmit={(e) => handleSumbit(e)}
           >
             <input
               type="text"
@@ -69,7 +71,13 @@ const AdvancedSearch = () => {
               </h3>
             </div>
             <div className="">
-              <TablesInitiatives />
+              {busqueda !== "" ? (
+                <TablesInitiatives
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  busqueda={busqueda}
+                />
+              ) : null}
             </div>
           </div>
         </div>
