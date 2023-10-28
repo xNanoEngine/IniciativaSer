@@ -8,6 +8,14 @@ import {
 import clientAxios from "../config/clienteAxios";
 
 const TablesInitiatives = () => {
+  const TABLE_HEAD = [
+    "Programa",
+    "Titulo",
+    "Componente",
+    "Financiamiento",
+    "Descripcion",
+    "",
+  ];
   const [currentPage, setCurrentPage] = useState(1);
   const [displayedRows, setDisplayedRows] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
