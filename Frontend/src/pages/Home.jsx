@@ -8,7 +8,6 @@ const Home2 = () => {
   const { busqueda, setBusqueda } = useFilter();
   const [inputValue, setInputValue] = useState("");
   const handleInputChange = (e) => {
-    // Actualizar el estado local del valor del input
     setInputValue(e.target.value);
   };
   const handleSubmit = () => {

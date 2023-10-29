@@ -10,15 +10,26 @@ const AdvancedSearch = () => {
   const { busqueda, setBusqueda } = useFilter();
   const [inputValue, setInputValue] = useState("");
   const [selectedFilters, setSelectedFilters] = useState({});
+  useEffect(() => {
+    if (busqueda) {
+      setInputValue(busqueda);
+    }
+    const lastSearch = localStorage.getItem("lastSearch");
+    if (lastSearch) {
+      setInputValue(lastSearch);
+      setBusqueda(lastSearch);
+    }
+    //localStorage.setItem("lastSearch", busqueda);
+  }, []);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-
   const handleSumbit = (e) => {
     e.preventDefault();
     setBusqueda(inputValue);
     setCurrentPage(1);
+    localStorage.setItem("lastSearch", inputValue);
   };
 
   const handleSelectionChange = (type, selectedItems) => {
@@ -96,12 +107,6 @@ const AdvancedSearch = () => {
             </div>
           </div>
           <div className="space-y-14 md:w-5/6">
-            <div className="flex flex-col space-y-2">
-              <h2 className="text-3xl font-bold font-custom_Syne">
-                Resultados
-              </h2>
-              <h3 className="text-gray-600">Mostrando resultados aquí...</h3>
-            </div>
             <div>
               {busqueda !== "" ? (
                 <TablesInitiatives
