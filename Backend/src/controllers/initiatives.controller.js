@@ -423,14 +423,29 @@ export async function getIniciativas(req, res) {
       };
       Options.where = whereConditions
     } else if (Filtro_Iniciativa === "Programa") {
-      Options.include.push({
-        model: Programa,
-        as: 'programas',
-        attributes: ["nombre"],
-        where: {
-          nombre: {[Op.like]: `%${Busqueda}%`},
-        }
-      });
+      if (Filtro_Comuna){
+        Options.include.push(
+          {
+            model: Programa,
+            as: 'programas',
+            attributes: ["nombre"],
+            where: {
+              nombre: {[Op.like]: `%${Busqueda}%`},
+            }
+          });
+      }
+      else {
+        Options.include = [
+          {
+            model: Programa,
+            as: 'programas',
+            attributes: ["nombre"],
+            where: {
+              nombre: {[Op.like]: `%${Busqueda}%`},
+            }
+          }
+        ]
+      }
     } else if (Filtro_Iniciativa === "Descripcion") {
       whereConditions.descripcion = {
         [Op.like]: `%${Busqueda}%`,
