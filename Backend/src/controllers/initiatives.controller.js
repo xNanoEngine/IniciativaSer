@@ -246,9 +246,7 @@ export async function createIniciativa(req, res) {
     const comuna = await createComuna_(Comuna_);
     const documento = await createDocumento_(documento_);
     const espacio_cultural = await createEspacioCultural_(espacio_cultural_);
-    const localidad_territorio = await createLocalidadterritorio_(
-      localidad_territorio_
-    );
+    const localidad_territorio = await createLocalidadterritorio_(localidad_territorio_);
     const objetivo = await createObjetivo_(objetivo_);
     const persona_juridica = await createPersonajuridica_(persona_juridica_);
     const persona_natural = await createPersonanatural_(personanatural_);
@@ -394,24 +392,55 @@ export async function getIniciativas(req, res) {
   const page = parseInt(Page, 10);
   const offset = (page - 1) * limit;
   const whereConditions = {}; // Objeto de condiciones
+  const comunas = Filtro_Comuna.split(",");
 
+  const Options = {
+    limit: limit,
+    offset: offset,
+  }
+
+  if (Filtro_Comuna) {
+    Options.include = [
+      {
+        model: Comuna,
+        attributes: ["nombre"],
+        as: "comunas",
+        where: {
+          nombre: {
+                    [Op.or]: comunas.map((nombre) => ({
+                      [Op.like]: nombre,
+                    })),
+                  },
+        }
+      }
+    ]
+  }
+  
   if (Filtro_Iniciativa) {
     if (Filtro_Iniciativa === "Nombre") {
       whereConditions.nombre = {
         [Op.like]: `%${Busqueda}%`,
       };
+      Options.where = whereConditions
     } else if (Filtro_Iniciativa === "Programa") {
-      whereConditions.programa = {
-        [Op.like]: `%${Busqueda}%`,
-      };
+      Options.include.push({
+        model: Programa,
+        as: 'programas',
+        attributes: ["nombre"],
+        where: {
+          nombre: {[Op.like]: `%${Busqueda}%`},
+        }
+      });
     } else if (Filtro_Iniciativa === "Descripcion") {
       whereConditions.descripcion = {
         [Op.like]: `%${Busqueda}%`,
       };
+      Options.where = whereConditions
     } else if (Filtro_Iniciativa === "Componente") {
       whereConditions.componente = {
         [Op.like]: `%${Busqueda}%`,
       };
+      Options.where = whereConditions
     } else if (Filtro_Iniciativa === "Financiamiento") {
       whereConditions.formaFinanciamiento = {
         [Op.like]: `%${Busqueda}%`,
@@ -419,19 +448,8 @@ export async function getIniciativas(req, res) {
     }
   }
 
-  if (Filtro_Comuna) {
-    const comunas = Filtro_Comuna.split(",");
-    if (comunas.length > 0) {
-      whereConditions.comuna = { [Op.or]: comunas };
-    }
-  }
-
   try {
-    const { count, rows } = await Iniciativa.findAndCountAll({
-      where: whereConditions,
-      limit: limit,
-      offset: offset,
-    });
+    const { count, rows } = await Iniciativa.findAndCountAll(Options);
     const totalPages = Math.ceil(count / PerPage);
     res.status(200).json({
       counts: count,
