@@ -358,6 +358,24 @@ export async function getIniciativas(req, res) {
         [Op.like]: `%${Busqueda}%`,
       };
     }
+  } else {
+    whereConditions[Op.or] = [
+      {
+        nombre: { [Op.like]: `%${Busqueda}%` },
+      },
+      {
+        descripcion: { [Op.like]: `%${Busqueda}%` },
+      },
+      {
+        componente: { [Op.like]: `%${Busqueda}%` },
+      },
+      {
+        formaFinanciamiento: { [Op.like]: `%${Busqueda}%` },
+      },
+      // Agrega más campos aquí si es necesario
+    ];
+
+    Options.where = whereConditions;
   }
   if (token) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
