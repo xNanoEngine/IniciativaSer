@@ -163,12 +163,6 @@ export async function createIniciativa(req, res) {
     fechaFin: Iniciativa_fechaFin,
   };
 
-  const Comuna_ = {
-    id: Comuna_id,
-    nombre: Comuna_nombre,
-    cantHabitantes: Comuna_cantHabitantes,
-  };
-
   const ambitodominioarea_ = {
     nombre: AmbitoDominioArea_nombre,
   };
@@ -228,12 +222,6 @@ export async function createIniciativa(req, res) {
     pais_origen: PersonaNatural_pais_origen,
     pueblo_originario: PersonaNatural_pueblo_originario,
   };
-  const programa_ = {
-    id: Programa_id,
-    nombre: Programa_nombre,
-    descripcion: Programa_descripcion,
-    url: Programa_url,
-  };
 
   const tipoespaciocultural_ = {
     tipo: TipoEspacioCultural_tipo,
@@ -243,14 +231,14 @@ export async function createIniciativa(req, res) {
 
   try {
     const iniciativa = await createIniciativa_(Iniciativa_);
-    const comuna = await createComuna_(Comuna_);
+    const comuna = await Comuna.findOne({ where: { nombre: Comuna_nombre} });
     const documento = await createDocumento_(documento_);
     const espacio_cultural = await createEspacioCultural_(espacio_cultural_);
     const localidad_territorio = await createLocalidadterritorio_(localidad_territorio_);
     const objetivo = await createObjetivo_(objetivo_);
     const persona_juridica = await createPersonajuridica_(persona_juridica_);
     const persona_natural = await createPersonanatural_(personanatural_);
-    const programa = await createPrograma_(programa_);
+    const programa = await Programa.findOne({ where: { nombre: Programa_nombre} });
     const tipo_espacio_cultural = await createTipoespaciocultural_(
       tipoespaciocultural_
     );
@@ -369,20 +357,47 @@ export async function getIniciativas(req, res) {
       };
     }
   }
-  try {
-    const {rows, count} = await Iniciativa.findAndCountAll(Options);
-    const totalPages = Math.ceil(count / PerPage);
-    
-    res.status(200).json({
-      counts: count,
-      results: rows,
-      totalPages: totalPages,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error al obtener las iniciativas." });
+  if (token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const cuentaId = parseInt(decoded.userId, 10);
+
+    try {
+      const { count, rows } = await Iniciativa.findAndCountAll(Options);
+      // Iterar a través de las iniciativas y establecer el campo canEdit
+      const iniciativasConCanEdit = rows.map((iniciativa) => ({
+        ...iniciativa.dataValues,
+        canEdit: iniciativa.cuentaId === cuentaId,
+      }));
+
+      const totalPages = Math.ceil(count / PerPage);
+      console.log(cuentaId);
+      res.status(200).json({
+        counts: count,
+        results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
+        totalPages: totalPages,
+        accountId: cuentaId,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error al obtener las iniciativas." });
+    }
+  } else {
+    // Si no se proporciona un token, simplemente envía las iniciativas sin el campo canEdit
+    try {
+      const { count, rows } = await Iniciativa.findAndCountAll(Options);
+      const totalPages = Math.ceil(count / PerPage);
+      res.status(200).json({
+        counts: count,
+        results: rows,
+        totalPages: totalPages,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error al obtener las iniciativas." });
+    }
   }
 }
+
 
 export async function updateIniciativa(req, res) {
   const { id } = req.params;

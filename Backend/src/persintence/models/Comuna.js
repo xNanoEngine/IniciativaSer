@@ -22,6 +22,23 @@ export const Comuna = sequelize.define("comuna",{
     freezeTableName: true
 });    
 
+const ComunaToAdd = [
+    {
+        nombre: "Valdivia",
+        cantHabitantes: 168721, // 
+    },
+    {
+        nombre: "Paillaco",
+        cantHabitantes: 20915, // 
+},
+];
+
+Comuna.bulkCreate(ComunaToAdd).then(() => {
+    console.log('Registros creados exitosamente');
+    }).catch((error) => {
+    console.error('Error al crear registros:', error);
+});    
+
 Comuna.hasMany(EspacioCultural, {
     foreinkey: "comunaId",
     sourceKey: "id",
