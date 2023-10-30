@@ -4,6 +4,7 @@ import ChecklistSearch from "../components/imports/ChecklistSearch";
 import TablesInitiatives from "../components/imports/TablesInitiatives";
 import { initiativeFilters, comuneFilters } from "../constants";
 import { useFilter } from "../hook/useFilter";
+import SearchHeader from "../components/imports/SearchHeader";
 
 const AdvancedSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,18 +47,14 @@ const AdvancedSearch = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center">
       <div className="flex-grow mb-10">
-        <section className="sm:py-16 py-6 flex justify-center flex-col bg-slate-100 w-screen border-t-black border-t-2 border-b-black border-b-2">
-          <div className="flex justify-center sm:mb-16 mb-6 z-[1] text-center">
-            <h1 className="leading-tight">Búsqueda avanzada</h1>
-          </div>
-          <div className="mx-auto text-center text-sm w-full line-clamp-6 md:w-2/5 md:line-clamp-6 md:text-lg">
-            Explora un abanico de oportunidades en este espacio dedicado a las
+        <SearchHeader
+          title="Búsqueda avanzada"
+          desc="Explora un abanico de oportunidades en este espacio dedicado a las
             búsquedas avanzadas. Aquí encontrarás diversas iniciativas que se
             adaptan a tus intereses, y podrás refinar tus resultados para
             encontrar exactamente lo que necesitas. Simplificamos tu búsqueda
-            para que descubras más fácilmente las soluciones que buscas.
-          </div>
-        </section>
+            para que descubras más fácilmente las soluciones que buscas."
+        />
         <div className="mt-10">
           <form
             className="flex flex-col w-full h-full items-center space-y-4 md:space-y-0 md:flex-row md:justify-center md:space-x-4"

@@ -63,9 +63,8 @@ const TablesInitiatives = ({
     };
 
     // Verificar si filters no está vacío antes de realizar la solicitud
-    if (Object.keys(filters).length > 0) {
-      fetchData();
-    }
+
+    fetchData();
   }, [busqueda, currentPage, filters]);
 
   const handlePreviousPage = () => {

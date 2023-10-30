@@ -6,42 +6,31 @@ const ChecklistSearch = ({ data, type, singleSelect, onSelectionChange }) => {
 
   const toggleItem = (itemName) => {
     if (singleSelect) {
-      setSelectedItems([itemName]);
-      onSelectionChange([itemName]);
-      // Mantén el componente abierto cuando se selecciona un elemento
-      setOpen(true);
+      if (selectedItems.includes(itemName)) {
+        setSelectedItems([]);
+        onSelectionChange([]);
+        setOpen(false);
+      } else {
+        setSelectedItems([itemName]);
+        onSelectionChange([itemName]);
+        setOpen(true);
+      }
     } else {
       setSelectedItems((prevSelected) => {
+        let updatedSelected;
         if (prevSelected.includes(itemName)) {
-          const updatedSelected = prevSelected.filter(
-            (item) => item !== itemName
-          );
-          onSelectionChange(updatedSelected);
-          return updatedSelected;
+          updatedSelected = prevSelected.filter((item) => item !== itemName);
         } else {
-          const updatedSelected = [...prevSelected, itemName];
-          onSelectionChange(updatedSelected);
-          return updatedSelected;
+          updatedSelected = [...prevSelected, itemName];
         }
+
+        onSelectionChange(updatedSelected);
+        return updatedSelected;
       });
     }
   };
 
   const isItemSelected = (itemName) => selectedItems.includes(itemName);
-
-  // Agregar esta función para manejar la selección inicial
-  const handleInitialSelection = () => {
-    if (singleSelect && data.length > 0) {
-      const initialSelection = data[0].name;
-      setSelectedItems([initialSelection]);
-      onSelectionChange([initialSelection]);
-    }
-  };
-
-  // Llamar a la función de selección inicial cuando el componente se monta
-  useEffect(() => {
-    handleInitialSelection();
-  }, []);
 
   return (
     <div className="w-full border-b-2 border-black">
