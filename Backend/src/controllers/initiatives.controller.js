@@ -231,14 +231,18 @@ export async function createIniciativa(req, res) {
 
   try {
     const iniciativa = await createIniciativa_(Iniciativa_);
-    const comuna = await Comuna.findOne({ where: { nombre: Comuna_nombre} });
+    const comuna = await Comuna.findOne({ where: { nombre: Comuna_nombre } });
     const documento = await createDocumento_(documento_);
     const espacio_cultural = await createEspacioCultural_(espacio_cultural_);
-    const localidad_territorio = await createLocalidadterritorio_(localidad_territorio_);
+    const localidad_territorio = await createLocalidadterritorio_(
+      localidad_territorio_
+    );
     const objetivo = await createObjetivo_(objetivo_);
     const persona_juridica = await createPersonajuridica_(persona_juridica_);
     const persona_natural = await createPersonanatural_(personanatural_);
-    const programa = await Programa.findOne({ where: { nombre: Programa_nombre} });
+    const programa = await Programa.findOne({
+      where: { nombre: Programa_nombre },
+    });
     const tipo_espacio_cultural = await createTipoespaciocultural_(
       tipoespaciocultural_
     );
@@ -274,21 +278,21 @@ export async function createIniciativa(req, res) {
 }
 
 export async function getIniciativas(req, res) {
-  const { Filtro_Iniciativa, Filtro_Comuna, Busqueda, Page, PerPage } =
+  const { Filtro_Iniciativa, Filtro_Comuna, Busqueda, Page, PerPage, token } =
     req.query;
   const limit = parseInt(PerPage, 10);
   const page = parseInt(Page, 10);
   const offset = (page - 1) * limit;
   const whereConditions = {}; // Objeto de condiciones
-  const comunasfiltro = Filtro_Comuna.split(",");
 
   const Options = {
     limit: limit,
     offset: offset,
-    subQuery: false
-  }
+    subQuery: false,
+  };
 
   if (Filtro_Comuna) {
+    const comunasfiltro = Filtro_Comuna.split(",");
     Options.include = [
       {
         model: Comuna,
@@ -296,20 +300,19 @@ export async function getIniciativas(req, res) {
         as: "comunas",
         where: {
           nombre: {
-                    [Op.or]: comunasfiltro.map((nombre) => ({
-                      [Op.like]: nombre,
-                    })),
-                  },
-        }
+            [Op.or]: comunasfiltro.map((nombre) => ({
+              [Op.like]: nombre,
+            })),
+          },
+        },
       },
       {
         model: Programa,
-        as: 'programas',
+        as: "programas",
         attributes: ["nombre"],
-      }
-    ]
-  }
-  else {
+      },
+    ];
+  } else {
     Options.include = [
       {
         model: Comuna,
@@ -318,39 +321,37 @@ export async function getIniciativas(req, res) {
       },
       {
         model: Programa,
-        as: 'programas',
+        as: "programas",
         attributes: ["nombre"],
-      }
-    ]
+      },
+    ];
   }
-  
+
   if (Filtro_Iniciativa) {
     if (Filtro_Iniciativa === "Nombre") {
       whereConditions.nombre = {
         [Op.like]: `%${Busqueda}%`,
       };
-      Options.where = whereConditions
+      Options.where = whereConditions;
     } else if (Filtro_Iniciativa === "Programa") {
-        Options.include[1] = (
-          {
-            model: Programa,
-            as: 'programas',
-            attributes: ["nombre"],
-            where: {
-              nombre: {[Op.like]: `%${Busqueda}%`},
-            }
-          });
-
+      Options.include[1] = {
+        model: Programa,
+        as: "programas",
+        attributes: ["nombre"],
+        where: {
+          nombre: { [Op.like]: `%${Busqueda}%` },
+        },
+      };
     } else if (Filtro_Iniciativa === "Descripcion") {
       whereConditions.descripcion = {
         [Op.like]: `%${Busqueda}%`,
       };
-      Options.where = whereConditions
+      Options.where = whereConditions;
     } else if (Filtro_Iniciativa === "Componente") {
       whereConditions.componente = {
         [Op.like]: `%${Busqueda}%`,
       };
-      Options.where = whereConditions
+      Options.where = whereConditions;
     } else if (Filtro_Iniciativa === "Financiamiento") {
       whereConditions.formaFinanciamiento = {
         [Op.like]: `%${Busqueda}%`,
@@ -397,7 +398,6 @@ export async function getIniciativas(req, res) {
     }
   }
 }
-
 
 export async function updateIniciativa(req, res) {
   const { id } = req.params;
