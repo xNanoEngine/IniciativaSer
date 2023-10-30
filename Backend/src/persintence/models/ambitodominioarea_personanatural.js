@@ -13,13 +13,13 @@ export const ambitodominioarea_personanatural = sequelize.define("ambitodominioa
             key: 'id',
         },
     },
-    nombre_ambito_dominio_area: {
-        type: DataTypes.STRING,
+    id_ambito_dominio_area: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         references: {
             model: 'ambitodominioarea',
-            key: 'nombre', 
+            key: 'id', 
         },
     },
 }, {
@@ -28,5 +28,5 @@ export const ambitodominioarea_personanatural = sequelize.define("ambitodominioa
 });
 
 ambitodominioarea_personanatural.belongsTo(PersonaNatural, { foreignKey: "persona_natural_id"})
-ambitodominioarea_personanatural.belongsTo(ambitodominioarea, { foreignKey: "nombre_ambito_dominio_area"})
+ambitodominioarea_personanatural.belongsTo(ambitodominioarea, { foreignKey: "id_ambito_dominio_area"})
 
