@@ -303,23 +303,43 @@ export async function getIniciativas(req, res) {
   const Options = {
     limit: limit,
     offset: offset,
+    subQuery: false
   };
   if (Filtro_Comuna) {
-    const comunas = Filtro_Comuna.split(",");
     Options.include = [
       {
         model: Comuna,
         attributes: ["nombre"],
         as: "comunas",
+        
         where: {
           nombre: {
-            [Op.or]: comunas.map((nombre) => ({
-              [Op.like]: nombre,
-            })),
-          },
-        },
+                    [Op.or]: comunas.map((nombre) => ({
+                      [Op.like]: nombre,
+                    })),
+                  },
+        }
       },
-    ];
+      {
+        model: Programa,
+        as: 'programas',
+        attributes: ["nombre"],
+      }
+    ]
+  }
+  else {
+    Options.include = [
+      {
+        model: Comuna,
+        attributes: ["nombre"],
+        as: "comunas",
+      },
+      {
+        model: Programa,
+        as: 'programas',
+        attributes: ["nombre"],
+      }
+    ]
   }
 
   if (Filtro_Iniciativa) {
@@ -329,27 +349,15 @@ export async function getIniciativas(req, res) {
       };
       Options.where = whereConditions;
     } else if (Filtro_Iniciativa === "Programa") {
-      if (Filtro_Comuna) {
-        Options.include.push({
-          model: Programa,
-          as: "programas",
-          attributes: ["nombre"],
-          where: {
-            nombre: { [Op.like]: `%${Busqueda}%` },
-          },
-        });
-      } else {
-        Options.include = [
+        Options.include[1] = (
           {
             model: Programa,
-            as: "programas",
+            as: 'programas',
             attributes: ["nombre"],
             where: {
-              nombre: { [Op.like]: `%${Busqueda}%` },
-            },
-          },
-        ];
-      }
+              nombre: {[Op.like]: `%${Busqueda}%`},
+            }
+          });
     } else if (Filtro_Iniciativa === "Descripcion") {
       whereConditions.descripcion = {
         [Op.like]: `%${Busqueda}%`,
