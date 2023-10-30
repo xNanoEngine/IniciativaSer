@@ -11,7 +11,7 @@ const Home2 = () => {
     setInputValue(e.target.value);
   };
   const handleSubmit = () => {
-    localStorage.removeItem("lastSearch");
+    localStorage.setItem("lastSearch", inputValue);
     setBusqueda(inputValue);
     inputValue !== "" ? navigate("/search") : null;
   };

@@ -5,6 +5,7 @@ import {
   initiativeConcurseLine,
   initiativeType,
   initiativeProgram,
+  comuneFilters,
 } from "../../../constants";
 import { InitiativeSchema } from "../../validations/InitiativeValidation";
 import Combobox from "../Combobox";
@@ -29,6 +30,7 @@ const Initiative = ({ onSubmit }) => {
           initiativeComponent: selectedOptions.initiativeComponent,
           initiativeConcurseLine: selectedOptions.initiativeConcurseLine,
           initiativeArea: selectedOptions.initiativeArea,
+          initiativeComune: selectedOptions.initiativeComune,
           initiativeDescription: document
             .getElementById("initiativeDescription")
             .value.trim(),
@@ -115,6 +117,17 @@ const Initiative = ({ onSubmit }) => {
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("initiativeArea", option)}
             error={errors.initiativeArea}
+          />
+        </div>
+        <div className="flex flex-col items-center md:ml-6 md:space-x-4 md:flex-row md:justify-left">
+          <Combobox
+            data={comuneFilters}
+            label={"Comuna"}
+            prop={"w-32 mt-6"}
+            onChange={(option) =>
+              handleOptionChange("initiativeComune", option)
+            }
+            error={errors.initiativeComune}
           />
         </div>
         <div className="flex flex-col md:ml-6 md:justify-left">

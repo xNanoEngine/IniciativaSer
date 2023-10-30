@@ -18,7 +18,7 @@ const Combobox = ({ data, label, prop, onChange, error }) => {
   return (
     <div className={`relative ${prop}`}>
       <div
-        className={`bg-white border items-center ${
+        className={`bg-white border items-center z-0 ${
           error ? "border-red-500" : "border-gray-300"
         } rounded-md p-2 cursor-pointer flex flex-row`}
         onClick={toggleDropdown}
@@ -40,7 +40,7 @@ const Combobox = ({ data, label, prop, onChange, error }) => {
       </div>
       {error && <div className="text-red-500 mt-1 text-sm">{error}</div>}
       {isOpen && (
-        <div className="absolute bg-white border border-gray-300 mt-2 py-2 rounded-md shadow-lg w-fit max-h-[200px] overflow-y-auto">
+        <div className="absolute bg-white border z-1 border-gray-300 mt-2 py-2 rounded-md shadow-lg w-fit max-h-[200px] overflow-y-auto">
           {data.map((option, index) => (
             <div
               key={option.name || index}

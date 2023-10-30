@@ -328,6 +328,7 @@ export async function getIniciativas(req, res) {
   }
 
   if (Filtro_Iniciativa) {
+    console.log("Filtro_Iniciativa");
     if (Filtro_Iniciativa === "Nombre") {
       whereConditions.nombre = {
         [Op.like]: `%${Busqueda}%`,

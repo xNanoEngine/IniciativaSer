@@ -13,6 +13,7 @@ export const InitiativeSchema = Yup.object().shape({
   initiativeComponent: Yup.string().required("Este campo es obligatorio"),
   initiativeConcurseLine: Yup.string().required("Este campo es obligatorio"),
   initiativeArea: Yup.string().required("Este campo es obligatorio"),
+  initiativeComune: Yup.string().required("Este campo es obligatorio"),
   initiativeDescription: Yup.string()
     .trim()
     .required("La descripción de la iniciativa es obligatoria")

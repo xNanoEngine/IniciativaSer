@@ -136,7 +136,14 @@ const TablesInitiatives = ({
                     <tbody>
                       {displayedRows.map(
                         (
-                          { id, nombre, componente, descripcion, canEdit },
+                          {
+                            id,
+                            nombre,
+                            componente,
+                            descripcion,
+                            canEdit,
+                            formaFinanciamiento,
+                          },
                           index
                         ) => {
                           const isLast = index === displayedRows.length - 1;
@@ -168,7 +175,9 @@ const TablesInitiatives = ({
                                 </span>
                               </td>
                               <td className={classes}>
-                                <div className="w-max">a</div>
+                                <div className="w-max">
+                                  {formaFinanciamiento}
+                                </div>
                               </td>
                               <td className={classes}>
                                 <span className="font-normal text-gray-600 text-sm capitalize">
