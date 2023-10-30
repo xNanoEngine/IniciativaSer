@@ -3,8 +3,7 @@ import React from "react";
 const Logout = ({ isOpen, onClose }) => {
   const handleLogout = () => {
     // Remover el token del localStorage
-    localStorage.removeItem("token");
-
+    localStorage.clear();
     // Cierra el modal de Logout
     onClose();
     window.location.href = "/home";
