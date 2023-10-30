@@ -246,9 +246,7 @@ export async function createIniciativa(req, res) {
     const comuna = await createComuna_(Comuna_);
     const documento = await createDocumento_(documento_);
     const espacio_cultural = await createEspacioCultural_(espacio_cultural_);
-    const localidad_territorio = await createLocalidadterritorio_(
-      localidad_territorio_
-    );
+    const localidad_territorio = await createLocalidadterritorio_(localidad_territorio_);
     const objetivo = await createObjetivo_(objetivo_);
     const persona_juridica = await createPersonajuridica_(persona_juridica_);
     const persona_natural = await createPersonanatural_(personanatural_);
@@ -285,36 +283,32 @@ export async function createIniciativa(req, res) {
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }
-
-  // createComuna_(Comuna_).then(data => {
-  //   res.status(200).json({status : true, data : data})
-  // }, error => {
-  //   res.status(400).json({status : false, error : error.message })
-  // })
 }
+
 export async function getIniciativas(req, res) {
-  const { Filtro_Iniciativa, Filtro_Comuna, Busqueda, Page, PerPage, token } =
+  const { Filtro_Iniciativa, Filtro_Comuna, Busqueda, Page, PerPage } =
     req.query;
   const limit = parseInt(PerPage, 10);
   const page = parseInt(Page, 10);
   const offset = (page - 1) * limit;
   const whereConditions = {}; // Objeto de condiciones
+  const comunasfiltro = Filtro_Comuna.split(",");
 
   const Options = {
     limit: limit,
     offset: offset,
     subQuery: false
-  };
+  }
+
   if (Filtro_Comuna) {
     Options.include = [
       {
         model: Comuna,
         attributes: ["nombre"],
         as: "comunas",
-        
         where: {
           nombre: {
-                    [Op.or]: comunas.map((nombre) => ({
+                    [Op.or]: comunasfiltro.map((nombre) => ({
                       [Op.like]: nombre,
                     })),
                   },
@@ -341,13 +335,13 @@ export async function getIniciativas(req, res) {
       }
     ]
   }
-
+  
   if (Filtro_Iniciativa) {
     if (Filtro_Iniciativa === "Nombre") {
       whereConditions.nombre = {
         [Op.like]: `%${Busqueda}%`,
       };
-      Options.where = whereConditions;
+      Options.where = whereConditions
     } else if (Filtro_Iniciativa === "Programa") {
         Options.include[1] = (
           {
@@ -358,62 +352,35 @@ export async function getIniciativas(req, res) {
               nombre: {[Op.like]: `%${Busqueda}%`},
             }
           });
+
     } else if (Filtro_Iniciativa === "Descripcion") {
       whereConditions.descripcion = {
         [Op.like]: `%${Busqueda}%`,
       };
-      Options.where = whereConditions;
+      Options.where = whereConditions
     } else if (Filtro_Iniciativa === "Componente") {
       whereConditions.componente = {
         [Op.like]: `%${Busqueda}%`,
       };
-      Options.where = whereConditions;
+      Options.where = whereConditions
     } else if (Filtro_Iniciativa === "Financiamiento") {
       whereConditions.formaFinanciamiento = {
         [Op.like]: `%${Busqueda}%`,
       };
     }
   }
-
-  if (token) {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const cuentaId = parseInt(decoded.userId, 10);
-
-    try {
-      const { count, rows } = await Iniciativa.findAndCountAll(Options);
-
-      // Iterar a través de las iniciativas y establecer el campo canEdit
-      const iniciativasConCanEdit = rows.map((iniciativa) => ({
-        ...iniciativa.dataValues,
-        canEdit: iniciativa.cuentaId === cuentaId,
-      }));
-
-      const totalPages = Math.ceil(count / PerPage);
-      console.log(cuentaId);
-      res.status(200).json({
-        counts: count,
-        results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
-        totalPages: totalPages,
-        accountId: cuentaId,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error al obtener las iniciativas." });
-    }
-  } else {
-    // Si no se proporciona un token, simplemente envía las iniciativas sin el campo canEdit
-    try {
-      const { count, rows } = await Iniciativa.findAndCountAll(Options);
-      const totalPages = Math.ceil(count / PerPage);
-      res.status(200).json({
-        counts: count,
-        results: rows,
-        totalPages: totalPages,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error al obtener las iniciativas." });
-    }
+  try {
+    const {rows, count} = await Iniciativa.findAndCountAll(Options);
+    const totalPages = Math.ceil(count / PerPage);
+    
+    res.status(200).json({
+      counts: count,
+      results: rows,
+      totalPages: totalPages,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al obtener las iniciativas." });
   }
 }
 
