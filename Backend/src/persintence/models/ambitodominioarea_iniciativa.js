@@ -13,13 +13,13 @@ export const ambitodominioarea_iniciativa = sequelize.define("ambitodominioarea_
             key: 'id', // Campo de ID de Estudiantes
         },
     },
-    nombre_ambito_dominio_area: {
-        type: DataTypes.STRING,
+    id_ambito_dominio_area: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         references: {
             model: 'ambitodominioarea',
-            key: 'nombre', 
+            key: 'id', 
         },
     },
 }, {
@@ -28,5 +28,5 @@ export const ambitodominioarea_iniciativa = sequelize.define("ambitodominioarea_
 });
 
 ambitodominioarea_iniciativa.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})
-ambitodominioarea_iniciativa.belongsTo(ambitodominioarea, { foreignKey: "nombre_ambito_dominio_area"})
+ambitodominioarea_iniciativa.belongsTo(ambitodominioarea, { foreignKey: "id_ambito_dominio_area"})
 
