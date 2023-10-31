@@ -25,7 +25,7 @@ const TablesDocument = ({ busqueda, currentPage, setCurrentPage, filters }) => {
     const fetchData = async () => {
       setIsLoading(true);
       const token = localStorage.getItem("token");
-      const Filtro_Tipo = filters.tipo ? `${filters.tipo}` : null;
+      const Filtro_Tipo = filters.Tipo ? `${filters.Tipo}` : null;
 
       try {
         const response = await clientAxios.get(`/documentos`, {
