@@ -22,22 +22,32 @@ export const Comuna = sequelize.define("comuna",{
     freezeTableName: true
 });    
 
-const ComunaToAdd = [
-    {
-        nombre: "Valdivia",
-        cantHabitantes: 168721, // 
-    },
-    {
-        nombre: "Paillaco",
-        cantHabitantes: 20915, // 
-},
-];
-
-Comuna.bulkCreate(ComunaToAdd).then(() => {
-    console.log('Registros creados exitosamente');
-    }).catch((error) => {
-    console.error('Error al crear registros:', error);
-});    
+Comuna.afterSync(async () => {
+    try {
+      // Verifica si ya existe un usuario con el nombre "admin"
+    const comunaExistente = await Comuna.findOne({
+        where: { nombre: "Valdivia" },
+    });  
+    if (!comunaExistente) {
+        Comuna.create({
+            nombre: "Valdivia",
+            cantHabitantes: 168721, // 
+        });
+        Comuna.create({
+            nombre: "Paillaco",
+            cantHabitantes: 20915, // 
+        });
+        console.log("datos de comuna creados automáticamente.");
+    } else {
+        console.log("datos de comuna ya existen.");
+    }
+    } catch (error) {
+    console.error(
+        "Error al crear el datos de comuna automáticamente:",
+        error
+    );
+    }
+});
 
 Comuna.hasMany(EspacioCultural, {
     foreinkey: "comunaId",
