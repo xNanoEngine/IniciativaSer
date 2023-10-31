@@ -6,6 +6,7 @@ import {
   Initiative,
   AdvancedSearch,
   ViewInitiative,
+  DocumentSearch,
 } from "./pages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {
@@ -59,9 +60,10 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path="/login" element={<LoginWithRedirect />} />
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<LoginWithRedirect />} />
             <Route path="/search" element={<AdvancedSearch />} />
+            <Route path="/document" element={<DocumentSearch />} />
             <Route path="/view" element={<ViewInitiative />} />;
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

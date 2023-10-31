@@ -359,6 +359,7 @@ export async function getIniciativas(req, res) {
       };
     }
   } else {
+    //Busqueda global, (Cuando no hay filtros de iniciativa, ventana home)
     whereConditions[Op.or] = [
       {
         nombre: { [Op.like]: `%${Busqueda}%` },
@@ -372,7 +373,6 @@ export async function getIniciativas(req, res) {
       {
         formaFinanciamiento: { [Op.like]: `%${Busqueda}%` },
       },
-      // Agrega más campos aquí si es necesario
     ];
 
     Options.where = whereConditions;
