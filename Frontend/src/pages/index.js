@@ -5,6 +5,7 @@ import Login from "./Login";
 import Initiative from "./Initiative";
 import AdvancedSearch from "./AdvancedSearch";
 import ViewInitiative from "./ViewInitiative";
+import DocumentSearch from "./DocumentSearch";
 export {
   Navbar,
   Logout,
@@ -13,4 +14,5 @@ export {
   Initiative,
   AdvancedSearch,
   ViewInitiative,
+  DocumentSearch,
 };

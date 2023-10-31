@@ -7,7 +7,7 @@ import FilterSearch from "../components/imports/FilterSearch";
 import Footer from "../components/imports/Footer";
 import TablesInitiatives from "../components/imports/TablesInitiatives";
 
-const AdvancedSearch = () => {
+const DocumentSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { busqueda, setBusqueda } = useFilter();
   const [inputValue, setInputValue] = useState("");
@@ -48,9 +48,9 @@ const AdvancedSearch = () => {
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center">
       <div className="flex-grow mb-10">
         <SearchHeader
-          title="Búsqueda avanzada"
+          title="Búsqueda de documentos"
           desc="Explora un abanico de oportunidades en este espacio dedicado a las
-            búsquedas avanzadas. Aquí encontrarás diversas iniciativas que se
+            búsquedas de documentos. Aquí encontrarás diversos documentos que se
             adaptan a tus intereses, y podrás refinar tus resultados para
             encontrar exactamente lo que necesitas. Simplificamos tu búsqueda
             para que descubras más fácilmente las soluciones que buscas."
@@ -65,8 +65,8 @@ const AdvancedSearch = () => {
         <div className="flex flex-col space-y-10 mt-10 mx-10 md:flex-row md:mt-20 md:mx-32 md:space-x-10 md:space-y-0">
           <FilterSearch
             filters={SearchFilters}
-            reference="/search"
-            subTitle="Búsqueda avanzada"
+            reference="/document"
+            subTitle="Búsqueda de documentos"
             onSelectionChange={(type, selectedItems) =>
               handleSelectionChange(type, selectedItems)
             }
@@ -90,4 +90,4 @@ const AdvancedSearch = () => {
   );
 };
 
-export default AdvancedSearch;
+export default DocumentSearch;

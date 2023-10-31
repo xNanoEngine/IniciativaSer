@@ -22,7 +22,7 @@ export const navLinks = [
       },
       {
         title: "Búsqueda de documentos",
-        ref: "/documentos",
+        ref: "/document",
       },
     ],
   },
@@ -335,3 +335,15 @@ export const initiativeFilters = [
 ];
 
 export const comuneFilters = [{ name: "Valdivia" }, { name: "Paillaco" }];
+export const SearchFilters = [
+  {
+    type: "Iniciativa",
+    data: initiativeFilters,
+    singleSelect: true,
+  },
+  {
+    type: "Comuna",
+    data: comuneFilters,
+    singleSelect: false,
+  },
+];
