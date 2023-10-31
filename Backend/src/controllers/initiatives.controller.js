@@ -3,6 +3,9 @@ import { Op } from "sequelize";
 import sequelize from "sequelize";
 import { Cuentas } from "../persintence/models/Cuentas.js";
 import { Iniciativa } from "../persintence/models/Iniciativa.js";
+import { Programa } from "../persintence/models/Programa.js";
+import { Comuna } from "../persintence/models/Comuna.js";
+import { Documento } from "../persintence/models/Documento.js";
 
 import {
   createIniciativa_,
@@ -80,8 +83,7 @@ import {
   deleteTipoespaciocultural_,
   getTipoespaciocultural_,
 } from "../persintence/repository/tipoespaciocultural.repository.js";
-import { Programa } from "../persintence/models/Programa.js";
-import { Comuna } from "../persintence/models/Comuna.js";
+
 
 export async function createIniciativa(req, res) {
   const {
@@ -390,7 +392,6 @@ export async function getIniciativas(req, res) {
       }));
 
       const totalPages = Math.ceil(count / PerPage);
-      console.log(cuentaId);
       res.status(200).json({
         counts: count,
         results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
@@ -522,5 +523,50 @@ export async function getProgramas(req, res) {
     //return programas;
   } catch (error) {
     throw new Error("Sucedio un error obteniendo programas......");
+  }
+}
+
+export async function getDocumento(req, res) {
+  const { id } = req.params;
+  try {
+    console.log("getDocumento por id");
+    const documento = await Documento.findOne({
+      where: { id },
+    });
+    return documento;
+  } catch (error) {
+    throw new Error("Sucedio un error obteniendo documento por id......");
+  }
+}
+
+export async function getDocumentos(req, res) {
+  const { currentPage, perPage } = req.body;
+  const offset = (currentPage - 1) * perPage;
+  try {
+    console.log("getDocumentos");
+    const { counts, documentos } = await Documento.findAndCountAll({
+      attributes: [
+        "id",
+        "titulo",
+        "fecha_publicacion",
+        "enlace",
+        "materia",
+        "fuente",
+        "tipo"
+      ],
+      order: [["titulo", "DESC"]],
+      limit: perPage,
+      offset: offset,
+      subQuery: false,
+    });
+    const totalPages = Math.ceil(counts / perPage);
+    res.json({
+      totalItems: counts, // Total de artículos
+      totalPages: totalPages, // Número total de páginas
+      currentPage: currentPage, // Página actual
+      data: documentos,
+    });
+  } catch (error) {
+    throw new Error("Sucedio un error obteniendo documentos......");
   }
 }

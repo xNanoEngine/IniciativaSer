@@ -12,6 +12,7 @@ import accountsRoutes from "./routes/accounts.routes.js";
 import initiativesRoutes from "./routes/initiatives.routes.js";
 import authoritationRoutes from "./routes/authoritation.routes.js";
 import programsRoutes from "./routes/programs.routes.js";
+import documentsRoutes from "./routes/documents.routes.js";
 
 // Middlewares
 app.use(morgan("dev"));
@@ -31,6 +32,7 @@ app.use("/api/cuentas", accountsRoutes);
 app.use("/api/iniciativas", initiativesRoutes);
 app.use("/api/authoritation", authoritationRoutes);
 app.use("/api/programas", programsRoutes);
+app.use("/api/documentos", documentsRoutes);
 // cuenta de prueba
 
 export default app;
