@@ -58,7 +58,7 @@ const InitiativeForm = () => {
       PersonaNatural_rol: formResults[2].selectedOptions.personRole,
       Iniciativa_nombre: formResults[3].initiativeName,
       Comuna_nombre: formResults[3].selectedOptions.initiativeComune,
-      Iniciativa_programa: formResults[3].selectedOptions.initiativeProgram,
+      Programa_nombre: formResults[3].selectedOptions.initiativeProgram,
       Iniciativa_tipo: formResults[3].selectedOptions.initiativeType,
       Iniciativa_descripcion: formResults[3].initiativeDescription,
       Iniciativa_componente: formResults[3].selectedOptions.initiativeComponent,
