@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { SearchFilters } from "../constants";
+import { DocumentFilters } from "../constants";
 import { useFilter } from "../hook/useFilter";
 import SearchHeader from "../components/imports/SearchHeader";
 import SearchForm from "../components/imports/SearchForm";
 import FilterSearch from "../components/imports/FilterSearch";
 import Footer from "../components/imports/Footer";
-import TablesInitiatives from "../components/imports/TablesInitiatives";
+import TablesDocument from "../components/imports/TablesDocument";
 
 const DocumentSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { busqueda, setBusqueda } = useFilter();
   const [inputValue, setInputValue] = useState("");
+  const [documentBusqueda, setDocumentBusqueda] = useState("");
   const [selectedFilters, setSelectedFilters] = useState({});
   useEffect(() => {
-    if (busqueda) {
-      setInputValue(busqueda);
-    }
-    const lastSearch = localStorage.getItem("lastSearch");
-    if (lastSearch) {
-      setInputValue(lastSearch);
-      setBusqueda(lastSearch);
+    const lastDocument = localStorage.getItem("lastDocument");
+    if (lastDocument) {
+      setInputValue(lastDocument);
+      setDocumentBusqueda(lastDocument);
     }
   }, []);
 
@@ -28,9 +25,9 @@ const DocumentSearch = () => {
   };
   const handleSumbit = (e) => {
     e.preventDefault();
-    setBusqueda(inputValue);
+    setDocumentBusqueda(inputValue);
     setCurrentPage(1);
-    localStorage.setItem("lastSearch", inputValue);
+    localStorage.setItem("lastDocument", inputValue);
   };
 
   const handleSelectionChange = (type, selectedItems) => {
@@ -64,7 +61,7 @@ const DocumentSearch = () => {
         </div>
         <div className="flex flex-col space-y-10 mt-10 mx-10 md:flex-row md:mt-20 md:mx-32 md:space-x-10 md:space-y-0">
           <FilterSearch
-            filters={SearchFilters}
+            filters={DocumentFilters}
             reference="/document"
             subTitle="Búsqueda de documentos"
             onSelectionChange={(type, selectedItems) =>
@@ -73,11 +70,11 @@ const DocumentSearch = () => {
           />
           <div className="space-y-14 md:w-5/6">
             <div>
-              {busqueda !== "" ? (
-                <TablesInitiatives
+              {documentBusqueda !== "" ? (
+                <TablesDocument
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
-                  busqueda={busqueda}
+                  busqueda={documentBusqueda}
                   filters={selectedFilters}
                 />
               ) : null}

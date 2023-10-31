@@ -347,3 +347,11 @@ export const SearchFilters = [
     singleSelect: false,
   },
 ];
+
+export const DocumentFilters = [
+  {
+    type: "Tipo",
+    data: documentType,
+    singleSelect: false,
+  },
+];

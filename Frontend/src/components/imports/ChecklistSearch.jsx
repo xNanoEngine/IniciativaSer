@@ -45,7 +45,7 @@ const ChecklistSearch = ({ data, type, singleSelect, onSelectionChange }) => {
       <div
         className={`my-2 transition-all duration-300 ease-in-out   ${
           open
-            ? "max-h-screen opacity-100 overflow-scroll"
+            ? "max-h-32 opacity-100 overflow-y-auto"
             : "overflow-hidden opacity-0 max-h-0"
         }`}
       >
