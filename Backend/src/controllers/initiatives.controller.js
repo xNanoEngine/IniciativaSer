@@ -328,7 +328,7 @@ export async function getIniciativas(req, res) {
       },
     ];
   }
-
+  console.log(Busqueda);
   if (Filtro_Iniciativa) {
     console.log("Filtro_Iniciativa");
     if (Filtro_Iniciativa === "Nombre") {
@@ -359,25 +359,16 @@ export async function getIniciativas(req, res) {
       whereConditions.formaFinanciamiento = {
         [Op.like]: `%${Busqueda}%`,
       };
+      Options.where = whereConditions;
     }
   } else {
     //Busqueda global, (Cuando no hay filtros de iniciativa, ventana home)
-    whereConditions[Op.or] = [
-      {
-        nombre: { [Op.like]: `%${Busqueda}%` },
-      },
-      {
-        descripcion: { [Op.like]: `%${Busqueda}%` },
-      },
-      {
-        componente: { [Op.like]: `%${Busqueda}%` },
-      },
-      {
-        formaFinanciamiento: { [Op.like]: `%${Busqueda}%` },
-      },
-    ];
-
-    Options.where = whereConditions;
+    Options.where = {[Op.or] : [
+      {nombre: { [Op.like]: `%${Busqueda}%` }},
+      {descripcion: { [Op.like]: `%${Busqueda}%` }},
+      {componente: { [Op.like]: `%${Busqueda}%` }},
+      {formaFinanciamiento: { [Op.like]: `%${Busqueda}%` }},
+    ]};
   }
   if (token) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -407,7 +398,6 @@ export async function getIniciativas(req, res) {
     try {
       const { count, rows } = await Iniciativa.findAndCountAll(Options);
       const totalPages = Math.ceil(count / PerPage);
-      console.log(Iniciativa.dataValues);
       res.status(200).json({
         counts: count,
         results: rows,
@@ -542,7 +532,7 @@ export async function getDocumento(req, res) {
 
 export async function getDocumentos(req, res) {
   const { Filtro_Tipo, Busqueda, Page, PerPage, token } =
-  req.query;
+  req.body;
   const limit = parseInt(PerPage, 10);
   const page = parseInt(Page, 10);
   const offset = (page - 1) * limit;
@@ -562,27 +552,39 @@ export async function getDocumentos(req, res) {
     ],
     order: [["titulo", "DESC"]],
   };
+  console.log(Busqueda);
+  console.log(Filtro_Tipo);
+
   if (Filtro_Tipo){
-    Options.where = {[Op.and]: [{
-      [Op.or]:[
-        {
-          titulo: { [Op.like]: `%${Busqueda}%` },
-        },
-        {
-          fuente: { [Op.like]: `%${Busqueda}%` },
-        },
-        {
-          enlace: { [Op.like]: `%${Busqueda}%` },
-        },
+    console.log("Hay filtro");
+    if (Busqueda === ""){
+    Options.where = {[Op.and]:[
+      {[Op.or]:[
+        {titulo: { [Op.like]: `%${Busqueda}%` }},
+        {fuente: { [Op.like]: `%${Busqueda}%` }},
+        {enlace: { [Op.like]: `%${Busqueda}%` }}
       ]},
-      {tipo: {[Op.like]: "%${Filtro_Tipo}$%"}}   
+      {tipo: {[Op.like]: Filtro_Tipo}}   
       ]
     }
+    } else {
+      Options.where = {tipo: {[Op.like]: Filtro_Tipo}}   
+    }
+  } else {
+    console.log("No Hay filtro");
+    if (Busqueda === ""){
+      Options.where = {[Op.or]:[
+        {titulo: { [Op.like]: `%${Busqueda}%` }},
+        {fuente: { [Op.like]: `%${Busqueda}%` }},
+        {enlace: { [Op.like]: `%${Busqueda}%` }},
+      ]};
+    } 
   }
 
+  console.log(Options);
   try {
       console.log("getDocumentos");
-      const { counts, rows } = await Documento.findAndCountAll({Options});
+      const { counts, rows } = await Documento.findAndCountAll(Options);
       const totalPages = Math.ceil(counts / PerPage);
       res.status(200).json({
         totalItems: counts, // Total de artículos
