@@ -390,7 +390,7 @@ export async function getIniciativas(req, res) {
         ...iniciativa.dataValues,
         canEdit: iniciativa.cuentaId === cuentaId,
       }));
-
+      console.log(iniciativasConCanEdit);
       const totalPages = Math.ceil(count / PerPage);
       res.status(200).json({
         counts: count,
@@ -407,6 +407,7 @@ export async function getIniciativas(req, res) {
     try {
       const { count, rows } = await Iniciativa.findAndCountAll(Options);
       const totalPages = Math.ceil(count / PerPage);
+      console.log(Iniciativa.dataValues);
       res.status(200).json({
         counts: count,
         results: rows,
@@ -540,33 +541,98 @@ export async function getDocumento(req, res) {
 }
 
 export async function getDocumentos(req, res) {
-  const { currentPage, perPage } = req.body;
-  const offset = (currentPage - 1) * perPage;
-  try {
-    console.log("getDocumentos");
-    const { counts, documentos } = await Documento.findAndCountAll({
-      attributes: [
-        "id",
-        "titulo",
-        "fecha_publicacion",
-        "enlace",
-        "materia",
-        "fuente",
-        "tipo"
-      ],
-      order: [["titulo", "DESC"]],
-      limit: perPage,
-      offset: offset,
-      subQuery: false,
-    });
-    const totalPages = Math.ceil(counts / perPage);
-    res.json({
-      totalItems: counts, // Total de artículos
-      totalPages: totalPages, // Número total de páginas
-      currentPage: currentPage, // Página actual
-      data: documentos,
-    });
-  } catch (error) {
-    throw new Error("Sucedio un error obteniendo documentos......");
+  const { Filtro_Tipo, Busqueda, Page, PerPage, token } =
+  req.query;
+  const limit = parseInt(PerPage, 10);
+  const page = parseInt(Page, 10);
+  const offset = (page - 1) * limit;
+
+  const Options = {
+    limit: limit,
+    offset: offset,
+    subQuery: false,
+    attributes: [
+      "id",
+      "titulo",
+      "fecha_publicacion",
+      "enlace",
+      "materia",
+      "fuente",
+      "tipo"
+    ],
+    order: [["titulo", "DESC"]],
+  };
+  if (Filtro_Tipo){
+    Options.where = {[Op.and]: [{
+      [Op.or]:[
+        {
+          titulo: { [Op.like]: `%${Busqueda}%` },
+        },
+        {
+          fuente: { [Op.like]: `%${Busqueda}%` },
+        },
+        {
+          enlace: { [Op.like]: `%${Busqueda}%` },
+        },
+      ]},
+      {tipo: {[Op.like]: "%${Filtro_Tipo}$%"}}   
+      ]
+    }
   }
-}
+
+  try {
+      console.log("getDocumentos");
+      const { counts, rows } = await Documento.findAndCountAll({Options});
+      const totalPages = Math.ceil(counts / PerPage);
+      res.status(200).json({
+        totalItems: counts, // Total de artículos
+        totalPages: totalPages, // Número total de páginas
+        data: rows,
+      });
+    } catch (error) {
+      res.status(500).json("Sucedio un error obteniendo documentos......");
+    }
+
+
+    // if (token) {
+    //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    //   const AccountId = parseInt(decoded.userId, 10);
+    //   Options.include = {
+    //     model: Iniciativa,
+    //     attributes: "cuentaId",
+    //   } 
+    //   try {
+    //     const { count, rows } = await Documento.findAndCountAll(Options);
+    //     // Iterar a través de las iniciativas y establecer el campo canEdit
+    //     const documentosConCanEdit = rows.map((documento) => ({
+    //       ...documento.dataValues,
+    //       canEdit: documento.cuentaId === AccountId,
+    //     }));
+  
+    //     const totalPages = Math.ceil(count / PerPage);
+    //     res.status(200).json({
+    //       counts: count,
+    //       results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
+    //       totalPages: totalPages,
+    //       accountId: accountId,
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //     res.status(500).json({ message: "Error al obtener las iniciativas." });
+    //   }
+    // } else {
+    //   // Si no se proporciona un token, simplemente envía los documentos sin el campo canEdit
+    //   try {
+    //     console.log("getDocumentos");
+    //     const { count, rows } = await Documento.findAndCountAll({Options});
+    //     const totalPages = Math.ceil(count / PerPage);
+    //     res.json({
+    //       counts: count,
+    //       results: rows,
+    //       totalPages: totalPages,
+    //     });
+    //   } catch (error) {
+    //     throw new Error("Sucedio un error obteniendo documentos......");
+    //   }
+    // }
+}  
