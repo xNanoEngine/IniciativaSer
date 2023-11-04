@@ -1,3 +1,4 @@
+import { Documento } from "../models/Documento.js";
 import { Iniciativa } from "../models/Iniciativa.js";
 
 export async function createIniciativa_(iniciativa) {
@@ -115,22 +116,10 @@ export async function getIniciativa_(id) {
     console.log("getIniciativa");
     const iniciativa = await Iniciativa.findOne({
       where: { id },
-      include: 'documentos',
-      // attributes: [
-      //   "id",
-      //   "idInterno",
-      //   "nombre",
-      //   "tipo",
-      //   "descripcion",
-      //   "componente",
-      //   "presupuesto",
-      //   "formaFinanciamiento",
-      //   "tipoPublicoObjetivo",
-      //   "cantPublico",
-      //   "fechaInicio",
-      //   "fechaFin",
-      //   'documento.titulo'
-      // ],
+      include: {
+        model: Documento,
+        as: "documentos" 
+      },
     });
     return iniciativa;
   } catch (error) {

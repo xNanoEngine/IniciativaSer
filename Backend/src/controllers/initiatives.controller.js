@@ -110,6 +110,7 @@ export async function createIniciativa(req, res) {
     Documento_materia,
     Documento_fuente,
     Documento_tipo,
+    Documento_autor,
     EspacioCultural_id,
     EspacioCultural_nombre,
     EspacioCultural_direccion,
@@ -150,6 +151,7 @@ export async function createIniciativa(req, res) {
   } = req.body;
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
   const cuentaId = decoded.userId;
+
   const Iniciativa_ = {
     id: Iniciativa_id,
     idInterno: Iniciativa_idInterno,
@@ -165,10 +167,6 @@ export async function createIniciativa(req, res) {
     fechaFin: Iniciativa_fechaFin,
   };
 
-  const ambitodominioarea_ = {
-    nombre: AmbitoDominioArea_nombre,
-  };
-
   const documento_ = {
     id: Documento_id,
     titulo: Documento_titulo,
@@ -177,6 +175,7 @@ export async function createIniciativa(req, res) {
     materia: Documento_materia,
     fuente: Documento_fuente,
     tipo: Documento_tipo,
+    autor: Documento_autor,
   };
 
   const espacio_cultural_ = {
@@ -295,6 +294,7 @@ export async function getIniciativas(req, res) {
     limit: limit,
     offset: offset,
     subQuery: false,
+    nest: true, //
   };
 
   if (Filtro_Comuna) {
@@ -317,6 +317,11 @@ export async function getIniciativas(req, res) {
         as: "programas",
         attributes: ["nombre"],
       },
+      {
+        model: Documento,
+        as: "documentos",
+        attributes: ["titulo"],
+      }
     ];
   } else {
     Options.include = [
@@ -330,6 +335,11 @@ export async function getIniciativas(req, res) {
         as: "programas",
         attributes: ["nombre"],
       },
+      {
+        model: Documento,
+        as: "documentos",
+        attributes: ["titulo"],
+      }
     ];
   }
   if (Filtro_Iniciativa) {
@@ -527,6 +537,14 @@ export async function getDocumento(req, res) {
   try {
     console.log("getDocumento por id");
     const documento = await Documento.findOne({
+      include:[{
+          model: ambitodominioarea,
+          as: "ambitodominioareas",
+          attributes: ["nombre"],
+        },{
+          model: Iniciativa,
+          attributes: ["nombre"],
+        }],
       where: { id },
     });
     return documento;
@@ -545,6 +563,16 @@ export async function getDocumentos(req, res) {
     limit: limit,
     offset: offset,
     subQuery: false,
+    include:[
+      { 
+        model: Iniciativa,
+        attributes: ["nombre"]
+      },
+      {
+        model: ambitodominioarea,
+        attributes: ["nombre"]	
+      }
+    ],
     attributes: [
       "id",
       "titulo",
@@ -553,6 +581,7 @@ export async function getDocumentos(req, res) {
       "materia",
       "fuente",
       "tipo",
+      "autor"
     ],
     order: [["titulo", "DESC"]],
   };

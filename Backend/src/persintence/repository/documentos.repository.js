@@ -10,13 +10,13 @@ export async function createDocumento_(documento){
             enlace,
             materia,
             fuente,
-            tipo
-          });
-          return newDocumento
+            tipo,
+            autor
+        });
+        return newDocumento
     } catch (error) {
         throw new Error("Sucedio un error......")
     }
-
 }
 
 export async function getDocumentos_(){
