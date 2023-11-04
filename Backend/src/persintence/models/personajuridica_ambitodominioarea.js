@@ -13,13 +13,13 @@ export const personajuridica_ambitodominioarea = sequelize.define("personajuridi
             key: 'id',
         },
     },
-    nombre_ambito_dominio_area: {
-        type: DataTypes.STRING,
+    id_ambito_dominio_area: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         references: {
             model: 'ambitodominioarea',
-            key: 'nombre', 
+            key: 'id', 
         },
     },
 }, {

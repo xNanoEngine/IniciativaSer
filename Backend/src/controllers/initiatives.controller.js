@@ -6,6 +6,7 @@ import { Iniciativa } from "../persintence/models/Iniciativa.js";
 import { Programa } from "../persintence/models/Programa.js";
 import { Comuna } from "../persintence/models/Comuna.js";
 import { Documento } from "../persintence/models/Documento.js";
+import { ambitodominioarea } from "../persintence/models/ambitodominioarea.js";
 
 import {
   createIniciativa_,
@@ -247,9 +248,9 @@ export async function createIniciativa(req, res) {
     const tipo_espacio_cultural = await createTipoespaciocultural_(
       tipoespaciocultural_
     );
-    const ambito_dominio_area = await createambitodominioarea_(
-      ambitodominioarea_
-    );
+    const ambito_dominio_area = await ambitodominioarea.findOne({
+      where: {nombre: AmbitoDominioArea_nombre},
+    });
 
     // 1 x n
     await iniciativa.addDocumento(documento);
@@ -270,6 +271,10 @@ export async function createIniciativa(req, res) {
     await objetivo.addIniciativa(iniciativa);
     await persona_juridica.addIniciativa(iniciativa);
     await programa.addIniciativa(iniciativa);
+    await ambito_dominio_area.addIniciativa(iniciativa);
+    await ambito_dominio_area.addPersonanatural(persona_natural);
+    await ambito_dominio_area.addDocumento(documento);
+    await ambito_dominio_area.addPersona_juridica(persona_juridica);
     //console.log(Object.keys(comuna.__proto__));
     console.log("TERMINO");
     res.status(200).json({ status: true });

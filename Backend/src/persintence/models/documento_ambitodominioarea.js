@@ -13,13 +13,13 @@ export const documento_ambitodominioarea = sequelize.define("documento_ambitodom
             key: 'id', // Campo de ID de Estudiantes
         },
     },
-    nombre_ambito_dominio_area: {
-        type: DataTypes.STRING,
+    id_ambito_dominio_area: {
+        type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         references: {
             model: 'ambitodominioarea',
-            key: 'nombre', 
+            key: 'id', 
         },
     },
 }, {
