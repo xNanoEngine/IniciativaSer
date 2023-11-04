@@ -29,7 +29,13 @@ const ViewInitiative = () => {
                   <div className="font-bold font-custom_Syne text-2xl py-4 border-b-2 border-black w-4/6">
                     Programa
                   </div>
-                  <div className="mt-5"> {elemento.descripcion}</div>
+                  <div className="mt-5">
+                  {elemento.programas.map((program) => (
+                    <div>
+                      {program.nombre}
+                    </div>
+                  ))}
+                  </div>
                 </div>
                 <div className="">
                   <div className="font-bold font-custom_Syne text-2xl py-4 border-b-2 border-black w-4/6">
@@ -59,7 +65,15 @@ const ViewInitiative = () => {
                   <div className="font-bold font-custom_Syne text-2xl py-4 border-b-2 border-black w-4/6">
                     Documentos
                   </div>
-                  <div className="mt-5">{elemento.descripcion} </div>
+                  <div className="mt-5">
+                    {elemento.documentos.map((docs) => (
+                      <div>
+                      <a href={docs.enlace}
+                        className="text-blue-500"
+                      > {docs.titulo}</a>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

@@ -320,7 +320,7 @@ export async function getIniciativas(req, res) {
       {
         model: Documento,
         as: "documentos",
-        attributes: ["titulo"],
+        attributes: ["titulo", "enlace"],
       }
     ];
   } else {
@@ -338,7 +338,7 @@ export async function getIniciativas(req, res) {
       {
         model: Documento,
         as: "documentos",
-        attributes: ["titulo"],
+        attributes: ["titulo", "enlace"],
       }
     ];
   }

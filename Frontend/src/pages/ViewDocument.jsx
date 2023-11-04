@@ -41,13 +41,19 @@ const ViewDocument = () => {
                   <div className="font-bold font-custom_Syne text-2xl py-4 border-b-2 border-black w-4/6">
                     Iniciativa
                   </div>
-                  <div className="mt-5"> Nombre de iniciativa</div>
+                  <div className="mt-5"> {elemento.iniciativa.nombre}</div>
                 </div>
                 <div className="">
                   <div className="font-bold font-custom_Syne text-2xl py-4 border-b-2 border-black w-4/6">
                     Ámbito
                   </div>
-                  <div className="mt-5"> Ambito - Dominio - Area</div>
+                  <div className="mt-5">   
+                  {elemento.ambitodominioareas.map((ambito) => (
+                    <div>
+                      {ambito.nombre}
+                    </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="">
                   <div className="font-bold font-custom_Syne text-2xl py-4 border-b-2 border-black w-4/6">

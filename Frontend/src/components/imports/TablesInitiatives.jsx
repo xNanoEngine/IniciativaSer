@@ -137,6 +137,7 @@ const TablesInitiatives = ({
                         (
                           {
                             id,
+                            programas,
                             nombre,
                             componente,
                             descripcion,
@@ -158,9 +159,11 @@ const TablesInitiatives = ({
                             >
                               <td className={classes}>
                                 <div className="flex items-center gap-3">
-                                  <span className="font-normal text-gray-600 text-sm">
-                                    {nombre}
-                                  </span>
+                                  {programas.map((program) => (
+                                    <span className="font-normal text-gray-600 text-sm">
+                                      {program.nombre}
+                                    </span>
+                                  ))}
                                 </div>
                               </td>
                               <td className={classes}>
