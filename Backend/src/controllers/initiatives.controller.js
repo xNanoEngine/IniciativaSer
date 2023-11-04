@@ -84,7 +84,6 @@ import {
   getTipoespaciocultural_,
 } from "../persintence/repository/tipoespaciocultural.repository.js";
 
-
 export async function createIniciativa(req, res) {
   const {
     Iniciativa_id,
@@ -328,7 +327,6 @@ export async function getIniciativas(req, res) {
       },
     ];
   }
-  console.log(Busqueda);
   if (Filtro_Iniciativa) {
     console.log("Filtro_Iniciativa");
     if (Filtro_Iniciativa === "Nombre") {
@@ -363,12 +361,14 @@ export async function getIniciativas(req, res) {
     }
   } else {
     //Busqueda global, (Cuando no hay filtros de iniciativa, ventana home)
-    Options.where = {[Op.or] : [
-      {nombre: { [Op.like]: `%${Busqueda}%` }},
-      {descripcion: { [Op.like]: `%${Busqueda}%` }},
-      {componente: { [Op.like]: `%${Busqueda}%` }},
-      {formaFinanciamiento: { [Op.like]: `%${Busqueda}%` }},
-    ]};
+    Options.where = {
+      [Op.or]: [
+        { nombre: { [Op.like]: `%${Busqueda}%` } },
+        { descripcion: { [Op.like]: `%${Busqueda}%` } },
+        { componente: { [Op.like]: `%${Busqueda}%` } },
+        { formaFinanciamiento: { [Op.like]: `%${Busqueda}%` } },
+      ],
+    };
   }
   if (token) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -531,8 +531,7 @@ export async function getDocumento(req, res) {
 }
 
 export async function getDocumentos(req, res) {
-  const { Filtro_Tipo, Busqueda, Page, PerPage, token } =
-  req.body;
+  const { Filtro_Tipo, Busqueda, Page, PerPage, token } = req.query;
   const limit = parseInt(PerPage, 10);
   const page = parseInt(Page, 10);
   const offset = (page - 1) * limit;
@@ -548,93 +547,104 @@ export async function getDocumentos(req, res) {
       "enlace",
       "materia",
       "fuente",
-      "tipo"
+      "tipo",
     ],
     order: [["titulo", "DESC"]],
   };
-  console.log(Busqueda);
-  console.log(Filtro_Tipo);
 
-  if (Filtro_Tipo){
-    console.log("Hay filtro");
-    if (Busqueda === ""){
-    Options.where = {[Op.and]:[
-      {[Op.or]:[
-        {titulo: { [Op.like]: `%${Busqueda}%` }},
-        {fuente: { [Op.like]: `%${Busqueda}%` }},
-        {enlace: { [Op.like]: `%${Busqueda}%` }}
-      ]},
-      {tipo: {[Op.like]: Filtro_Tipo}}   
-      ]
-    }
+  if (Filtro_Tipo) {
+    const tipoFiltro = Filtro_Tipo.split(",");
+    if (Busqueda !== "") {
+      Options.where = {
+        [Op.and]: [
+          {
+            [Op.or]: [
+              { titulo: { [Op.like]: `%${Busqueda}%` } },
+              { fuente: { [Op.like]: `%${Busqueda}%` } },
+              { enlace: { [Op.like]: `%${Busqueda}%` } },
+            ],
+          },
+          {
+            tipo: {
+              [Op.or]: tipoFiltro.map((nombre) => ({
+                [Op.like]: nombre,
+              })),
+            },
+          },
+        ],
+      };
     } else {
-      Options.where = {tipo: {[Op.like]: Filtro_Tipo}}   
+      Options.where = {
+        tipo: {
+          [Op.or]: tipoFiltro.map((nombre) => ({
+            [Op.like]: nombre,
+          })),
+        },
+      };
     }
   } else {
-    console.log("No Hay filtro");
-    if (Busqueda === ""){
-      Options.where = {[Op.or]:[
-        {titulo: { [Op.like]: `%${Busqueda}%` }},
-        {fuente: { [Op.like]: `%${Busqueda}%` }},
-        {enlace: { [Op.like]: `%${Busqueda}%` }},
-      ]};
-    } 
+    Options.where = {
+      [Op.or]: [
+        { titulo: { [Op.like]: `%${Busqueda}%` } },
+        { fuente: { [Op.like]: `%${Busqueda}%` } },
+        { enlace: { [Op.like]: `%${Busqueda}%` } },
+      ],
+    };
   }
 
-  console.log(Options);
   try {
-      console.log("getDocumentos");
-      const { counts, rows } = await Documento.findAndCountAll(Options);
-      const totalPages = Math.ceil(counts / PerPage);
-      res.status(200).json({
-        totalItems: counts, // Total de artículos
-        totalPages: totalPages, // Número total de páginas
-        data: rows,
-      });
-    } catch (error) {
-      res.status(500).json("Sucedio un error obteniendo documentos......");
-    }
+    console.log("getDocumentos");
+    const { count, rows } = await Documento.findAndCountAll(Options);
 
+    const totalPages = Math.ceil(count / PerPage);
+    res.status(200).json({
+      totalItems: count, // Total de artículos
+      totalPages: totalPages, // Número total de páginas
+      data: rows,
+    });
+  } catch (error) {
+    res.status(500).json("Sucedio un error obteniendo documentos......");
+  }
 
-    // if (token) {
-    //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    //   const AccountId = parseInt(decoded.userId, 10);
-    //   Options.include = {
-    //     model: Iniciativa,
-    //     attributes: "cuentaId",
-    //   } 
-    //   try {
-    //     const { count, rows } = await Documento.findAndCountAll(Options);
-    //     // Iterar a través de las iniciativas y establecer el campo canEdit
-    //     const documentosConCanEdit = rows.map((documento) => ({
-    //       ...documento.dataValues,
-    //       canEdit: documento.cuentaId === AccountId,
-    //     }));
-  
-    //     const totalPages = Math.ceil(count / PerPage);
-    //     res.status(200).json({
-    //       counts: count,
-    //       results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
-    //       totalPages: totalPages,
-    //       accountId: accountId,
-    //     });
-    //   } catch (error) {
-    //     console.log(error);
-    //     res.status(500).json({ message: "Error al obtener las iniciativas." });
-    //   }
-    // } else {
-    //   // Si no se proporciona un token, simplemente envía los documentos sin el campo canEdit
-    //   try {
-    //     console.log("getDocumentos");
-    //     const { count, rows } = await Documento.findAndCountAll({Options});
-    //     const totalPages = Math.ceil(count / PerPage);
-    //     res.json({
-    //       counts: count,
-    //       results: rows,
-    //       totalPages: totalPages,
-    //     });
-    //   } catch (error) {
-    //     throw new Error("Sucedio un error obteniendo documentos......");
-    //   }
-    // }
-}  
+  // if (token) {
+  //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  //   const AccountId = parseInt(decoded.userId, 10);
+  //   Options.include = {
+  //     model: Iniciativa,
+  //     attributes: "cuentaId",
+  //   }
+  //   try {
+  //     const { count, rows } = await Documento.findAndCountAll(Options);
+  //     // Iterar a través de las iniciativas y establecer el campo canEdit
+  //     const documentosConCanEdit = rows.map((documento) => ({
+  //       ...documento.dataValues,
+  //       canEdit: documento.cuentaId === AccountId,
+  //     }));
+
+  //     const totalPages = Math.ceil(count / PerPage);
+  //     res.status(200).json({
+  //       counts: count,
+  //       results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
+  //       totalPages: totalPages,
+  //       accountId: accountId,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.status(500).json({ message: "Error al obtener las iniciativas." });
+  //   }
+  // } else {
+  //   // Si no se proporciona un token, simplemente envía los documentos sin el campo canEdit
+  //   try {
+  //     console.log("getDocumentos");
+  //     const { count, rows } = await Documento.findAndCountAll({Options});
+  //     const totalPages = Math.ceil(count / PerPage);
+  //     res.json({
+  //       counts: count,
+  //       results: rows,
+  //       totalPages: totalPages,
+  //     });
+  //   } catch (error) {
+  //     throw new Error("Sucedio un error obteniendo documentos......");
+  //   }
+  // }
+}

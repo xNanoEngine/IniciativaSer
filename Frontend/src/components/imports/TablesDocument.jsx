@@ -40,11 +40,12 @@ const TablesDocument = ({ busqueda, currentPage, setCurrentPage, filters }) => {
 
         if (response.status === 200) {
           const data = response.data;
-          const accountId = data.accountId;
-          localStorage.setItem("document", JSON.stringify(data.results));
-          setUserId(accountId);
+          //const accountId = data.accountId;
+          localStorage.setItem("document", JSON.stringify(data.data));
+          //setUserId(accountId);
+          console.log(data.totalPages);
           setTotalPages(data.totalPages);
-          setDisplayedRows(data.results);
+          setDisplayedRows(data.data);
           setIsLoading(false);
         }
       } catch (error) {
@@ -55,7 +56,7 @@ const TablesDocument = ({ busqueda, currentPage, setCurrentPage, filters }) => {
     // Verificar si filters no está vacío antes de realizar la solicitud
 
     fetchData();
-  }, [currentPage, filters]);
+  }, [busqueda, currentPage, filters]);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -124,10 +125,7 @@ const TablesDocument = ({ busqueda, currentPage, setCurrentPage, filters }) => {
                     </thead>
                     <tbody>
                       {displayedRows.map(
-                        (
-                          { id, titulo, fuente, Tipo_Documento, canEdit },
-                          index
-                        ) => {
+                        ({ id, titulo, fuente, tipo, canEdit }, index) => {
                           const isLast = index === displayedRows.length - 1;
                           const classes = isLast
                             ? "p-4"
@@ -153,7 +151,12 @@ const TablesDocument = ({ busqueda, currentPage, setCurrentPage, filters }) => {
                               </td>
                               <td className={classes}>
                                 <span className="font-normal text-gray-600 text-sm">
-                                  {Tipo_Documento}
+                                  {fuente}
+                                </span>
+                              </td>
+                              <td className={classes}>
+                                <span className="font-normal text-gray-600 text-sm">
+                                  {tipo}
                                 </span>
                               </td>
                               <td className={classes}>

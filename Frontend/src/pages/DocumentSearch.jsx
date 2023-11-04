@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { DocumentFilters } from "../constants";
-import { useFilter } from "../hook/useFilter";
 import SearchHeader from "../components/imports/SearchHeader";
 import SearchForm from "../components/imports/SearchForm";
 import FilterSearch from "../components/imports/FilterSearch";
@@ -36,7 +35,6 @@ const DocumentSearch = () => {
         ...prevFilters,
         [type]: selectedItems,
       };
-
       return updatedFilters;
     });
   };
@@ -77,7 +75,9 @@ const DocumentSearch = () => {
                   busqueda={documentBusqueda}
                   filters={selectedFilters}
                 />
-              ) : null}
+              ) : (
+                <h1>Ingrese documento a buscar</h1>
+              )}
             </div>
           </div>
         </div>

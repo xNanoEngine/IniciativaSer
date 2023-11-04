@@ -80,7 +80,9 @@ const AdvancedSearch = () => {
                   busqueda={busqueda}
                   filters={selectedFilters}
                 />
-              ) : null}
+              ) : (
+                <h1>Ingrese iniciativa a buscar</h1>
+              )}
             </div>
           </div>
         </div>
