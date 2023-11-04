@@ -16,6 +16,9 @@ const Document = ({ onSubmit }) => {
       await DocumentSchema.validate(
         {
           documentName: document.getElementById("documentName").value.trim(),
+          documentAuthor: document
+            .getElementById("documentAuthor")
+            .value.trim(),
           documentDate: document.getElementsByName("documentDate")[0].value,
           documentType: selectedOptions.documentType,
           institutionName: document
@@ -29,6 +32,7 @@ const Document = ({ onSubmit }) => {
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
       data.documentName = data.documentName.trim();
+      data.documentAuthor = data.documentAuthor.trim();
       data.institutionName = data.institutionName.trim();
       data.keyWords = data.keyWords.trim();
       data.documentUrl = data.documentUrl.trim();
@@ -78,6 +82,21 @@ const Document = ({ onSubmit }) => {
             />
             {errors.documentDate && (
               <span className="text-red-500">{errors.documentDate}</span>
+            )}
+          </div>
+          <div className="flex flex-col mt-6 md:mt-0">
+            <label className="block ml-1">Autor:</label>
+            <input
+              type="text"
+              id="documentAuthor"
+              name="documentAuthor"
+              className={`w-full px-4 py-2 rounded-md border ${
+                errors.documentAuthor ? "border-red-500" : ""
+              }`}
+              placeholder="Respuesta..."
+            />
+            {errors.documentAuthor && (
+              <span className="text-red-500">{errors.documentAuthor}</span>
             )}
           </div>
         </div>

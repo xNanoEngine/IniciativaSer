@@ -74,6 +74,7 @@ const InitiativeForm = () => {
       TipoEspacioCultural_tipo:
         formResults[4].selectedOptions.culturalSpaceTypes,
       Documento_titulo: formResults[7].documentName,
+      Documento_autor: formResults[7].documentAuthor,
       Documento_fecha_publicacion: formResults[7].documentDate,
       Documento_enlace: formResults[7].documentUrl,
       Documento_materia: formResults[7].keyWords,

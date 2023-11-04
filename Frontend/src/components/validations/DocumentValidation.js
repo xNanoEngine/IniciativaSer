@@ -6,6 +6,11 @@ export const DocumentSchema = Yup.object().shape({
     .required("El nombre del documento es obligatorio")
     .min(1, "El nombre del documento debe tener al menos un carácter")
     .max(100, "El nombre del documento no puede superar los 100 carácteres"),
+  documentAuthor: Yup.string()
+    .trim()
+    .required("El autor del documento es obligatorio")
+    .min(1, "El autor del documento debe tener al menos un carácter")
+    .max(100, "El autor del documento no puede superar los 100 carácteres"),
   documentDate: Yup.date()
     .typeError("La fecha es obligatoria")
     .required("La fecha es obligatoria")
