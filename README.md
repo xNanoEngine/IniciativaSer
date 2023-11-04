@@ -13,3 +13,4 @@ Este cuenta con un inicio de sesion para los usuarios del seremi, e interfaces p
 -  Sebastian Paredes
 -  Javier Mansilla
 -  Tomas Manriquez
+-  Manuel Gatica
