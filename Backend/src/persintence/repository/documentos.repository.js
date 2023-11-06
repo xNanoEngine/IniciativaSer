@@ -1,7 +1,7 @@
 import { Documento } from "../models/Documento.js";
 
 export async function createDocumento_(documento){
-    const { id, titulo, fecha_publicacion, enlace, materia, fuente, tipo } = documento
+    const { id, titulo, fecha_publicacion, enlace, materia, fuente, tipo, autor } = documento
     try {
         const newDocumento = await Documento.create({
             id,
