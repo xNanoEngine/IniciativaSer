@@ -67,18 +67,12 @@ const DocumentSearch = () => {
             }
           />
           <div className="space-y-14 md:w-5/6">
-            <div>
-              {documentBusqueda !== "" ? (
-                <TablesDocument
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  busqueda={documentBusqueda}
-                  filters={selectedFilters}
-                />
-              ) : (
-                <h1>Ingrese documento a buscar</h1>
-              )}
-            </div>
+            <TablesDocument
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              busqueda={documentBusqueda}
+              filters={selectedFilters}
+            />
           </div>
         </div>
       </div>
