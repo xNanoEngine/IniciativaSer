@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SearchFilters } from "../constants";
-import { useFilter } from "../hook/useFilter";
+import { useFilterContext } from "../context/filters";
 import SearchHeader from "../components/imports/SearchHeader";
 import SearchForm from "../components/imports/SearchForm";
 import FilterSearch from "../components/imports/FilterSearch";
@@ -9,23 +9,25 @@ import TablesInitiatives from "../components/imports/TablesInitiatives";
 
 const AdvancedSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { busqueda, setBusqueda } = useFilter();
+  const { busqueda, setBusqueda, filters, updateFilters } = useFilterContext();
   const [inputValue, setInputValue] = useState("");
-  const [selectedFilters, setSelectedFilters] = useState({});
+  console.log(busqueda, filters);
   useEffect(() => {
     if (busqueda) {
       setInputValue(busqueda);
+    } else {
+      const lastSearch = localStorage.getItem("lastSearch");
+      if (lastSearch) {
+        setInputValue(lastSearch);
+        setBusqueda(lastSearch);
+      }
     }
-    const lastSearch = localStorage.getItem("lastSearch");
-    if (lastSearch) {
-      setInputValue(lastSearch);
-      setBusqueda(lastSearch);
-    }
-  }, []);
+  }, [busqueda, setBusqueda]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
+
   const handleSumbit = (e) => {
     e.preventDefault();
     setBusqueda(inputValue);
@@ -34,14 +36,7 @@ const AdvancedSearch = () => {
   };
 
   const handleSelectionChange = (type, selectedItems) => {
-    setSelectedFilters((prevFilters) => {
-      const updatedFilters = {
-        ...prevFilters,
-        [type]: selectedItems,
-      };
-
-      return updatedFilters;
-    });
+    updateFilters({ [type]: selectedItems });
   };
 
   return (
@@ -76,7 +71,7 @@ const AdvancedSearch = () => {
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               busqueda={busqueda}
-              filters={selectedFilters}
+              filters={filters}
             />
           </div>
         </div>

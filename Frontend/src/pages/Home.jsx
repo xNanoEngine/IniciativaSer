@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Footer from "../components/imports/Footer";
 import ProgramSeremi from "../components/imports/ProgramSeremi";
-import { useFilter } from "../hook/useFilter";
-import { useNavigate, Navigate } from "react-router-dom";
+// import { useFilter } from "../hook/useFilter";
+import { useFilterContext } from "../context/filters";
+import { useNavigate } from "react-router-dom";
 const Home2 = () => {
   const navigate = useNavigate();
-  const { busqueda, setBusqueda } = useFilter();
+  const { busqueda, setBusqueda } = useFilterContext();
   const [inputValue, setInputValue] = useState("");
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
