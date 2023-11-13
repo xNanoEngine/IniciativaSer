@@ -13,7 +13,7 @@ const Home2 = () => {
   const handleSubmit = () => {
     localStorage.setItem("lastSearch", inputValue);
     setBusqueda(inputValue);
-    inputValue !== "" ? navigate("/search") : null;
+    navigate("/search");
   };
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">

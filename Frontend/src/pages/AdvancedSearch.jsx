@@ -72,18 +72,12 @@ const AdvancedSearch = () => {
             }
           />
           <div className="space-y-14 md:w-5/6">
-            <div>
-              {busqueda !== "" ? (
-                <TablesInitiatives
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  busqueda={busqueda}
-                  filters={selectedFilters}
-                />
-              ) : (
-                <h1>Ingrese iniciativa a buscar</h1>
-              )}
-            </div>
+            <TablesInitiatives
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              busqueda={busqueda}
+              filters={selectedFilters}
+            />
           </div>
         </div>
       </div>

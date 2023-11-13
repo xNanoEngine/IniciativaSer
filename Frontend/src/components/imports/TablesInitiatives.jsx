@@ -160,7 +160,10 @@ const TablesInitiatives = ({
                               <td className={classes}>
                                 <div className="flex items-center gap-3">
                                   {programas.map((program) => (
-                                    <span className="font-normal text-gray-600 text-sm">
+                                    <span
+                                      key={program.nombre}
+                                      className="font-normal text-gray-600 text-sm"
+                                    >
                                       {program.nombre}
                                     </span>
                                   ))}
