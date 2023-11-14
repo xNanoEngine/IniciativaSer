@@ -5,12 +5,13 @@ import SearchForm from "../components/imports/SearchForm";
 import FilterSearch from "../components/imports/FilterSearch";
 import Footer from "../components/imports/Footer";
 import TablesDocument from "../components/imports/TablesDocument";
-
+import { useFilterContext } from "../context/filters";
 const DocumentSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [inputValue, setInputValue] = useState("");
   const [documentBusqueda, setDocumentBusqueda] = useState("");
   const [selectedFilters, setSelectedFilters] = useState({});
+  const { filters, updateFilters } = useFilterContext();
   useEffect(() => {
     const lastDocument = localStorage.getItem("lastDocument");
     if (lastDocument) {
@@ -30,13 +31,7 @@ const DocumentSearch = () => {
   };
 
   const handleSelectionChange = (type, selectedItems) => {
-    setSelectedFilters((prevFilters) => {
-      const updatedFilters = {
-        ...prevFilters,
-        [type]: selectedItems,
-      };
-      return updatedFilters;
-    });
+    updateFilters({ [type]: selectedItems });
   };
 
   return (
@@ -71,7 +66,7 @@ const DocumentSearch = () => {
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               busqueda={documentBusqueda}
-              filters={selectedFilters}
+              filters={filters}
             />
           </div>
         </div>
