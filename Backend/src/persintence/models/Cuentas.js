@@ -18,6 +18,9 @@ export const Cuentas = sequelize.define(
     password: {
       type: DataTypes.STRING,
     },
+    rol: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: true,
@@ -43,6 +46,7 @@ Cuentas.afterSync(async () => {
       await Cuentas.create({
         name: nombreUsuario,
         password: hashedPassword,
+        rol: "Seremi",
       });
       console.log("Usuario administrador creado automáticamente.");
     } else {
