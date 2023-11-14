@@ -12,7 +12,7 @@ const router = Router();
 // Routes
 router.post("/", checkAuth, createIniciativa);
 router.put("/:id", checkAuth, updateIniciativa);
-router.delete("/:id", checkAuth, deleteIniciativa);
+router.patch("/:id", checkAuth, deleteIniciativa);
 router.get("/", getIniciativas);
 router.get("/:id", getIniciativa);
 

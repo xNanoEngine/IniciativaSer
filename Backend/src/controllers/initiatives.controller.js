@@ -376,19 +376,7 @@ export async function getIniciativas(req, res) {
     }
   } else {
     //Busqueda global, (Cuando no hay filtros de iniciativa, ventana home)
-    // falta añadir busqueda global por programa
-
-    Options.include = [
-      {
-        model: Programa,
-        as: "programas",
-        attributes: ["nombre"],
-        where: {
-          nombre: { [Op.like]: `%${Busqueda}%` },
-        },
-      },
-      // Otras inclusiones
-    ];
+    // falta añadir busqueda global por programas
     Options.where = {
       [Op.or]: [
         { nombre: { [Op.like]: `%${Busqueda}%` } },

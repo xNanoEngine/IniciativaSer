@@ -102,9 +102,11 @@ export async function updateIniciativa_(iniciativa) {
 
 export async function deleteIniciativa_(id) {
   try {
-    await Iniciativa.destroy({
-      where: { id },
-    });
+    console.log(id);
+    const iniciativa_update = await Iniciativa.findByPk(id);
+    console.log(iniciativa_update);
+    iniciativa_update.flag = false;
+    await iniciativa_update.save();
     return "se elimino correctamente";
   } catch (error) {
     throw new Error("Sucedio un error......");

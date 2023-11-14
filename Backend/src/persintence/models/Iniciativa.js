@@ -52,7 +52,6 @@ export const Iniciativa = sequelize.define("iniciativa",{
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
-
     }
     
 }, {
