@@ -165,6 +165,7 @@ export async function createIniciativa(req, res) {
     cantPublico: Iniciativa_cantPublico,
     fechaInicio: Iniciativa_fechaInicio,
     fechaFin: Iniciativa_fechaFin,
+    flag: true, 
   };
 
   const documento_ = {

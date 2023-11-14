@@ -47,6 +47,12 @@ export const Iniciativa = sequelize.define("iniciativa",{
     },
     fechaFin: {
         type: DataTypes.DATE,
+    },
+    flag:{
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+
     }
     
 }, {
