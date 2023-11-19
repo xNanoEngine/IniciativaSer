@@ -71,17 +71,11 @@ const TablesDocument = ({ busqueda, currentPage, setCurrentPage, filters }) => {
   };
 
   const MaxVisiblePages = 5; // Define cuántas páginas deseas mostrar
-
-  // Calcular la página de inicio y fin del rango de botones visibles
   let rangeStart = Math.max(1, currentPage - Math.floor(MaxVisiblePages / 2));
   const rangeEnd = Math.min(totalPages, rangeStart + MaxVisiblePages - 1);
-
-  // Ajustar el rango si no hay suficientes páginas para mostrar 5 números
   if (rangeEnd - rangeStart + 1 < MaxVisiblePages) {
     rangeStart = Math.max(1, totalPages - MaxVisiblePages + 1);
   }
-
-  // Generar los botones de página visibles
   const visiblePages = Array.from(
     { length: rangeEnd - rangeStart + 1 },
     (_, i) => rangeStart + i

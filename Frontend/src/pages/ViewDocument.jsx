@@ -12,7 +12,7 @@ const ViewDocument = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
       <div className="flex-grow mb-10">
-        <section className="sm:py-16 py-6 flex justify-center flex-col w-screen border-t-black border-t-2 space-y-5">
+        <section className="sm:py-16 py-6 flex justify-center flex-col w-screen  space-y-5">
           <div className="flex flex-col ml-80 space-y-10">
             <div className="">
               <h1>{elemento.titulo} </h1>
@@ -47,11 +47,9 @@ const ViewDocument = () => {
                   <div className="font-bold font-custom_Syne text-2xl py-4 border-b-2 border-black w-4/6">
                     Ámbito
                   </div>
-                  <div className="mt-5">   
-                  {elemento.ambitodominioareas.map((ambito) => (
-                    <div>
-                      {ambito.nombre}
-                    </div>
+                  <div className="mt-5">
+                    {elemento.ambitodominioareas.map((ambito) => (
+                      <div>{ambito.nombre}</div>
                     ))}
                   </div>
                 </div>

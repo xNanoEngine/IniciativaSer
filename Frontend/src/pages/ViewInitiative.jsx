@@ -12,7 +12,7 @@ const ViewInitiative = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
       <div className="flex-grow mb-10">
-        <section className="sm:py-16 py-6 flex justify-center flex-col w-screen border-t-black border-t-2 space-y-5">
+        <section className="sm:py-16 py-6 flex justify-center flex-col w-screen space-y-5">
           <div className="flex flex-col ml-80 space-y-10">
             <div className="">
               <h1>{elemento.nombre} </h1>
@@ -30,11 +30,9 @@ const ViewInitiative = () => {
                     Programa
                   </div>
                   <div className="mt-5">
-                  {elemento.programas.map((program) => (
-                    <div>
-                      {program.nombre}
-                    </div>
-                  ))}
+                    {elemento.programas.map((program) => (
+                      <div>{program.nombre}</div>
+                    ))}
                   </div>
                 </div>
                 <div className="">
@@ -68,9 +66,10 @@ const ViewInitiative = () => {
                   <div className="mt-5">
                     {elemento.documentos.map((docs) => (
                       <div>
-                      <a href={docs.enlace}
-                        className="text-blue-500"
-                      > {docs.titulo}</a>
+                        <a href={docs.enlace} className="text-blue-500">
+                          {" "}
+                          {docs.titulo}
+                        </a>
                       </div>
                     ))}
                   </div>

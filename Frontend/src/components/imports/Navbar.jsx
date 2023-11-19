@@ -43,11 +43,11 @@ function Navbar({ isAuth }) {
   };
 
   return (
-    <nav className="w-full flex py-6 justify-between items-center navbar select-none ">
+    <nav className="w-full flex py-6 justify-between items-center navbar select-none">
       <a href="/">
         <img src={icon} alt="hoobank" className="w-[50px] h-[50px]" />
       </a>
-      <ul className="list-none sm:flex hidden justify-end items-center flex-1">
+      <ul className="list-none sm:flex hidden justify-end items-center flex-1 ">
         {filteredLinks.map((nav, index) => (
           <li
             key={nav.ref || index}

@@ -19,7 +19,7 @@ const Home2 = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#ffffff] justify-center ">
       <div className="flex-grow mb-10">
-        <section className="sm:py-16 py-6 flex justify-center flex-col bg-slate-100 w-screen border-t-black border-t-2 border-b-black border-b-2">
+        <section className="sm:py-16 py-6 flex justify-center flex-col bg-slate-100 w-screen border-b-black border-b-2">
           <div className="flex justify-center sm:mb-16 mb-6 z-[1] text-center">
             <h1 className="leading-tight">
               Bienvenido(a) al

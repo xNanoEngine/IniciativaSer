@@ -61,7 +61,7 @@ export const navLinks = [
       },
       {
         title: "Mis registros",
-        ref: "/subelemento2",
+        ref: "/records",
       },
       {
         title: "Salir",

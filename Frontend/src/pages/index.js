@@ -7,6 +7,7 @@ import AdvancedSearch from "./AdvancedSearch";
 import ViewInitiative from "./ViewInitiative";
 import DocumentSearch from "./DocumentSearch";
 import ViewDocument from "./ViewDocument";
+import UserRecords from "./UserRecords";
 export {
   Navbar,
   Logout,
@@ -17,4 +18,5 @@ export {
   ViewInitiative,
   DocumentSearch,
   ViewDocument,
+  UserRecords,
 };

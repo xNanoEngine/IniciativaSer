@@ -8,6 +8,7 @@ import {
   ViewInitiative,
   DocumentSearch,
   ViewDocument,
+  UserRecords,
 } from "./pages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {
@@ -32,7 +33,7 @@ const LoginWithRedirect = () => {
   }, [navigate, isAuth, location.pathname]);
 
   if (isAuth) {
-    return null; // No renderizar nada en lugar de <Login />
+    return null;
   }
 
   return <Login />;
@@ -46,7 +47,7 @@ const App = () => {
       <FilterProvider>
         <Router>
           {(!loginPath || isAuth) && (
-            <div className="sm:px-16 px-6 flex justify-center items-center">
+            <div className="sm:px-16 px-6 flex justify-center items-center border-b-2 border-black">
               <div className="xl:max-w-[1280px] w-full">
                 <Navbar isAuth={isAuth} />
               </div>
@@ -67,6 +68,15 @@ const App = () => {
             <Route path="/document" element={<DocumentSearch />} />
             <Route path="/view" element={<ViewInitiative />} />;
             <Route path="/viewDocument" element={<ViewDocument />} />;
+            <Route
+              path="/records"
+              element={
+                <ProtectedRoute>
+                  <UserRecords />
+                </ProtectedRoute>
+              }
+            />
+            ;
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
