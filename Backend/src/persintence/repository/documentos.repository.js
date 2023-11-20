@@ -1,4 +1,9 @@
 import { Documento } from "../models/Documento.js";
+import jwt from "jsonwebtoken";
+import { Op } from "sequelize";
+
+import { Iniciativa } from "../models/Iniciativa.js";
+import { ambitodominioarea } from "../models/ambitodominioarea.js";
 
 export async function createDocumento_(documento){
     const { id, titulo, fecha_publicacion, enlace, materia, fuente, tipo, autor } = documento
@@ -19,17 +24,93 @@ export async function createDocumento_(documento){
     }
 }
 
-export async function getDocumentos_(){
-    try {
-        const documentos = await Documento.findAll({
-            attributes: ["id", "titulo", "fecha_publicacion", "enlace", "materia", "fuente", "tipo"],
-            order: [["id", "DESC"]],
-        });
-        return documentos
-    } catch (error) {
-        throw new Error("Sucedio un error......")
+export async function getDocumentos_(body){
+    const { Filtro_Tipo, Busqueda, Page, PerPage, token } = body;
+    const limit = parseInt(PerPage, 10);
+    const page = parseInt(Page, 10);
+    const offset = (page - 1) * limit;
+  
+    const Options = {
+      limit: limit,
+      offset: offset,
+      subQuery: false,
+      include: [
+        {
+          model: Iniciativa,
+          attributes: ["nombre"],
+          where: {flag: true}
+        },
+        {
+          model: ambitodominioarea,
+          attributes: ["nombre"],
+        },
+      ],
+      attributes: [
+        "id",
+        "titulo",
+        "fecha_publicacion",
+        "enlace",
+        "materia",
+        "fuente",
+        "tipo",
+        "autor",
+      ],
+      order: [["titulo", "DESC"]],
+    };
+  
+    if (Filtro_Tipo) {
+      const tipoFiltro = Filtro_Tipo.split(",");
+      if (Busqueda !== "") {
+        Options.where = {
+          [Op.and]: [
+            {
+              [Op.or]: [
+                { titulo: { [Op.like]: `%${Busqueda}%` } },
+                { fuente: { [Op.like]: `%${Busqueda}%` } },
+                { enlace: { [Op.like]: `%${Busqueda}%` } },
+              ],
+            },
+            {
+              tipo: {
+                [Op.or]: tipoFiltro.map((nombre) => ({
+                  [Op.like]: nombre,
+                })),
+              },
+            },
+          ],
+        };
+      } else {
+        Options.where = {
+          tipo: {
+            [Op.or]: tipoFiltro.map((nombre) => ({
+              [Op.like]: nombre,
+            })),
+          },
+        };
+      }
+    } else {
+      Options.where = {
+        [Op.or]: [
+          { titulo: { [Op.like]: `%${Busqueda}%` } },
+          { fuente: { [Op.like]: `%${Busqueda}%` } },
+          { enlace: { [Op.like]: `%${Busqueda}%` } },
+        ],
+      };
     }
-
+  
+    try {
+      console.log("getDocumentos");
+      const { count, rows } = await Documento.findAndCountAll(Options);
+  
+      const totalPages = Math.ceil(count / PerPage);
+      return({
+        totalItems: count, // Total de artículos
+        totalPages: totalPages, // Número total de páginas
+        data: rows,
+      });
+    } catch (error) {
+      return("Sucedio un error obteniendo documentos......");
+    }
 }
 
 export async function updateDocumento_(documento){
