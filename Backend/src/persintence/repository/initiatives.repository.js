@@ -1,8 +1,60 @@
-import { Documento } from "../models/Documento.js";
-import { Iniciativa } from "../models/Iniciativa.js";
+import { Iniciativa } from "../persintence/models/Iniciativa.js";
+import { Programa } from "../persintence/models/Programa.js";
+import { Documento } from "../persintence/models/Documento.js";
+import { ambitodominioarea } from "../persintence/models/ambitodominioarea.js";
 
-export async function createIniciativa_(iniciativa) {
+import {
+  createInitiative,
+  getIniciativas_,
+  updateIniciativa_,
+  deleteIniciativa_,
+  getIniciativa_,
+} from "../persintence/repository/initiatives.repository.js";
+
+import {
+  getDocumentos_,
+} from "../persintence/repository/documentos.repository.js";
+
+
+export async function createIniciativa(req, res) {
+  createInitiative(req.body).then(
+    (data) => {
+      res.status(200).json({ status: true });
+    },
+    (error) => {
+      res.status(400).json({ status: false, error: error.message });
+    }
+  );
+}
+
+export async function getIniciativas(req, res) {
+  getIniciativas_(req.query).then(
+    (data) => {
+      res.status(200).json(data);
+    },
+    (error) => {
+      res.status(400).json({ status: false, error: error.message });
+    }
+  );
+}
+
+
+export async function updateIniciativa(req, res) {
+  const { id } = req.params;
   const {
+    idInterno,
+    nombre,
+    tipo,
+    descripcion,
+    componente,
+    presupuesto,
+    formaFinanciamiento,
+    tipoPublicoObjetivo,
+    cantPublico,
+    fechaInicio,
+    fechaFin,
+  } = req.body;
+  const iniciativa = {
     id,
     idInterno,
     nombre,
@@ -15,116 +67,157 @@ export async function createIniciativa_(iniciativa) {
     cantPublico,
     fechaInicio,
     fechaFin,
-  } = iniciativa;
+  };
+  updateIniciativa_(iniciativa).then(
+    (msg) => {
+      res.status(200).json({ status: true, msg: msg });
+    },
+    (error) => {
+      res.status(400).json({ status: false, error: error.message });
+    }
+  );
+}
+
+export async function deleteIniciativa(req, res) {
+  const { id } = req.params;
+  deleteIniciativa_(id).then(
+    (msg) => {
+      res.status(200).json({ status: true, msg: msg });
+    },
+    (error) => {
+      res.status(400).json({ status: false, error: error.message });
+    }
+  );
+}
+
+export async function getIniciativa(req, res) {
+  const { id } = req.params;
+  getIniciativa_(id).then(
+    (data) => {
+      res.status(200).json({ status: true, data: data });
+    },
+    (error) => {
+      res.status(400).json({ status: false, error: error.message });
+    }
+  );
+}
+
+export async function getPrograma(req, res) {
+  const { id } = req.params;
   try {
-    const newIniciativa = await Iniciativa.create({
-      id,
-      idInterno,
-      nombre,
-      tipo,
-      descripcion,
-      componente,
-      presupuesto,
-      formaFinanciamiento,
-      tipoPublicoObjetivo,
-      cantPublico,
-      fechaInicio,
-      fechaFin,
+    console.log("getPrograma por id");
+    const programa = await Programa.findOne({
+      where: { id },
     });
-    return newIniciativa;
+    return programa;
   } catch (error) {
-    console.error("Error al insertar Iniciativa:", error);
-    throw new Error("Sucedio un error......");
+    throw new Error("Sucedio un error obteniendo programa por id......");
   }
 }
 
-export async function getIniciativas_() {
+export async function getProgramas(req, res) {
+  const { currentPage, perPage } = req.body;
+  const offset = (currentPage - 1) * perPage;
   try {
-    const iniciativas = await Iniciativa.findAll({
+    console.log("getProgramas");
+    const { counts, programas } = await Programa.findAndCountAll({
       attributes: [
         "id",
-        "idInterno",
         "nombre",
-        "tipo",
         "descripcion",
-        "componente",
-        "presupuesto",
-        "formaFinanciamiento",
-        "tipoPublicoObjetivo",
-        "cantPublico",
-        "fechaInicio",
-        "fechaFin",
+        "url",
+        //"imagen"
       ],
-      order: [["id", "DESC"]],
+      order: [["nombre", "DESC"]],
+      limit: perPage,
+      offset: offset,
+      subQuery: false,
     });
-    return iniciativas;
+    const totalPages = Math.ceil(counts / perPage);
+    res.json({
+      totalItems: counts, // Total de artículos
+      totalPages: totalPages, // Número total de páginas
+      currentPage: currentPage, // Página actual
+      data: programas,
+    });
+    //return programas;
   } catch (error) {
-    throw new Error("Sucedio un error......");
+    throw new Error("Sucedio un error obteniendo programas......");
   }
 }
 
-export async function updateIniciativa_(iniciativa) {
-  const {
-    id,
-    idInterno,
-    nombre,
-    tipo,
-    descripcion,
-    componente,
-    presupuesto,
-    formaFinanciamiento,
-    tipoPublicoObjetivo,
-    cantPublico,
-    fechaInicio,
-    fechaFin,
-  } = iniciativa;
+export async function getDocumento(req, res) {
+  const { id } = req.params;
   try {
-    const iniciativa_update = await Iniciativa.findByPk(id);
-    console.log(iniciativa_update);
-    iniciativa_update.idInterno = idInterno;
-    iniciativa_update.nombre = nombre;
-    iniciativa_update.tipo = tipo;
-    iniciativa_update.descripcion = descripcion;
-    iniciativa_update.componente = componente;
-    iniciativa_update.presupuesto = presupuesto;
-    iniciativa_update.formaFinanciamiento = formaFinanciamiento;
-    iniciativa_update.tipoPublicoObjetivo = tipoPublicoObjetivo;
-    iniciativa_update.cantPublico = cantPublico;
-    iniciativa_update.fechaInicio = fechaInicio;
-    iniciativa_update.fechaFin = fechaFin;
-    await iniciativa_update.save();
-    return "se modifico correctamente";
-  } catch (error) {
-    console.log(error);
-    throw new Error("Sucedio un error......");
-  }
-}
-
-export async function deleteIniciativa_(id) {
-  try {
-    console.log(id);
-    const iniciativa_update = await Iniciativa.findByPk(id);
-    console.log(iniciativa_update);
-    iniciativa_update.flag = false;
-    await iniciativa_update.save();
-    return "se elimino correctamente";
-  } catch (error) {
-    throw new Error("Sucedio un error......");
-  }
-}
-
-export async function getIniciativa_(id) {
-  try {
-    console.log("getIniciativa");
-    const iniciativa = await Iniciativa.findOne({
+    console.log("getDocumento por id");
+    const documento = await Documento.findOne({
+      include: [
+        {
+          model: ambitodominioarea,
+          as: "ambitodominioareas",
+          attributes: ["nombre"],
+        },
+        {
+          model: Iniciativa,
+          attributes: ["nombre"],
+        },
+      ],
       where: { id },
-      include: {
-        model: Documento,
-        as: "documentos" 
-      },
     });
-    return iniciativa;
+    return documento;
   } catch (error) {
-    throw new Error("Sucedio un error......");
+    throw new Error("Sucedio un error obteniendo documento por id......");
   }
+}
+
+export async function getDocumentos(req, res) {
+  getDocumentos_(req.query).then(
+    (data) => {
+      res.status(200).json(data);
+    },
+    (error) => {
+      res.status(400).json({ status: false, error: error.message });
+    }
+  );
+  // if (token) {
+  //   const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  //   const AccountId = parseInt(decoded.userId, 10);
+  //   Options.include = {
+  //     model: Iniciativa,
+  //     attributes: "cuentaId",
+  //   }
+  //   try {
+  //     const { count, rows } = await Documento.findAndCountAll(Options);
+  //     // Iterar a través de las iniciativas y establecer el campo canEdit
+  //     const documentosConCanEdit = rows.map((documento) => ({
+  //       ...documento.dataValues,
+  //       canEdit: documento.cuentaId === AccountId,
+  //     }));
+
+  //     const totalPages = Math.ceil(count / PerPage);
+  //     res.status(200).json({
+  //       counts: count,
+  //       results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
+  //       totalPages: totalPages,
+  //       accountId: accountId,
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //     res.status(500).json({ message: "Error al obtener las iniciativas." });
+  //   }
+  // } else {
+  //   // Si no se proporciona un token, simplemente envía los documentos sin el campo canEdit
+  //   try {
+  //     console.log("getDocumentos");
+  //     const { count, rows } = await Documento.findAndCountAll({Options});
+  //     const totalPages = Math.ceil(count / PerPage);
+  //     res.json({
+  //       counts: count,
+  //       results: rows,
+  //       totalPages: totalPages,
+  //     });
+  //   } catch (error) {
+  //     throw new Error("Sucedio un error obteniendo documentos......");
+  //   }
+  // }
 }
