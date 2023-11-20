@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { downWhite } from "../../../assets";
 import { CheckIcon } from "../../Icons";
+import clientAxios from "../../config/clienteAxios";
+import { useLocation } from "react-router-dom";
 const Accordion = (props) => {
   const [isValid, setIsValid] = useState(false); // Nuevo estado para rastrear si el formulario es válido
+  const [editData, setEditData] = useState({});
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const queryValue = queryParams.get("Edit");
+  console.log(queryValue);
+  useEffect(() => {
+    // Cargar datos de edición si hay un valor en la URL
+    if (queryValue) {
+      // Aquí deberías obtener los datos de edición según tu lógica y actualizar el estado
+      // Ejemplo: clientAxios.get(`/api/iniciativas/${queryValue}`).then((response) => setEditData(response.data));
+    }
+  }, [queryValue]);
 
-  const handleToggleProperty = () => {
-    // Actualiza el estado de isValid cuando se muestra/oculta la propiedad
-    setIsValid(!isValid);
-    props.toggleAccordion();
-  };
   return (
     <div className="border rounded-md mb-1">
       <button className="initiativeButton" onClick={props.toggleAccordion}>
@@ -47,6 +56,7 @@ const Accordion = (props) => {
             props.onSubmit(formData);
             setIsValid(isValid);
           },
+          data: editData[props.title] || {},
         })}
       </div>
     </div>

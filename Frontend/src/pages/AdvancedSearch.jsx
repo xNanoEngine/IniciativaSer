@@ -11,7 +11,7 @@ const AdvancedSearch = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { busqueda, setBusqueda, filters, updateFilters } = useFilterContext();
   const [inputValue, setInputValue] = useState("");
-  console.log(busqueda, filters);
+
   useEffect(() => {
     if (busqueda) {
       setInputValue(busqueda);

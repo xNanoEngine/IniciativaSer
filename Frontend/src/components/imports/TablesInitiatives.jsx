@@ -5,6 +5,7 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/react/24/solid";
 import { verifyToken } from "../../utils/authUtils";
+import { useNavigate } from "react-router-dom";
 import clientAxios from "../config/clienteAxios";
 
 const TablesInitiatives = ({
@@ -21,6 +22,7 @@ const TablesInitiatives = ({
     "Descripcion",
     "",
   ];
+  const navigate = useNavigate();
   const [displayedRows, setDisplayedRows] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [isMobileView, setIsMobileView] = useState(false);
@@ -201,7 +203,12 @@ const TablesInitiatives = ({
                                 {canEdit && (
                                   <div content="Edit User">
                                     <button variant="text">
-                                      <PencilIcon className="h-4 w-4" />
+                                      <PencilIcon
+                                        onClick={navigate(
+                                          `/initiative?Edit=${id}`
+                                        )}
+                                        className="h-4 w-4"
+                                      />
                                     </button>
                                   </div>
                                 )}

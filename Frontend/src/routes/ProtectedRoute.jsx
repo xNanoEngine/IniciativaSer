@@ -20,8 +20,9 @@ const ProtectedRoute = ({ children }) => {
       if (isValidToken) {
         setIsAuth(true);
       } else {
+        localStorage.clear();
         setIsAuth(false);
-        navigate("/");
+        window.location.reload();
       }
     };
 

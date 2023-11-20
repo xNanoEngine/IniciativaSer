@@ -42,7 +42,7 @@ function Navbar({ isAuth }) {
     }
   };
 
-  return (
+  return location.pathname !== "/login" ? (
     <nav className="w-full flex py-6 justify-between items-center navbar select-none">
       <a href="/">
         <img src={icon} alt="hoobank" className="w-[50px] h-[50px]" />
@@ -192,7 +192,7 @@ function Navbar({ isAuth }) {
         />
       }
     </nav>
-  );
+  ) : null;
 }
 
 export default Navbar;

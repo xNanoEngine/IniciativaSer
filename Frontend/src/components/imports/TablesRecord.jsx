@@ -10,6 +10,42 @@ const TablesRecord = ({ currentPage, setCurrentPage }) => {
   const [displayedRows, setDisplayedRows] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const RowsPerPage = 5;
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setIsLoading(true);
+  //     const token = localStorage.getItem("token");
+  //     const Filtro_Tipo = filters.Tipo ? `${filters.Tipo}` : null;
+
+  //     try {
+  //       const response = await clientAxios.get(`/documentos`, {
+  //         params: {
+  //           Page: currentPage,
+  //           PerPage: RowsPerPage,
+  //           Busqueda: busqueda,
+  //           Filtro_Tipo,
+  //           token,
+  //         },
+  //       });
+
+  //       if (response.status === 200) {
+  //         const data = response.data;
+  //         //const accountId = data.accountId;
+  //         localStorage.setItem("document", JSON.stringify(data.data));
+  //         //setUserId(accountId);
+  //         console.log(data.totalPages);
+  //         setTotalPages(data.totalPages);
+  //         setDisplayedRows(data.data);
+  //         setIsLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.log(filters);
+  //     }
+  //   };
+
+  //   // Verificar si filters no está vacío antes de realizar la solicitud
+
+  //   fetchData();
+  // }, [busqueda, currentPage, filters]);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
