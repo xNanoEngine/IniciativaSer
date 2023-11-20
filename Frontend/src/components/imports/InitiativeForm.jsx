@@ -9,7 +9,34 @@ const InitiativeForm = () => {
   const [accordions, setAccordion] = useState(titles);
   const [formResults, setFormResults] = useState({});
   const [resetCounter, setResetCounter] = useState(0);
-
+  const data = {
+    legalPersonality: {
+      typeLegalPersonality: "Institución pública",
+      nombre: "Juan Pérez",
+      rut: "20493021k",
+      juridicPersonRole: "Ejecutor",
+    },
+    naturalPerson: {
+      typeNaturalPersonality: "Persona natural",
+      nombre: "María García",
+      rut: "12345678-9",
+    },
+    initiative: {
+      name: "Initiación",
+    },
+    culturalSpace: {
+      name: "Cultural Space",
+    },
+    targetAudiences: {
+      name: "Target",
+    },
+    financing: {
+      name: "Budget",
+    },
+    document: {
+      name: "Document",
+    },
+  };
   const toggleAccordion = (accordionkey) => {
     const updatedAccordions = accordions.map((accord) => {
       if (accord.key === accordionkey) {
@@ -98,6 +125,8 @@ const InitiativeForm = () => {
           title={accordion.title}
           data={accordion.data}
           isOpen={accordion.isOpen}
+          formInfo={data[accordion.code]}
+          code={accordion.code}
           toggleAccordion={() => toggleAccordion(accordion.key)}
           onSubmit={(formData) => handleFormSubmit(accordion.key, formData)}
         />

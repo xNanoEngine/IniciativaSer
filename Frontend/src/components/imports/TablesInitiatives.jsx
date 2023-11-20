@@ -204,9 +204,9 @@ const TablesInitiatives = ({
                                   <div content="Edit User">
                                     <button variant="text">
                                       <PencilIcon
-                                        onClick={navigate(
-                                          `/initiative?Edit=${id}`
-                                        )}
+                                        onClick={() =>
+                                          navigate(`/initiative?Edit=${id}`)
+                                        }
                                         className="h-4 w-4"
                                       />
                                     </button>

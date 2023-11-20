@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { personRole, typeLegalPersonality } from "../../../constants";
 import Combobox from "../Combobox";
 import { LegalPersonalitySchema } from "../../validations/LegalPersonalityValidation";
 
-const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
+const LegalPersonality = ({ onSubmit, setFormIsValid, data }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [rut, setRut] = useState("");
+  const [name, setName] = useState("");
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
-
-  const handleRutChange = (event) => {
-    let value = event.target.value;
+  const formatRut = (value) => {
     // Eliminar cualquier carácter que no sea un dígito o la letra 'k' (para RUTs válidos)
     value = value.replace(/[^\dkK]/g, "");
     // Formatear el RUT con puntos y guión
@@ -37,7 +36,28 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
         );
       }
     }
-    setRut(value);
+    return value;
+  };
+  useEffect(() => {
+    if (data) {
+      setRut(formatRut(data.rut || ""));
+      setName(data.nombre || "");
+      setSelectedOptions({
+        typeLegalPersonality: data.typeLegalPersonality || "",
+        juridicPersonRole: data.juridicPersonRole || "",
+      });
+    }
+  }, [data]);
+
+  const handleRutChange = (event) => {
+    const value = event.target.value;
+    const formattedRut = formatRut(value);
+    setRut(formattedRut);
+  };
+
+  const handleRutBlur = () => {
+    const formattedRut = formatRut(rut);
+    setRut(formattedRut);
   };
 
   const handleSubmit = async (event) => {
@@ -75,11 +95,12 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
         <div className="flex flex-col md:flex-row justify-left space-x-4">
           <Combobox
             data={typeLegalPersonality}
-            label={"Tipo de Persona Jurídica"}
+            label={data.typeLegalPersonality || "Tipo de Persona Jurídica"}
             prop={"w-72 mt-6"}
             onChange={(option) =>
               handleOptionChange("typeLegalPersonality", option)
             }
+            value={selectedOptions.typeLegalPersonality}
             error={errors.typeLegalPersonality}
           />
           <div className="flex flex-col mt-6 md:mt-0">
@@ -88,6 +109,8 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
               type="text"
               id="name"
               name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.name ? "border-red-500" : ""
               }`}
@@ -103,6 +126,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
               name="rut"
               value={rut} // Usar el valor formateado del RUT
               onChange={handleRutChange}
+              onBlur={handleRutBlur}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.rut ? "border-red-500" : ""
               }`}
@@ -112,11 +136,12 @@ const LegalPersonality = ({ onSubmit, setFormIsValid }) => {
           </div>
           <Combobox
             data={personRole}
-            label={"Rol Persona Jurídica"}
+            label={data.juridicPersonRole || "Rol Persona Jurídica"}
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("juridicPersonRole", option)
             }
+            value={selectedOptions.juridicPersonRole}
             error={errors.juridicPersonRole}
           />
           <button

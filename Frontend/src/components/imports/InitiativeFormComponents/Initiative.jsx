@@ -10,7 +10,7 @@ import {
 import { InitiativeSchema } from "../../validations/InitiativeValidation";
 import Combobox from "../Combobox";
 
-const Initiative = ({ onSubmit }) => {
+const Initiative = ({ onSubmit, data }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const handleOptionChange = (key, option) => {
