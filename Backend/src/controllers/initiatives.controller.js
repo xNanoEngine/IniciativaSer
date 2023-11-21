@@ -11,13 +11,10 @@ import {
   getIniciativa_,
 } from "../persintence/repository/initiatives.repository.js";
 
-import {
-  getDocumentos_,
-} from "../persintence/repository/documentos.repository.js";
-
+import { getDocumentos_ } from "../persintence/repository/documentos.repository.js";
 
 export async function createIniciativa(req, res) {
-  createInitiative(req.body).then(
+  createInitiative(req.body.formData).then(
     (data) => {
       res.status(200).json({ status: true });
     },
@@ -37,7 +34,6 @@ export async function getIniciativas(req, res) {
     }
   );
 }
-
 
 export async function updateIniciativa(req, res) {
   const { id } = req.params;

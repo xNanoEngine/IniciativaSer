@@ -43,7 +43,7 @@ const Accordion = (props) => {
             props.onSubmit(formData);
             setIsValid(isValid);
           },
-          data: props.formInfo || {}, // Actualizado para usar props.editData
+          info: props.formInfo || null, // Actualizado para usar props.editData
         })}
       </div>
     </div>

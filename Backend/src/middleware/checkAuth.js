@@ -2,16 +2,20 @@ import jwt from "jsonwebtoken";
 import { Cuentas } from "../persintence/models/Cuentas.js";
 const checkAuth = async (req, res, next) => {
   let token;
-  console.log("Checking");
-  console.log(req.headers);
+  const rol = req.body.rol;
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+      if (rol == "seremi") {
+        console.log("entre seremi 2");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      } else if (rol == "admin") {
+        console.log("entre admin 2");
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_ADM);
+      }
       return next();
     } catch (error) {
       return res.status(404).json({ msg: "Hubo un error" });

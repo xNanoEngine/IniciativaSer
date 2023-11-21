@@ -27,6 +27,7 @@ export function createAccount(req, res) {
     password,
     rol,
   };
+
   createAccounts_(cuenta).then(
     (data) => {
       res.status(200).json({ status: true, data: data });

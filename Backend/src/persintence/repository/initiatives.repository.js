@@ -8,30 +8,15 @@ import { Comuna } from "../models/Comuna.js";
 import { Documento } from "../models/Documento.js";
 import { ambitodominioarea } from "../models/ambitodominioarea.js";
 
-import {
-  createDocumento_,
-} from "./documentos.repository.js";
-import {
-  createEspacioCultural_,
-} from "./espaciocultural.repository.js";
-import {
-  createLocalidadterritorio_,
-} from "./localidadterritorio.repository.js";
-import {
-  createObjetivo_,
-} from "./objetivo.repository.js";
-import {
-  createPersonajuridica_,
-} from "./personasjuridicas.repository.js";
-import {
-  createPersonanatural_,
-} from "./personanaturals.repository.js";
-import {
-  createTipoespaciocultural_,
-} from "./tipoespaciocultural.repository.js";
+import { createDocumento_ } from "./documentos.repository.js";
+import { createEspacioCultural_ } from "./espaciocultural.repository.js";
+import { createLocalidadterritorio_ } from "./localidadterritorio.repository.js";
+import { createObjetivo_ } from "./objetivo.repository.js";
+import { createPersonajuridica_ } from "./personasjuridicas.repository.js";
+import { createPersonanatural_ } from "./personanaturals.repository.js";
+import { createTipoespaciocultural_ } from "./tipoespaciocultural.repository.js";
 
-
-export async function createInitiative(body){
+export async function createInitiative(body) {
   const {
     Iniciativa_id,
     Iniciativa_idInterno,
@@ -94,8 +79,14 @@ export async function createInitiative(body){
     Programa_url,
     TipoEspacioCultural_tipo,
     token,
+    rol,
   } = body;
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  let decoded;
+  if (rol == "seremi") {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } else if (rol == "admin") {
+    decoded = jwt.verify(token, process.env.JWT_SECRET_ADM);
+  }
   const cuentaId = decoded.userId;
 
   const Iniciativa_ = {
@@ -223,9 +214,9 @@ export async function createInitiative(body){
     await ambito_dominio_area.addPersona_juridica(persona_juridica);
     //console.log(Object.keys(comuna.__proto__));
     console.log("TERMINO");
-    return({ status: true });
+    return { status: true };
   } catch (error) {
-    return({ status: false, error: error.message });
+    return { status: false, error: error.message };
   }
 }
 
@@ -267,8 +258,15 @@ async function createIniciativa_(iniciativa) {
 }
 
 export async function getIniciativas_(Body) {
-  const { Filtro_Iniciativa, Filtro_Comuna, Busqueda, Page, PerPage, token } =
-  Body;
+  const {
+    Filtro_Iniciativa,
+    Filtro_Comuna,
+    Busqueda,
+    Page,
+    PerPage,
+    token,
+    rol,
+  } = Body;
   const limit = parseInt(PerPage, 10);
   const page = parseInt(Page, 10);
   const offset = (page - 1) * limit;
@@ -326,7 +324,7 @@ export async function getIniciativas_(Body) {
       },
     ];
   }
-  
+
   if (Filtro_Iniciativa) {
     if (Filtro_Iniciativa === "Nombre") {
       whereConditions.nombre = {
@@ -356,11 +354,10 @@ export async function getIniciativas_(Body) {
       whereConditions.formaFinanciamiento = {
         [Op.like]: `%${Busqueda}%`,
       };
-      
+
       Options.where = whereConditions;
     }
     whereConditions.flag = true;
-
   } else {
     //Busqueda global, (Cuando no hay filtros de iniciativa, ventana home)
     // falta añadir busqueda global por programas
@@ -372,11 +369,16 @@ export async function getIniciativas_(Body) {
         { formaFinanciamiento: { [Op.like]: `%${Busqueda}%` } },
         { "$programas.nombre$": { [Op.like]: `%${Busqueda}%` } },
       ],
-      flag: true
+      flag: true,
     };
   }
   if (token) {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let decoded;
+    if (rol == "seremi") {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } else if (rol == "admin") {
+      decoded = jwt.verify(token, process.env.JWT_SECRET_ADM);
+    }
     const cuentaId = parseInt(decoded.userId, 10);
 
     try {
@@ -388,12 +390,12 @@ export async function getIniciativas_(Body) {
       }));
       console.log(iniciativasConCanEdit);
       const totalPages = Math.ceil(count / PerPage);
-      return({
+      return {
         counts: count,
         results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
         totalPages: totalPages,
         accountId: cuentaId,
-      });
+      };
       // res.status(200).json({
       //   counts: count,
       //   results: iniciativasConCanEdit, // Enviar las iniciativas con el campo canEdit
@@ -402,18 +404,18 @@ export async function getIniciativas_(Body) {
       // });
     } catch (error) {
       console.log(error);
-      return({ message: "Error al obtener las iniciativas." });
+      return { message: "Error al obtener las iniciativas." };
     }
   } else {
     // Si no se proporciona un token, simplemente envía las iniciativas sin el campo canEdit
     try {
       const { count, rows } = await Iniciativa.findAndCountAll(Options);
       const totalPages = Math.ceil(count / PerPage);
-      return({
+      return {
         counts: count,
         results: rows,
         totalPages: totalPages,
-      });
+      };
       // res.status(200).json({
       //   counts: count,
       //   results: rows,
@@ -421,7 +423,7 @@ export async function getIniciativas_(Body) {
       // });
     } catch (error) {
       console.log(error);
-      return({ message: "Error al obtener las iniciativas." });
+      return { message: "Error al obtener las iniciativas." };
     }
   }
 }
@@ -483,7 +485,7 @@ export async function getIniciativa_(id) {
       where: { id },
       include: {
         model: Documento,
-        as: "documentos" 
+        as: "documentos",
       },
     });
     return iniciativa;

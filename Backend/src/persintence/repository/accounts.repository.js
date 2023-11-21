@@ -14,23 +14,28 @@ export async function getAccouts_() {
 }
 
 export async function createAccounts_(cuentas) {
-  const { name, password, rol } = cuentas;
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    let newAccount = await Cuentas.create(
-      {
-        name,
-        password: hashedPassword,
-        rol,
-      },
-      {
-        fields: ["name", "password", "rol"],
-      }
-    );
+  if (rol !== "seremi" || rol !== "admin") {
+    return res.status(400).json({ status: false, error: "Invalid Rol" });
+  } else {
+    const { name, password, rol } = cuentas;
 
-    return newAccount;
-  } catch (error) {
-    throw new Error("Error...");
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      let newAccount = await Cuentas.create(
+        {
+          name,
+          password: hashedPassword,
+          rol,
+        },
+        {
+          fields: ["name", "password", "rol"],
+        }
+      );
+
+      return newAccount;
+    } catch (error) {
+      throw new Error("Error...");
+    }
   }
 }
 

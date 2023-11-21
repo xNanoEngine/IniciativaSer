@@ -3,7 +3,7 @@ import { personRole, typeLegalPersonality } from "../../../constants";
 import Combobox from "../Combobox";
 import { LegalPersonalitySchema } from "../../validations/LegalPersonalityValidation";
 
-const LegalPersonality = ({ onSubmit, setFormIsValid, data }) => {
+const LegalPersonality = ({ onSubmit, setFormIsValid, info }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [rut, setRut] = useState("");
@@ -39,15 +39,15 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, data }) => {
     return value;
   };
   useEffect(() => {
-    if (data) {
-      setRut(formatRut(data.rut || ""));
-      setName(data.nombre || "");
+    if (info) {
+      setRut(formatRut(info.rut || ""));
+      setName(info.nombre || "");
       setSelectedOptions({
-        typeLegalPersonality: data.typeLegalPersonality || "",
-        juridicPersonRole: data.juridicPersonRole || "",
+        typeLegalPersonality: info.typeLegalPersonality || "",
+        juridicPersonRole: info.juridicPersonRole || "",
       });
     }
-  }, [data]);
+  }, [info]);
 
   const handleRutChange = (event) => {
     const value = event.target.value;
@@ -95,7 +95,9 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, data }) => {
         <div className="flex flex-col md:flex-row justify-left space-x-4">
           <Combobox
             data={typeLegalPersonality}
-            label={data.typeLegalPersonality || "Tipo de Persona Jurídica"}
+            label={
+              info ? info.typeLegalPersonality : "Tipo de Persona Jurídica"
+            }
             prop={"w-72 mt-6"}
             onChange={(option) =>
               handleOptionChange("typeLegalPersonality", option)
@@ -103,6 +105,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, data }) => {
             value={selectedOptions.typeLegalPersonality}
             error={errors.typeLegalPersonality}
           />
+
           <div className="flex flex-col mt-6 md:mt-0">
             <label className="block ml-1">Nombre:</label>
             <input
@@ -136,7 +139,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, data }) => {
           </div>
           <Combobox
             data={personRole}
-            label={data.juridicPersonRole || "Rol Persona Jurídica"}
+            label={info ? info.juridicPersonRole : "Rol Persona Jurídica"}
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("juridicPersonRole", option)

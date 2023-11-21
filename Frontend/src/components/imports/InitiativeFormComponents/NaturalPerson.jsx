@@ -3,8 +3,8 @@ import { personRole, gender, country } from "../../../constants";
 import { NaturalPersonSchema } from "../../validations/NaturalPersonValidation";
 import Combobox from "../Combobox";
 
-const NaturalPerson = ({ onSubmit, data }) => {
-  console.log(data);
+const NaturalPerson = ({ onSubmit, info }) => {
+  console.log(info);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [rutPerson, setRut] = useState("");
