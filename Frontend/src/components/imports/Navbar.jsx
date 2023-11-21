@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { navLinks } from "../../constants";
 import Logout from "../imports/Logout";
 import { close, icon, menu, down, up } from "../../assets";
+import { useNavigate } from "react-router-dom";
 
 function Navbar({ isAuth }) {
+  const navigate = useNavigate();
   const [active, setActive] = useState(window.location.pathname);
   const [toggle, setToggle] = useState(false);
   const [activeSub, setActiveSub] = useState(null);
-  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false); // Estado para controlar el modal de cierre de sesión
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
 
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setActive(window.location.pathname);
+      setToggle(false);
+    };
+    window.addEventListener("popstate", handleLocationChange);
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange);
+    };
+  }, []);
   const handleToggleSub2 = (navRef) => {
     setActiveSub(activeSub === navRef ? null : navRef);
   };

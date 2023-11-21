@@ -21,10 +21,11 @@ export function getAccounts(req, res) {
 }
 
 export function createAccount(req, res) {
-  const { name, password } = req.body;
+  const { name, password, rol } = req.body;
   const cuenta = {
     name,
     password,
+    rol,
   };
   createAccounts_(cuenta).then(
     (data) => {
@@ -83,7 +84,7 @@ export async function login(req, res) {
   try {
     const user = await login_(cuenta);
     const token = await createToken(user); // Generar un token JWT aquí
-    res.status(200).json({ status: true, token: token });
+    res.status(200).json({ status: true, token: token, userRol: user.rol });
   } catch (error) {
     res.status(400).json({ status: false, error: error.message });
   }

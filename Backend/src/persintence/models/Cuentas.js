@@ -31,32 +31,32 @@ export const Cuentas = sequelize.define(
 );
 
 Cuentas.afterSync(async () => {
-  const nombreUsuario = "user";
-  const contraseñaUsuario = "userS3r3mi119";
+  const usuariosPredeterminados = [
+    { name: "user", password: "userS3r3mi119", rol: "seremi" },
+    { name: "admin", password: "admin", rol: "admin" },
+    // Puedes agregar más tipos de usuarios según sea necesario
+  ];
 
   try {
-    // Verifica si ya existe un usuario con el nombre "admin"
-    const usuarioExistente = await Cuentas.findOne({
-      where: { name: nombreUsuario },
-    });
-
-    if (!usuarioExistente) {
-      // Si no existe, crea el usuario
-      const hashedPassword = await bcrypt.hash(contraseñaUsuario, 10);
-      await Cuentas.create({
-        name: nombreUsuario,
-        password: hashedPassword,
-        rol: "Seremi",
+    for (const usuario of usuariosPredeterminados) {
+      const usuarioExistente = await Cuentas.findOne({
+        where: { name: usuario.name },
       });
-      console.log("Usuario administrador creado automáticamente.");
-    } else {
-      console.log("El usuario administrador ya existe.");
+
+      if (!usuarioExistente) {
+        const hashedPassword = await bcrypt.hash(usuario.password, 10);
+        await Cuentas.create({
+          name: usuario.name,
+          password: hashedPassword,
+          rol: usuario.rol,
+        });
+        console.log(`Usuario ${usuario.rol} creado automáticamente.`);
+      } else {
+        console.log(`El usuario ${usuario.rol} ya existe.`);
+      }
     }
   } catch (error) {
-    console.error(
-      "Error al crear el usuario administrador automáticamente:",
-      error
-    );
+    console.error("Error al crear los usuarios automáticamente:", error);
   }
 });
 

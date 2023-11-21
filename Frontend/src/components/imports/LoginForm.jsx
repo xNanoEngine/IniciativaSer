@@ -32,6 +32,7 @@ const LoginForm = () => {
           password: user_password,
         });
         localStorage.setItem("token", data.token);
+        localStorage.setItem("rol", data.userRol);
         window.location.href = "/home";
       } catch (error) {
         setError("Usuario o contraseña incorrectos");

@@ -9,20 +9,27 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem("token");
-      if (!token) {
+      const rol = localStorage.getItem("rol");
+
+      if (!token || !rol) {
+        localStorage.clear();
         setIsAuth(false);
-        navigate("/");
+        navigate("/login");
         return;
       }
 
-      const isValidToken = await verifyToken(token);
+      try {
+        const isValidToken = await verifyToken(token, rol);
 
-      if (isValidToken) {
-        setIsAuth(true);
-      } else {
+        if (isValidToken) {
+          setIsAuth(true);
+        } else {
+          throw new Error("Invalid Token");
+        }
+      } catch (error) {
         localStorage.clear();
         setIsAuth(false);
-        window.location.reload();
+        navigate("/login");
       }
     };
 

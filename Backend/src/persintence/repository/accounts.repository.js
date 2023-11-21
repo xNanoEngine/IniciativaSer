@@ -14,16 +14,17 @@ export async function getAccouts_() {
 }
 
 export async function createAccounts_(cuentas) {
-  const { name, password } = cuentas;
+  const { name, password, rol } = cuentas;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     let newAccount = await Cuentas.create(
       {
         name,
         password: hashedPassword,
+        rol,
       },
       {
-        fields: ["name", "password"],
+        fields: ["name", "password", "rol"],
       }
     );
 
