@@ -13,6 +13,7 @@ import initiativesRoutes from "./routes/initiatives.routes.js";
 import authoritationRoutes from "./routes/authoritation.routes.js";
 import programsRoutes from "./routes/programs.routes.js";
 import documentsRoutes from "./routes/documents.routes.js";
+import accountInitiativesRoutes from "./routes/accountInitiatives.routes.js";
 
 // Middlewares
 app.use(morgan("dev"));
@@ -22,7 +23,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [process.env.ORIGIN],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -33,6 +34,7 @@ app.use("/api/iniciativas", initiativesRoutes);
 app.use("/api/authoritation", authoritationRoutes);
 app.use("/api/programas", programsRoutes);
 app.use("/api/documentos", documentsRoutes);
+app.use("/api/iniciativascuenta", accountInitiativesRoutes);
 // cuenta de prueba
 
 export default app;
