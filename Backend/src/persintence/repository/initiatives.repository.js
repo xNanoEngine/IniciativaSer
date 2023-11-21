@@ -511,3 +511,39 @@ export async function getIniciativa_(id) {
     throw new Error("Sucedio un error......");
   }
 }
+
+export async function getCuentasIniciativas_(Body) {
+  console.log(Body);
+  const { Page, PerPage, token } =
+  Body;
+  const limit = parseInt(PerPage, 10);
+  const page = parseInt(Page, 10);
+  const offset = (page - 1) * limit;
+  
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const cuentaId = parseInt(decoded.userId, 10);
+
+  const Options = {
+    limit: limit,
+    offset: offset,
+    subQuery: false,
+    nest: true, //
+    where: {
+      cuentaId: cuentaId,
+      flag: true
+    }
+  };
+
+  try {
+    const { count, rows } = await Iniciativa.findAndCountAll(Options);
+    const totalPages = Math.ceil(count / PerPage);
+    return({
+      counts: count,
+      results: rows,
+      totalPages: totalPages,
+    });
+  } catch (error) {
+    console.log(error);
+    return({ message: "Error al obtener las iniciativas." });
+  }
+}
