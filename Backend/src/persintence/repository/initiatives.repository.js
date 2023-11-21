@@ -481,10 +481,30 @@ export async function getIniciativa_(id) {
     console.log("getIniciativa");
     const iniciativa = await Iniciativa.findOne({
       where: { id },
-      include: {
+      include: [
+        {
+          model: PersonaJuridica,
+          required: true,
+        },
+        {
+          model: PersonaNatural,
+          required: true,
+        },
+        {
+        model: Programa,
+        as: "programas",
+        attributes: ["nombre"],
+        },
+        {
+        model: Comuna,
+        attributes: ["nombre"],
+        as: "comunas",
+        },
+        {
         model: Documento,
-        as: "documentos" 
-      },
+        as: "documentos",
+        },
+    ]
     });
     return iniciativa;
   } catch (error) {
