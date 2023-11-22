@@ -34,7 +34,6 @@ const TablesInitiatives = ({
     const fetchData = async () => {
       setIsLoading(true);
       const token = localStorage.getItem("token");
-      const rol = localStorage.getItem("rol");
       const Filtro_Iniciativa = filters.Iniciativa
         ? `${filters.Iniciativa}`
         : null;
@@ -48,7 +47,6 @@ const TablesInitiatives = ({
             Filtro_Iniciativa,
             Filtro_Comuna,
             token,
-            rol,
           },
         });
 

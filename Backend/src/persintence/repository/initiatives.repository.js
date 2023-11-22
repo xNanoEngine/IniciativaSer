@@ -78,16 +78,12 @@ export async function createInitiative(body) {
     Programa_descripcion,
     Programa_url,
     TipoEspacioCultural_tipo,
-    token,
-    rol,
+    userRol,
+    userId,
   } = body;
-  let decoded;
-  if (rol == "seremi") {
-    decoded = jwt.verify(token, process.env.JWT_SECRET);
-  } else if (rol == "admin") {
-    decoded = jwt.verify(token, process.env.JWT_SECRET_ADM);
-  }
-  const cuentaId = decoded.userId;
+  console.log(userId);
+  console.log(userRol);
+  const cuentaId = userId;
 
   const Iniciativa_ = {
     id: Iniciativa_id,
@@ -258,15 +254,8 @@ async function createIniciativa_(iniciativa) {
 }
 
 export async function getIniciativas_(Body) {
-  const {
-    Filtro_Iniciativa,
-    Filtro_Comuna,
-    Busqueda,
-    Page,
-    PerPage,
-    token,
-    rol,
-  } = Body;
+  const { Filtro_Iniciativa, Filtro_Comuna, Busqueda, Page, PerPage, token } =
+    Body;
   const limit = parseInt(PerPage, 10);
   const page = parseInt(Page, 10);
   const offset = (page - 1) * limit;
@@ -373,12 +362,8 @@ export async function getIniciativas_(Body) {
     };
   }
   if (token) {
-    let decoded;
-    if (rol == "seremi") {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } else if (rol == "admin") {
-      decoded = jwt.verify(token, process.env.JWT_SECRET_ADM);
-    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     const cuentaId = parseInt(decoded.userId, 10);
 
     try {

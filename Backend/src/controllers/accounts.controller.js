@@ -10,32 +10,44 @@ import {
 } from "../persintence/repository/accounts.repository.js";
 
 export function getAccounts(req, res) {
-  getAccouts_().then(
-    (data) => {
-      res.status(200).json({ status: true, data: data });
-    },
-    (error) => {
-      res.status(400).json({ status: false, error: error.message });
-    }
-  );
+  const { userRol } = req.body;
+  if (userRol == "admin") {
+    getAccouts_(req.body).then(
+      (data) => {
+        res.status(200).json({ status: true, data: data });
+      },
+      (error) => {
+        res.status(400).json({ status: false, error: error.message });
+      }
+    );
+  } else {
+    res
+      .status(400)
+      .json({ status: false, error: "No tiene permisos para ver usuarios" });
+  }
 }
 
 export function createAccount(req, res) {
-  const { name, password, rol } = req.body;
+  const { name, password, rol, userRol, userId } = req.body;
   const cuenta = {
     name,
     password,
     rol,
   };
-
-  createAccounts_(cuenta).then(
-    (data) => {
-      res.status(200).json({ status: true, data: data });
-    },
-    (error) => {
-      res.status(400).json({ status: false, error: error.message });
-    }
-  );
+  if (userRol == "admin") {
+    createAccounts_(cuenta).then(
+      (data) => {
+        res.status(200).json({ status: true, data: data });
+      },
+      (error) => {
+        res.status(400).json({ status: false, error: error.message });
+      }
+    );
+  } else {
+    res
+      .status(400)
+      .json({ status: false, error: "No tiene permisos para crear usuarios" });
+  }
 }
 
 export async function getAccount(req, res) {

@@ -9,12 +9,13 @@ import {
   updateIniciativa_,
   deleteIniciativa_,
   getIniciativa_,
+  getCuentasIniciativas_,
 } from "../persintence/repository/initiatives.repository.js";
 
 import { getDocumentos_ } from "../persintence/repository/documentos.repository.js";
 
 export async function createIniciativa(req, res) {
-  createInitiative(req.body.formData).then(
+  createInitiative(req.body).then(
     (data) => {
       res.status(200).json({ status: true });
     },

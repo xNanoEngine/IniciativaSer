@@ -43,7 +43,7 @@ const TablesDocument = ({ busqueda, currentPage, setCurrentPage, filters }) => {
           //const accountId = data.accountId;
           localStorage.setItem("document", JSON.stringify(data.data));
           //setUserId(accountId);
-          console.log(data.totalPages);
+
           setTotalPages(data.totalPages);
           setDisplayedRows(data.data);
           setIsLoading(false);
