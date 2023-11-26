@@ -491,11 +491,16 @@ export async function getIniciativa_(id) {
           model: Documento,
           as: "documentos",
         },
+        {
+          model: ambitodominioarea,
+          as: "ambitodominioareas",
+          required: true,
+        },
       ],
     });
     return iniciativa;
   } catch (error) {
-    throw new Error("Sucedio un error......");
+    throw new Error(error);
   }
 }
 
