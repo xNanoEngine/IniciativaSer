@@ -26,37 +26,36 @@ const TablesRecord = ({ currentPage, setCurrentPage }) => {
   const RowsPerPage = 5;
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      const token = localStorage.getItem("token");
-      try {
-        const response = await clientAxios.get(`/iniciativascuenta`, {
-          params: {
-            Page: currentPage,
-            PerPage: RowsPerPage,
-            token,
-          },
-        });
-        console.log("Enviando....")
-        if (response.status === 200) {
-          const data = response.data;
-          //const accountId = data.accountId;
-          localStorage.setItem("data", JSON.stringify(data.data));
-          //setUserId(accountId);
-          console.log(data.totalPages);
-          setTotalPages(data.totalPages);
-          setDisplayedRows(data.results);
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.log("Error al buscar las iniciativas por id de cuenta");
-      }
-    };
-
-    // Verificar si filters no está vacío antes de realizar la solicitud
-
     fetchData();
   }, [currentPage]);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    const token = localStorage.getItem("token");
+    try {
+      const response = await clientAxios.get(`/iniciativascuenta`, {
+        params: {
+          Page: currentPage,
+          PerPage: RowsPerPage,
+          token,
+        },
+      });
+      console.log("Enviando....")
+      if (response.status === 200) {
+        const data = response.data;
+        //const accountId = data.accountId;
+        localStorage.setItem("data", JSON.stringify(data.data));
+        //setUserId(accountId);
+        console.log(data.totalPages);
+        setTotalPages(data.totalPages);
+        setDisplayedRows(data.results);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log("Error al buscar las iniciativas por id de cuenta");
+    }
+  };
+
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -96,6 +95,7 @@ const TablesRecord = ({ currentPage, setCurrentPage }) => {
     } catch (error) {
       console.error('Error al realizar la solicitud PATCH:', error);
     }
+    fetchData();
   };
 
   return (
