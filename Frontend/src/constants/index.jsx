@@ -46,6 +46,12 @@ export const navLinks = [
     isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
   },
   {
+    title: "Gestionar usuarios",
+    ref: "/users",
+    isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
+    isAdmin: true, // Esta opción solo se mostrará si el usuario es administrador
+  },
+  {
     title: "Iniciar Sesión",
     ref: "/login",
     isAuth: false, // Esta opción solo se mostrará si el usuario no está logeado

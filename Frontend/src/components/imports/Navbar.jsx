@@ -10,7 +10,7 @@ function Navbar({ isAuth }) {
   const [toggle, setToggle] = useState(false);
   const [activeSub, setActiveSub] = useState(null);
   const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-
+  const userRole = localStorage.getItem("rol");
   useEffect(() => {
     const handleLocationChange = () => {
       setActive(window.location.pathname);
@@ -27,8 +27,8 @@ function Navbar({ isAuth }) {
 
   const filteredLinks = navLinks.filter((nav) => {
     if (isAuth) {
-      // Si el usuario está logeado, mostrar la opción si isAuth es true
-      return nav.isAuth !== false;
+      // Si el usuario está logeado y es un administrador, mostrar la opción si isAuth es true o si isAdmin es true
+      return nav.isAuth !== false && (!nav.isAdmin || userRole == "admin");
     } else {
       // Si el usuario no está logeado, mostrar la opción si isAuth es false o no está definida
       return nav.isAuth !== true;
@@ -109,13 +109,13 @@ function Navbar({ isAuth }) {
                         : "text-[#666666]"
                     }`}
                   >
-                    {subLink.title === "Salir" ? ( // Comprueba si el subLink es "Salir"
+                    {subLink.title === "Salir" ? (
                       <a
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
                           handleToggleSub(nav.ref);
-                          setLogoutModalOpen(true); // Abre el modal de salida
+                          setLogoutModalOpen(true);
                         }}
                       >
                         {subLink.title}

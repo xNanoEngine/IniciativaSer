@@ -9,6 +9,7 @@ import {
   DocumentSearch,
   ViewDocument,
   UserRecords,
+  UserManagment,
 } from "./pages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {
@@ -73,6 +74,15 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <UserRecords />
+                </ProtectedRoute>
+              }
+            />
+            ;
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <UserManagment />
                 </ProtectedRoute>
               }
             />
