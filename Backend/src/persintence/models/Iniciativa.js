@@ -62,6 +62,63 @@ export const Iniciativa = sequelize.define(
   }
 );
 
+
+export const personajuridica_iniciativa = sequelize.define("personajuridica_iniciativa",{
+  // iniciativa_id: {
+  //     type: DataTypes.INTEGER,
+  //     primaryKey: true,
+  //     allowNull: false,
+  //     references: {
+  //         model: 'iniciativa', // Nombre de la tabla de Estudiantes
+  //         key: 'id', // Campo de ID de Estudiantes
+  //     },
+  // },
+  // persona_juridica_id: {
+  //     type: DataTypes.INTEGER,
+  //     primaryKey: true,
+  //     allowNull: false,
+  //     references: {
+  //         model: 'persona_juridica',
+  //         key: 'id', 
+  //     },
+  // },
+  rol_persona_juridica: {
+      type: DataTypes.STRING,
+      allowNull: false
+  }
+}, {
+  timestamps: false,
+  freezeTableName: true
+});
+
+export const iniciativa_personanatural = sequelize.define("iniciativa_personanatural",{
+// iniciativa_id: {
+//     type: DataTypes.INTEGER,
+//     primaryKey: true,
+//     allowNull: false,
+//     references: {
+//         model: 'iniciativa', // Nombre de la tabla de Estudiantes
+//         key: 'id', // Campo de ID de Estudiantes
+//     },
+// },
+// persona_natural_id: {
+//     type: DataTypes.INTEGER,
+//     primaryKey: true,
+//     allowNull: false,
+//     references: {
+//         model: 'personanatural',
+//         key: 'id', 
+//     },
+// },
+rol_persona_natural: {
+    type: DataTypes.STRING,
+    allowNull: false,
+}
+}, {
+timestamps: true,
+freezeTableName: true
+});
+
 Iniciativa.belongsToMany(Programa, { through: "programa_iniciativa" });
 Programa.belongsToMany(Iniciativa, { through: "programa_iniciativa" });
 
