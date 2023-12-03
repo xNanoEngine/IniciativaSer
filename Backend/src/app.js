@@ -14,6 +14,7 @@ import authoritationRoutes from "./routes/authoritation.routes.js";
 import programsRoutes from "./routes/programs.routes.js";
 import documentsRoutes from "./routes/documents.routes.js";
 import accountInitiativesRoutes from "./routes/accountInitiatives.routes.js";
+import dataRoutes from "./routes/data.routes.js";
 
 // Middlewares
 app.use(morgan("dev"));
@@ -35,6 +36,7 @@ app.use("/api/authoritation", authoritationRoutes);
 app.use("/api/programas", programsRoutes);
 app.use("/api/documentos", documentsRoutes);
 app.use("/api/iniciativascuenta", accountInitiativesRoutes);
+app.use("/api/data", dataRoutes);
 // cuenta de prueba
 
 export default app;

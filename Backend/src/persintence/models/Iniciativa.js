@@ -86,8 +86,8 @@ PersonaNatural.belongsToMany(Iniciativa, {
   through: "iniciativa_personanatural",
 });
 
-Iniciativa.belongsToMany(Comuna, { through: "comuna_iniciativa" });
-Comuna.belongsToMany(Iniciativa, { through: "comuna_iniciativa" });
+Iniciativa.belongsToMany(Comuna, { through: "iniciativa_comuna" });
+Comuna.belongsToMany(Iniciativa, { through: "iniciativa_comuna" });
 
 Iniciativa.belongsToMany(Localidad_Territorio, {
   through: "localidadterritorio_iniciativa",

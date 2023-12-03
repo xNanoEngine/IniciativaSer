@@ -10,6 +10,7 @@ import {
   ViewDocument,
   UserRecords,
   UserManagment,
+  Statistics
 } from "./pages";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import {
@@ -69,6 +70,7 @@ const App = () => {
             <Route path="/document" element={<DocumentSearch />} />
             <Route path="/view" element={<ViewInitiative />} />;
             <Route path="/viewDocument" element={<ViewDocument />} />;
+            <Route path="/estadisticas" element={<Statistics />}/>;
             <Route
               path="/records"
               element={

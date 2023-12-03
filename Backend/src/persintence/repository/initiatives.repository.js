@@ -7,6 +7,8 @@ import { Programa } from "../models/Programa.js";
 import { Comuna } from "../models/Comuna.js";
 import { Documento } from "../models/Documento.js";
 import { ambitodominioarea } from "../models/ambitodominioarea.js";
+import { programa_iniciativa } from "../models/programa_iniciativa.js"
+import { iniciativa_comuna } from "../models/iniciativa_comuna.js";
 
 import { createDocumento_ } from "./documentos.repository.js";
 import { createEspacioCultural_ } from "./espaciocultural.repository.js";
@@ -531,5 +533,30 @@ export async function getCuentasIniciativas_(Body) {
   } catch (error) {
     console.log(error);
     return { message: "Error al obtener las iniciativas." };
+  }
+}
+
+export async function getData_() {
+  try {
+    const data1 = await Programa.findAll({
+      include: [{
+        model: Iniciativa,
+        attributes: [],
+        duplicating: false,
+      }],
+      attributes: [
+        'nombre', // Reemplaza con el atributo que contiene el nombre de la comuna
+        [sequelize.fn('COUNT', sequelize.col("iniciativas.id")), "cantidad"],
+      ],
+      includeIgnoreAttributes: false,
+      group: ['id'], // Agrupa por el identificador y nombre de la comuna
+    });
+
+    return {
+      data1: data1,
+    }
+  } catch (error) {
+    console.log(error);
+    return { "hola" : "hola", "message": error.message };
   }
 }

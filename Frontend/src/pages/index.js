@@ -9,6 +9,7 @@ import DocumentSearch from "./DocumentSearch";
 import ViewDocument from "./ViewDocument";
 import UserRecords from "./UserRecords";
 import UserManagment from "./UserManagment";
+import Statistics from "./Statistics";
 export {
   Navbar,
   Logout,
@@ -21,4 +22,5 @@ export {
   ViewDocument,
   UserRecords,
   UserManagment,
+  Statistics
 };

@@ -10,6 +10,7 @@ import {
   deleteIniciativa_,
   getIniciativa_,
   getCuentasIniciativas_,
+  getData_
 } from "../persintence/repository/initiatives.repository.js";
 
 import { getDocumentos_ } from "../persintence/repository/documentos.repository.js";
@@ -222,6 +223,17 @@ export async function getDocumentos(req, res) {
 export async function getAccountInitiatives(req, res) {
   console.log(req.query);
   getCuentasIniciativas_(req.query).then(
+    (data) => {
+      res.status(200).json(data);
+    },
+    (error) => {
+      res.status(400).json({ status: false, error: error.message });
+    }
+  );
+}
+
+export async function getData(req, res) {
+  getData_().then(
     (data) => {
       res.status(200).json(data);
     },

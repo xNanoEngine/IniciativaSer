@@ -3,7 +3,7 @@ import { sequelize } from "../database/database.js";
 import { Iniciativa } from "./Iniciativa.js";
 import { Objetivo } from "./Objetivo.js";
 
-export const localidadterritorio_iniciativa = sequelize.define("localidadterritorio_iniciativa",{
+export const objetivo_iniciativa = sequelize.define("objetivo_iniciativa",{
     iniciativa_id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
