@@ -19,6 +19,7 @@ import { createPersonanatural_ } from "./personanaturals.repository.js";
 import { createTipoespaciocultural_ } from "./tipoespaciocultural.repository.js";
 
 export async function createInitiative(body) {
+  console.log(body);
   const {
     Iniciativa_id,
     Iniciativa_idInterno,
@@ -493,11 +494,14 @@ export async function getIniciativa_(id) {
           model: Documento,
           as: "documentos",
         },
+        {
+          model: ambitodominioarea,
+        },
       ],
     });
     return iniciativa;
   } catch (error) {
-    throw new Error("Sucedio un error......");
+    throw new Error(error);
   }
 }
 
