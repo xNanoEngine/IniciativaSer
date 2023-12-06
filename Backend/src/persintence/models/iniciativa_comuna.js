@@ -4,7 +4,7 @@ import { Iniciativa } from "./Iniciativa.js";
 import { Comuna } from "./Comuna.js";
 
 export const iniciativa_comuna = sequelize.define("iniciativa_comuna",{
-    iniciativa_id: {
+    iniciativaId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -13,7 +13,7 @@ export const iniciativa_comuna = sequelize.define("iniciativa_comuna",{
             key: 'id', 
         },
     },
-    comuna_id: {
+    comunaId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -27,7 +27,7 @@ export const iniciativa_comuna = sequelize.define("iniciativa_comuna",{
     freezeTableName: true
 });
 
-iniciativa_comuna.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})
-iniciativa_comuna.belongsTo(Comuna, { foreignKey: "comuna_id"})
+iniciativa_comuna.belongsTo(Iniciativa, { foreignKey: "iniciativaId"})
+iniciativa_comuna.belongsTo(Comuna, { foreignKey: "comunaId"})
 
 

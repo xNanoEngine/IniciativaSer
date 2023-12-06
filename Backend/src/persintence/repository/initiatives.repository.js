@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
-import sequelize from "sequelize";
+//import sequelize from "sequelize";
+import { sequelize } from "../database/database.js";
+import {QueryTypes} from "sequelize";
 import { Cuentas } from "../models/Cuentas.js";
 import { Iniciativa } from "../models/Iniciativa.js";
 import { Programa } from "../models/Programa.js";
@@ -17,9 +19,10 @@ import { createObjetivo_ } from "./objetivo.repository.js";
 import { createPersonajuridica_ } from "./personasjuridicas.repository.js";
 import { createPersonanatural_ } from "./personanaturals.repository.js";
 import { createTipoespaciocultural_ } from "./tipoespaciocultural.repository.js";
+import { PersonaJuridica } from "../models/PersonaJuridica.js";
+import { PersonaNatural } from "../models/PersonaNatural.js";
 
 export async function createInitiative(body) {
-  console.log(body);
   const {
     Iniciativa_id,
     Iniciativa_idInterno,
@@ -65,6 +68,7 @@ export async function createInitiative(body) {
     PersonaJuridica_telefono,
     PersonaJuridica_IG,
     PersonaJuridica_correo,
+    PersonaJuridica_rol,
     PersonaNatural_id,
     PersonaNatural_rut,
     PersonaNatural_ig,
@@ -75,6 +79,7 @@ export async function createInitiative(body) {
     PersonaNatural_apellido,
     PersonaNatural_genero,
     PersonaNatural_pais_origen,
+    PersonaNatural_rol,
     PersonaNatural_pueblo_originario,
     Programa_id,
     Programa_nombre,
@@ -84,7 +89,6 @@ export async function createInitiative(body) {
     userRol,
     userId,
   } = body;
-  console.log(userId);
   console.log(userRol);
   const cuentaId = userId;
 
@@ -187,7 +191,7 @@ export async function createInitiative(body) {
     const ambito_dominio_area = await ambitodominioarea.findOne({
       where: { nombre: AmbitoDominioArea_nombre },
     });
-
+    
     // 1 x n
     await iniciativa.addDocumento(documento);
     await persona_juridica.addPrograma(programa);
@@ -201,17 +205,17 @@ export async function createInitiative(body) {
     await comuna.addDocumento(documento);
     await persona_juridica.addEspacio_cultural(espacio_cultural);
     await tipo_espacio_cultural.addEspacio_cultural(espacio_cultural);
-    await comuna.addIniciativa(iniciativa);
-    await persona_natural.addIniciativa(iniciativa);
+    await iniciativa.addComuna(comuna);
+    await persona_natural.addIniciativa(iniciativa, {through:{rol_persona_natural: PersonaNatural_rol} });
     await localidad_territorio.addIniciativa(iniciativa);
     await objetivo.addIniciativa(iniciativa);
-    await persona_juridica.addIniciativa(iniciativa);
+    await persona_juridica.addIniciativa(iniciativa, {through:{rol_persona_juridica: PersonaJuridica_rol} });
     await programa.addIniciativa(iniciativa);
     await ambito_dominio_area.addIniciativa(iniciativa);
     await ambito_dominio_area.addPersonanatural(persona_natural);
     await ambito_dominio_area.addDocumento(documento);
     await ambito_dominio_area.addPersona_juridica(persona_juridica);
-    //console.log(Object.keys(comuna.__proto__));
+    //console.log(Object.keys(iniciativa.__proto__));
     console.log("TERMINO");
     return { status: true };
   } catch (error) {
@@ -496,10 +500,31 @@ export async function getIniciativa_(id) {
         },
         {
           model: ambitodominioarea,
+          required: true,
         },
       ],
     });
-    return iniciativa;
+
+    const results= await sequelize.query("SELECT personaJuridicaId FROM personajuridica_iniciativa WHERE iniciativaId = ?", { 
+      replacements: [id],
+      type: QueryTypes.SELECT });
+    const personajuridicaidq = results[0].personaJuridicaId;
+    const results2 = await sequelize.query("SELECT espacioCulturalId FROM espaciocultural_personajuridica WHERE personaJuridicaId = ?",{
+      replacements: [personajuridicaidq],
+      type: QueryTypes.SELECT});
+    const espacio_culturalidq = results2[0].espacioCulturalId;
+    const results3 = await sequelize.query("SELECT nombre, direccion, comunaId FROM espacio_cultural WHERE id = ?",{
+      replacements: [espacio_culturalidq],
+      type: QueryTypes.SELECT});
+    const results4 = await sequelize.query("SELECT tipoespacioculturalId FROM espaciocultural_tipoespaciocultural WHERE espacioCulturalId = ?",{
+      replacements: [espacio_culturalidq],
+      type: QueryTypes.SELECT});
+    const tipoespacioculturalq = results4[0].tipoespacioculturalId;
+    const results5 = await sequelize.query("SELECT tipo from tipoespaciocultural WHERE id = ?", {
+      replacements: [tipoespacioculturalq],
+      type: QueryTypes.SELECT});
+    console.log(results3, results5);
+    return [iniciativa, results3, results5];
   } catch (error) {
     throw new Error(error);
   }
