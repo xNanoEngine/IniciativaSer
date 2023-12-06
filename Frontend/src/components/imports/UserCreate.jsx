@@ -32,7 +32,7 @@ const UserCreate = () => {
         },
         config
       );
-      window.location.href = "/home";
+      //window.location.href = "/home";
     } catch (error) {
       setError("Error al crear usuario");
       setShowError(true);
