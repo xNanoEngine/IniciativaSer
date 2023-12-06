@@ -368,3 +368,5 @@ export const DocumentFilters = [
     singleSelect: false,
   },
 ];
+
+export const accountRole = [{ name: "admin" }, { name: "seremi" }];
