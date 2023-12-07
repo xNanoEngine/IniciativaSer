@@ -3,8 +3,8 @@ import { sequelize } from "../database/database.js";
 import { Iniciativa } from "./Iniciativa.js";
 import { Programa } from "./Programa.js";
 
-export const programa_iniciativa = sequelize.define("programa_inciativa",{
-    iniciativa_id: {
+export const programa_iniciativa = sequelize.define("programa_iniciativa",{
+    iniciativaId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -13,7 +13,7 @@ export const programa_iniciativa = sequelize.define("programa_inciativa",{
             key: 'id', // Campo de ID de Estudiantes
         },
     },
-    programa_id: {
+    programaId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -23,10 +23,10 @@ export const programa_iniciativa = sequelize.define("programa_inciativa",{
         },
     },
 }, {
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true
 });
 
-programa_iniciativa.belongsTo(Iniciativa, { foreignKey: "iniciativa_id"})
-programa_iniciativa.belongsTo(Programa, { foreignKey: "programa_id"})
+programa_iniciativa.belongsTo(Iniciativa, { foreignKey: "iniciativaId"})
+programa_iniciativa.belongsTo(Programa, { foreignKey: "programaId"})
 

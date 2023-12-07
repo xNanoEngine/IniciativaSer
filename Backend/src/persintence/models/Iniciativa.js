@@ -63,7 +63,7 @@ export const Iniciativa = sequelize.define(
 );
 
 
-// export const personajuridica_iniciativa = sequelize.define("personajuridica_iniciativa",{
+export const personajuridica_iniciativa = sequelize.define("personajuridica_iniciativa",{
   // iniciativa_id: {
   //     type: DataTypes.INTEGER,
   //     primaryKey: true,
@@ -82,16 +82,16 @@ export const Iniciativa = sequelize.define(
   //         key: 'id', 
   //     },
   // },
-//   rol_persona_juridica: {
-//       type: DataTypes.STRING,
-//       allowNull: false
-//   }
-// }, {
-//   timestamps: false,
-//   freezeTableName: true
-// });
+  rol_persona_juridica: {
+      type: DataTypes.STRING,
+      allowNull: false
+  }
+}, {
+  timestamps: true,
+  freezeTableName: true
+});
 
-// export const iniciativa_personanatural = sequelize.define("iniciativa_personanatural",{
+export const iniciativa_personanatural = sequelize.define("iniciativa_personanatural",{
 // iniciativa_id: {
 //     type: DataTypes.INTEGER,
 //     primaryKey: true,
@@ -110,14 +110,14 @@ export const Iniciativa = sequelize.define(
 //         key: 'id', 
 //     },
 // },
-// rol_persona_natural: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-// }
-// }, {
-// timestamps: true,
-// freezeTableName: true
-// });
+rol_persona_natural: {
+    type: DataTypes.STRING,
+    allowNull: false,
+}
+}, {
+timestamps: true,
+freezeTableName: true
+});
 
 Iniciativa.belongsToMany(Programa, { through: "programa_iniciativa" });
 Programa.belongsToMany(Iniciativa, { through: "programa_iniciativa" });
@@ -160,4 +160,4 @@ Iniciativa.hasMany(Documento, {
   foreinkey: "iniciativaId",
   sourceKey: "id",
 });
-Documento.belongsTo(Iniciativa, { foreinkey: "inciativaId", targetId: "id" });
+Documento.belongsTo(Iniciativa, { foreinkey: "iniciativaId", targetId: "id" });
