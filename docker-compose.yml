@@ -16,11 +16,6 @@ services:
     restart: always
     networks:
       - red
-    deploy:
-      resources:
-        reservations:
-          cpus: '0.3'  # Puedes ajustar este valor según tus necesidades
-          memory: 512M  # Puedes ajustar este valor según tus necesidades
 
   backend:
     build:
@@ -33,11 +28,6 @@ services:
     networks:
       - red
     restart: always
-    deploy:
-      resources:
-        reservations:
-          cpus: '0.3'  # Puedes ajustar este valor según tus necesidades
-          memory: 512MB  # Asigna 1GB de memoria
 
   frontend:
     build:
@@ -47,11 +37,6 @@ services:
       - 3000:3000
     networks:
       - red
-    deploy:
-      resources:
-        reservations:
-          cpus: '0.3'  # Puedes ajustar este valor según tus necesidades
-          memory: 512MB  # Asigna 1GB de memoria
 
 volumes:
   data:
