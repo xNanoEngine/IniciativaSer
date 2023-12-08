@@ -457,12 +457,12 @@ export async function updateIniciativa_(iniciativa) {
   }
 }
 
-export async function deleteIniciativa_(id) {
+export async function deleteIniciativa_(id) { // Hace un borrado logico a la iniciativa seleccionada
   try {
     console.log(id);
     const iniciativa_update = await Iniciativa.findByPk(id);
     console.log(iniciativa_update);
-    iniciativa_update.flag = false;
+    iniciativa_update.flag = false; // Cambia el atributo FLAG de la iniciativa a falso, borrandolo de las busquedas
     await iniciativa_update.save();
     return "se elimino correctamente";
   } catch (error) {
@@ -565,24 +565,54 @@ export async function getCuentasIniciativas_(Body) {
   }
 }
 
-export async function getData_() {
+export async function getData_() { 
   try {
-    const data1 = await Programa.findAll({
+    const data1 = await Programa.findAll({ // Agrupa las iniciativas por el programa
       include: [{
         model: Iniciativa,
         attributes: [],
         duplicating: false,
       }],
       attributes: [
-        'nombre', // Reemplaza con el atributo que contiene el nombre de la comuna
+        'nombre', 
         [sequelize.fn('COUNT', sequelize.col("iniciativas.id")), "cantidad"],
       ],
       includeIgnoreAttributes: false,
-      group: ['id'], // Agrupa por el identificador y nombre de la comuna
+      group: ['id'], 
+    });
+
+    const data2 = await Comuna.findAll({ // Agrupa las iniciativas por la comuna
+      include: [{
+        model: Iniciativa,
+        attributes: [],
+        duplicating: false,
+      }],
+      attributes: [
+        'nombre', 
+        [sequelize.fn('COUNT', sequelize.col("iniciativas.id")), "cantidad"],
+      ],
+      includeIgnoreAttributes: false,
+      group: ['id'], 
+    });
+
+    const data3 = await ambitodominioarea.findAll({ // Agrupa las iniciativas por el ambito
+      include: [{
+        model: Iniciativa,
+        attributes: [],
+        duplicating: false,
+      }],
+      attributes: [
+        'nombre',
+        [sequelize.fn('COUNT', sequelize.col("iniciativas.id")), "cantidad"],
+      ],
+      includeIgnoreAttributes: false,
+      group: ['id'], 
     });
 
     return {
       data1: data1,
+      data2: data2,
+      data3: data3,
     }
   } catch (error) {
     console.log(error);
