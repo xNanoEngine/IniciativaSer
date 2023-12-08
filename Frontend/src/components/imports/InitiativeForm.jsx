@@ -12,35 +12,21 @@ const InitiativeForm = () => {
   const searchParams = new URLSearchParams(window.location.search);
   const query = searchParams.get("Edit");
   let data = {};
+  const handleGetInitiative = async (query) => {
+    try {
+      const config = getConfigAuth(localStorage.getItem("token"));
+      const { data } = await clientAxios.get(`/iniciativas/${query}`, {
+        params: {},
+        ...config,
+      });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (query) {
-    data = {
-      legalPersonality: {
-        typeLegalPersonality: "Institución pública",
-        nombre: "Juan Pérez",
-        rut: "20493021k",
-        juridicPersonRole: "Ejecutor",
-      },
-      naturalPerson: {
-        typeNaturalPersonality: "Persona natural",
-        nombre: "María García",
-        rut: "12345678-9",
-      },
-      initiative: {
-        name: "Initiación",
-      },
-      culturalSpace: {
-        name: "Cultural Space",
-      },
-      targetAudiences: {
-        name: "Target",
-      },
-      financing: {
-        name: "Budget",
-      },
-      document: {
-        name: "Document",
-      },
-    };
+    handleGetInitiative(query);
   }
 
   const toggleAccordion = (accordionkey) => {

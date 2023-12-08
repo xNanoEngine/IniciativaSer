@@ -4,11 +4,14 @@ import getConfigAuth from "../../utils/configToken";
 import Combobox from "./Combobox";
 import { accountRole } from "../../constants";
 import { CreateUserSchema } from "../validations/CreateUserValidation";
+import toast, { Toaster } from "react-hot-toast";
+
 const UserCreate = () => {
   const [user_account, setUser_account] = useState("");
   const [user_password, setUser_password] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
+  const [resetComboboxKey, setResetComboboxKey] = useState(0);
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
@@ -41,9 +44,14 @@ const UserCreate = () => {
         },
         config
       );
-      //window.location.href = "/home";
+      toast.success("Usuario creado con éxito");
+      setUser_account("");
+      setUser_password("");
+      setSelectedOptions({});
+      setResetComboboxKey((prevKey) => prevKey + 1);
       setErrors({});
     } catch (validationErrors) {
+      toast.error("Llene todo los datos antes de crear el usuario");
       const newErrors = {};
       validationErrors.inner.forEach((error) => {
         newErrors[error.path] = error.message;
@@ -83,6 +91,7 @@ const UserCreate = () => {
             <span className="text-red-500">{errors.password}</span>
           )}
           <Combobox
+            key={resetComboboxKey}
             data={accountRole}
             label={"Rol de cuenta"}
             prop={"w-52 mt-6"}
@@ -99,6 +108,7 @@ const UserCreate = () => {
           </button>
         </div>
       </form>
+      <Toaster />
     </div>
   );
 };

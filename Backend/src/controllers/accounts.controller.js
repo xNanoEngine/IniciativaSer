@@ -28,7 +28,7 @@ export function getAccounts(req, res) {
 }
 
 export function createAccount(req, res) {
-  const { name, password, rol, userRol, userId } = req.body;
+  const { name, password, rol, userRol } = req.body;
   const cuenta = {
     name,
     password,
