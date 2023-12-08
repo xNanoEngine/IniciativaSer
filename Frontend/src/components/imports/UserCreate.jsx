@@ -6,7 +6,7 @@ import { accountRole } from "../../constants";
 import { CreateUserSchema } from "../validations/CreateUserValidation";
 import toast, { Toaster } from "react-hot-toast";
 
-const UserCreate = () => {
+const UserCreate = ({ onUserCreate }) => {
   const [user_account, setUser_account] = useState("");
   const [user_password, setUser_password] = useState("");
   const [selectedOptions, setSelectedOptions] = useState({});
@@ -45,6 +45,11 @@ const UserCreate = () => {
         config
       );
       toast.success("Usuario creado con éxito");
+      onUserCreate({
+        name: user_account,
+        rol: selectedOptions.accountRole,
+      });
+
       setUser_account("");
       setUser_password("");
       setSelectedOptions({});

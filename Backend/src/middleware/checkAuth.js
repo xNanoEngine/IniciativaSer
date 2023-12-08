@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 const checkAuth = async (req, res, next) => {
   let token;
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")

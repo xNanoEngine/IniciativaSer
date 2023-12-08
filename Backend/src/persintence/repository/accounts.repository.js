@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 export async function getAccouts_() {
   try {
     const cuentas = await Cuentas.findAll({
-      atributes: ["id", "name", "password"],
+      atributes: ["id", "name", "rol"],
     });
 
     return cuentas;
