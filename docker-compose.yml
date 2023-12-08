@@ -8,7 +8,6 @@ services:
       MYSQL_DATABASE: test
       MYSQL_USER: manager_test
       MYSQL_PASSWORD: RqoKdtp88Z94v7vL#XKVHPxWdb9dw
-    
     volumes:
       - ./Base de datos/test.sql:/docker-entrypoint-initdb.d/init.sql
       - data:/var/lib/mysql
@@ -17,6 +16,11 @@ services:
     restart: always
     networks:
       - red
+    deploy:
+      resources:
+        reservations:
+          cpus: '0.3'  # Puedes ajustar este valor según tus necesidades
+          memory: 512M  # Puedes ajustar este valor según tus necesidades
 
   backend:
     build:
@@ -26,10 +30,15 @@ services:
       - 4000:4000
     depends_on:
       - db_test
-    
     networks:
       - red
     restart: always
+    deploy:
+      resources:
+        reservations:
+          cpus: '0.3'  # Puedes ajustar este valor según tus necesidades
+          memory: 512MB  # Asigna 1GB de memoria
+
   frontend:
     build:
       context: ./Frontend
@@ -38,6 +47,11 @@ services:
       - 3000:3000
     networks:
       - red
+    deploy:
+      resources:
+        reservations:
+          cpus: '0.3'  # Puedes ajustar este valor según tus necesidades
+          memory: 512MB  # Asigna 1GB de memoria
 
 volumes:
   data:

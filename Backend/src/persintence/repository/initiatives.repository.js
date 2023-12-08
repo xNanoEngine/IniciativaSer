@@ -523,8 +523,49 @@ export async function getIniciativa_(id) {
     const results5 = await sequelize.query("SELECT tipo from tipoespaciocultural WHERE id = ?", {
       replacements: [tipoespacioculturalq],
       type: QueryTypes.SELECT});
-    console.log(results3, results5);
-    return [iniciativa, results3, results5];
+    //console.log(iniciativa.persona_juridicas[0].dataValues.personajuridica_iniciativa.dataValues.rol_persona_juridica);
+    let Personalidad_Juridica = [];
+    let Persona_Natural = [];
+    let Iniciativa_Row = [];
+    let Espacio_Cultural = [];
+    let Publico_Objetivo = [];
+    let Financiamiento = [];
+    let Documento_ = [];
+    Personalidad_Juridica[0] = iniciativa.persona_juridicas[0].dataValues.tipo;
+    Personalidad_Juridica[1] = iniciativa.persona_juridicas[0].dataValues.nombre;
+    Personalidad_Juridica[2] = iniciativa.persona_juridicas[0].dataValues.rut;
+    Personalidad_Juridica[3] = iniciativa.persona_juridicas[0].dataValues.personajuridica_iniciativa.dataValues.rol_persona_juridica;
+    Persona_Natural[0] = iniciativa.personanaturals[0].dataValues.rut;
+    Persona_Natural[1] = iniciativa.personanaturals[0].dataValues.nombre;
+    Persona_Natural[2] = iniciativa.personanaturals[0].dataValues.apellido;
+    Persona_Natural[3] = iniciativa.personanaturals[0].dataValues.iniciativa_personanatural.dataValues.rol_persona_natural;
+    Persona_Natural[4] = iniciativa.personanaturals[0].dataValues.genero;
+    Persona_Natural[4] = iniciativa.personanaturals[0].dataValues.pais_origen;
+    Iniciativa_Row[0] = iniciativa.nombre;
+    Iniciativa_Row[1] = iniciativa.programas[0].dataValues.nombre;
+    Iniciativa_Row[2] = iniciativa.tipo;
+    Iniciativa_Row[3] = iniciativa.componente;
+    Iniciativa_Row[5] = iniciativa.ambitodominioareas[0].nombre;
+    Iniciativa_Row[6] = iniciativa.comunas[0].nombre;
+    Iniciativa_Row[7] = iniciativa.descripcion;
+    Iniciativa_Row[8] = iniciativa.fechaInicio;
+    Iniciativa_Row[9] = iniciativa.fechaFin;
+    Espacio_Cultural[0] = results3[0].nombre;
+    Espacio_Cultural[1] = results3[0].direccion;
+    Espacio_Cultural[2] = results5[0].tipo;
+    Publico_Objetivo[0] = iniciativa.tipoPublicoObjetivo;
+    Publico_Objetivo[1] = iniciativa.cantPublico;
+    Financiamiento[0] = iniciativa.formaFinanciamiento;
+    Financiamiento[1] = iniciativa.presupuesto;
+    Documento_[0] = iniciativa.documentos[0].titulo;
+    Documento_[1] = iniciativa.documentos[0].fecha_publicacion;
+    Documento_[2] = iniciativa.documentos[0].autor;
+    Documento_[3] = iniciativa.documentos[0].tipo;
+    Documento_[4] = iniciativa.documentos[0].fuente;
+    Documento_[5] = iniciativa.documentos[0].materia;
+    Documento_[6] = iniciativa.documentos[0].enlace;
+    //console.log(Documento_);
+    return [Personalidad_Juridica, Persona_Natural, Iniciativa_Row, Espacio_Cultural, Espacio_Cultural, Publico_Objetivo, Financiamiento, Documento_ ];
   } catch (error) {
     throw new Error(error);
   }
