@@ -1,6 +1,6 @@
 import React from "react";
 import Footer from "../components/imports/Footer";
-import UserCreate from "../components/imports/userCreate";
+import UserCreate from "../components/imports/UserCreate";
 
 const UserManagment = () => {
   return (
@@ -13,7 +13,7 @@ const UserManagment = () => {
               <span className="">Crear usuarios</span>
               <div className="flex flex-row py-5 justify-center">
                 <UserCreate />
-                <UserCreate />
+                <div>a</div>
               </div>
             </div>
           </div>
