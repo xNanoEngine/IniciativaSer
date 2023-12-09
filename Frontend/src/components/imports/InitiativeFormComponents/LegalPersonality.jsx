@@ -4,7 +4,6 @@ import Combobox from "../Combobox";
 import { LegalPersonalitySchema } from "../../validations/LegalPersonalityValidation";
 
 const LegalPersonality = ({ onSubmit, info }) => {
-  //console.log(info);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [rut, setRut] = useState("");

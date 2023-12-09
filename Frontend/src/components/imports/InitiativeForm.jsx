@@ -20,7 +20,7 @@ const InitiativeForm = () => {
           params: {},
           ...config,
         });
-        console.log(data.data[1]);
+        console.log(data.data[2]);
         const val = {
           legalPersonality: {
             typeLegalPersonality: data.data[0][0],
@@ -116,6 +116,7 @@ const InitiativeForm = () => {
 
   const handleSubmit = async (e) => {
     const config = getConfigAuth(localStorage.getItem("token"));
+    console.log(formResults[3].selectedOptions.initiativeConcurseLine);
     const formData = {
       PersonaJuridica_nombre: formResults[1].name,
       PersonaJuridica_rut: formResults[1].rut,
@@ -133,6 +134,8 @@ const InitiativeForm = () => {
       Iniciativa_tipo: formResults[3].selectedOptions.initiativeType,
       Iniciativa_descripcion: formResults[3].initiativeDescription,
       Iniciativa_componente: formResults[3].selectedOptions.initiativeComponent,
+      Iniciativa_lineaConcurso:
+        formResults[3].selectedOptions.initiativeConcurseLine,
       Iniciativa_fechaInicio: formResults[3].initiativeInitDate,
       Iniciativa_fechaFin: formResults[3].initiativeEndDate,
       Iniciativa_presupuesto: formResults[6].budget,

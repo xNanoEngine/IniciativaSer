@@ -18,7 +18,7 @@ export const InitiativeSchema = Yup.object().shape({
     .trim()
     .required("La descripción de la iniciativa es obligatoria")
     .min(1, "La descripcion debe tener al menos un carácter")
-    .max(5000, "La descripcion no puede superar los 5000 carácteres"),
+    .max(255, "La descripcion no puede superar los 255 carácteres"),
   initiativeInitDate: Yup.date()
     .typeError("La fecha de inicio es obligatoria")
     .required("La fecha de inicio es obligatoria")
