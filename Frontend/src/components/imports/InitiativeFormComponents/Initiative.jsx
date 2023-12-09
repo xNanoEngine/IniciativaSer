@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   initiativeArea,
   initiativeComponent,
@@ -10,34 +10,49 @@ import {
 import { InitiativeSchema } from "../../validations/InitiativeValidation";
 import Combobox from "../Combobox";
 
-const Initiative = ({ onSubmit, data }) => {
+const Initiative = ({ onSubmit, info }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
+  const [initiativeName, setInitiativeName] = useState("");
+  const [description, setDescription] = useState("");
+  const [initDate, setInitDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
+  useEffect(() => {
+    if (info) {
+      setInitiativeName(info.name || "");
+      setDescription(info.description || "");
+      setInitDate(new Date(info.initDate).toISOString().split("T")[0] || "");
+      setEndDate(new Date(info.endDate).toISOString().split("T")[0] || "");
+      setSelectedOptions({
+        initiativeProgram: info.program || "",
+        initiativeType: info.type || "",
+        initiativeComponent: info.component || "",
+        initiativeConcurseLine: info.concurseLine || "",
+        initiativeArea: info.area || "",
+        initiativeComune: info.comune || "",
+      });
+    }
+  }, [info]);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       // Valida los datos con el esquema Yup importado
       await InitiativeSchema.validate(
         {
-          initiativeName: document
-            .getElementById("initiativeName")
-            .value.trim(),
+          initiativeName: initiativeName.trim(),
           initiativeProgram: selectedOptions.initiativeProgram,
           initiativeType: selectedOptions.initiativeType,
           initiativeComponent: selectedOptions.initiativeComponent,
           initiativeConcurseLine: selectedOptions.initiativeConcurseLine,
           initiativeArea: selectedOptions.initiativeArea,
           initiativeComune: selectedOptions.initiativeComune,
-          initiativeDescription: document
-            .getElementById("initiativeDescription")
-            .value.trim(),
-          initiativeInitDate:
-            document.getElementsByName("initiativeInitDate")[0].value,
-          initiativeEndDate:
-            document.getElementsByName("initiativeEndDate")[0].value,
+          initiativeDescription: initiativeDescription.trim(),
+          initiativeInitDate: initiativeInitDate,
+          initiativeEndDate: initiativeEndDate,
         },
         { abortEarly: false }
       );
@@ -68,6 +83,8 @@ const Initiative = ({ onSubmit, data }) => {
               type="text"
               id="initiativeName"
               name="initiativeName"
+              value={initiativeName}
+              onChange={(e) => setInitiativeName(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.initiativeName ? "border-red-500" : ""
               }`}
@@ -79,54 +96,60 @@ const Initiative = ({ onSubmit, data }) => {
           </div>
           <Combobox
             data={initiativeProgram}
-            label={"Programa"}
+            label={info ? info.program : "Programa"}
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeProgram", option)
             }
+            value={selectedOptions.initiativeProgram}
             error={errors.initiativeProgram}
           />
           <Combobox
             data={initiativeType}
-            label={"Tipo de iniciativa"}
+            label={info ? info.type : "Tipo de iniciativa"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("initiativeType", option)}
+            value={selectedOptions.initiativeType}
             error={errors.initiativeType}
           />
           <Combobox
             data={initiativeComponent}
-            label={"Componente"}
+            label={info ? info.component : "Componente"}
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeComponent", option)
             }
+            value={selectedOptions.initiativeComponent}
             error={errors.initiativeComponent}
           />
           <Combobox
             data={initiativeConcurseLine}
-            label={"Línea concurso"}
+            label={info ? info.concurseLine : "Línea concurso"}
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeConcurseLine", option)
             }
+            value={selectedOptions.initiativeConcurseLine}
             error={errors.initiativeConcurseLine}
           />
           <Combobox
             data={initiativeArea}
-            label={"Disciplina-Área"}
+            label={info ? info.area : "Disciplina-Área"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("initiativeArea", option)}
+            value={selectedOptions.initiativeArea}
             error={errors.initiativeArea}
           />
         </div>
         <div className="flex flex-col items-center md:ml-6 md:space-x-4 md:flex-row md:justify-left">
           <Combobox
             data={comuneFilters}
-            label={"Comuna"}
+            label={info ? info.comune : "Comuna"}
             prop={"w-32 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeComune", option)
             }
+            value={selectedOptions.comuneFilters}
             error={errors.initiativeComune}
           />
         </div>
@@ -136,6 +159,8 @@ const Initiative = ({ onSubmit, data }) => {
             type="text"
             id="initiativeDescription"
             name="initiativeDescription"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className={`w-3/4 h-44 px-4 py-2 rounded-md border resize-none${
               errors.initiativeDescription ? "border-red-500" : ""
             }`}
@@ -151,6 +176,8 @@ const Initiative = ({ onSubmit, data }) => {
             <input
               type="date"
               name="initiativeInitDate"
+              value={initDate}
+              onChange={(e) => setInitDate(e.target.value)}
               className={`rounded-md p-2 border border-gray-300 ${
                 errors.initiativeInitDate ? "border-red-500" : ""
               }`}
@@ -164,6 +191,8 @@ const Initiative = ({ onSubmit, data }) => {
             <input
               type="date"
               name="initiativeEndDate"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
               className={`rounded-md p-2 border border-gray-300 ${
                 errors.initiativeEndDate ? "border-red-500" : ""
               }`}

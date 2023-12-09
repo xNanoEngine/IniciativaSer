@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { financing } from "../../../constants";
 import { FinancingSchema } from "../../validations/FinancingValidation";
 import Combobox from "../Combobox";
 
-const Financing = ({ onSubmit }) => {
+const Financing = ({ onSubmit, info }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [budgetNumber, setbudgetNumber] = useState(0);
@@ -18,13 +18,21 @@ const Financing = ({ onSubmit }) => {
     }
     setbudgetNumber(value);
   };
+  useEffect(() => {
+    if (info) {
+      setbudgetNumber(info.budget || "");
+      setSelectedOptions({
+        financing: info.type || "",
+      });
+    }
+  }, [info]);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       // Valida los datos con el esquema Yup importado
       await FinancingSchema.validate(
         {
-          budget: parseInt(document.getElementById("budget").value),
+          budget: budgetNumber,
           financing: selectedOptions.financing,
         },
         { abortEarly: false }
@@ -49,9 +57,10 @@ const Financing = ({ onSubmit }) => {
         <div className="flex flex-col md:flex-row justify-left space-x-4">
           <Combobox
             data={financing}
-            label={"Financiamiento"}
+            label={info ? info.type : "Financiamiento"}
             prop={"w-60 mt-6"}
             onChange={(option) => handleOptionChange("financing", option)}
+            value={selectedOptions.financing}
             error={errors.financing}
           />
           <div className="flex flex-col mt-6 md:mt-0">

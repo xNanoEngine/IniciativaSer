@@ -4,10 +4,12 @@ import Combobox from "../Combobox";
 import { LegalPersonalitySchema } from "../../validations/LegalPersonalityValidation";
 
 const LegalPersonality = ({ onSubmit, setFormIsValid, info }) => {
+  //console.log(info);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [rut, setRut] = useState("");
   const [name, setName] = useState("");
+
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
@@ -66,7 +68,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, info }) => {
       // Valida los datos con el esquema Yup importado
       await LegalPersonalitySchema.validate(
         {
-          name: document.getElementById("name").value.trim(),
+          name: name.trim(),
           rut: rut.trim(),
           typeLegalPersonality: selectedOptions.typeLegalPersonality,
           juridicPersonRole: selectedOptions.juridicPersonRole,

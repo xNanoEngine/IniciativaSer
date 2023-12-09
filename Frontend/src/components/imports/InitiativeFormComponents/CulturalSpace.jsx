@@ -1,25 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { culturalSpaceTypes } from "../../../constants";
 import { CulturalSpaceSchema } from "../../validations/CulturalSpaceValidation";
 import Combobox from "../Combobox";
 
-const CulturalSpace = ({ onSubmit }) => {
+const CulturalSpace = ({ onSubmit, info }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
+  const [culturalSpaceName, setCulturalSpaceName] = useState("");
+  const [address, setAddress] = useState("");
+
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
-
+  useEffect(() => {
+    if (info) {
+      setCulturalSpaceName(info.name || "");
+      setAddress(info.address || "");
+      setSelectedOptions({
+        culturalSpaceTypes: info.type || "",
+      });
+    }
+  }, [info]);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       // Valida los datos con el esquema Yup importado
       await CulturalSpaceSchema.validate(
         {
-          culturalSpaceName: document
-            .getElementById("culturalSpaceName")
-            .value.trim(),
-          address: document.getElementById("address").value.trim(),
+          culturalSpaceName: culturalSpaceName.trim(),
+          address: address.trim(),
           culturalSpaceTypes: selectedOptions.culturalSpaceTypes,
         },
         { abortEarly: false }
@@ -51,6 +60,8 @@ const CulturalSpace = ({ onSubmit }) => {
               type="text"
               id="culturalSpaceName"
               name="culturalSpaceName"
+              value={culturalSpaceName}
+              onChange={(e) => setCulturalSpaceName(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.culturalSpaceName ? "border-red-500" : ""
               }`}
@@ -66,6 +77,8 @@ const CulturalSpace = ({ onSubmit }) => {
               type="text"
               id="address"
               name="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
               className={`w-72 px-4 py-2 rounded-md border ${
                 errors.address ? "border-red-500" : ""
               }`}
@@ -77,11 +90,12 @@ const CulturalSpace = ({ onSubmit }) => {
           </div>
           <Combobox
             data={culturalSpaceTypes}
-            label={"Tipo de espacio cultural"}
+            label={info ? info.type : "Tipo de espacio cultural"}
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("culturalSpaceTypes", option)
             }
+            value={selectedOptions.culturalSpaceTypes}
             error={errors.culturalSpaceTypes}
           />
           <button

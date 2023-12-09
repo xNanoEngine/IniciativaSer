@@ -1,41 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { documentType } from "../../../constants";
 import { DocumentSchema } from "../../validations/DocumentValidation";
 import Combobox from "../Combobox";
 
-const Document = ({ onSubmit }) => {
+const Document = ({ onSubmit, info }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
+  const [documentName, setDocumentName] = useState("");
+  const [documentAuthor, setDocumentAuthor] = useState("");
+  const [documentDate, setDocumentDate] = useState("");
+  const [documentInstitution, setDocumentInstitution] = useState("");
+  const [documentKeyWords, setDocumentKeyWords] = useState("");
+  const [documentUrl, setDocumentUrl] = useState("");
+
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
+
+  useEffect(() => {
+    if (info) {
+      setDocumentName(info.name || "");
+      setDocumentAuthor(info.author || "");
+      setDocumentDate(new Date(info.date).toISOString().split("T")[0] || "");
+      setDocumentInstitution(info.institution || "");
+      setDocumentKeyWords(info.key || "");
+      setDocumentUrl(info.url || "");
+      setSelectedOptions({
+        documentType: info.type || "",
+      });
+    }
+  }, [info]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       // Valida los datos con el esquema Yup importado
       await DocumentSchema.validate(
         {
-          documentName: document.getElementById("documentName").value.trim(),
-          documentAuthor: document
-            .getElementById("documentAuthor")
-            .value.trim(),
-          documentDate: document.getElementsByName("documentDate")[0].value,
+          documentName: documentName.trim(),
+          documentAuthor: documentAuthor.trim(),
+          documentDate: documentDate,
           documentType: selectedOptions.documentType,
-          institutionName: document
-            .getElementById("institutionName")
-            .value.trim(),
-          keyWords: document.getElementById("keyWords").value.trim(),
-          documentUrl: document.getElementById("documentUrl").value.trim(),
+          institutionName: documentInstitution.trim(),
+          keyWords: documentKeyWords.trim(),
+          documentUrl: documentUrl.trim(),
         },
         { abortEarly: false }
       );
       const formData = new FormData(event.target);
       const data = Object.fromEntries(formData);
-      data.documentName = data.documentName.trim();
-      data.documentAuthor = data.documentAuthor.trim();
-      data.institutionName = data.institutionName.trim();
-      data.keyWords = data.keyWords.trim();
-      data.documentUrl = data.documentUrl.trim();
+      data.documentName = data.documentName;
+      data.documentAuthor = data.documentAuthor;
+      data.institutionName = data.institutionName;
+      data.keyWords = data.keyWords;
+      data.documentUrl = data.documentUrl;
       data.selectedOptions = selectedOptions;
       onSubmit(data, true);
       setErrors({});
@@ -60,6 +78,8 @@ const Document = ({ onSubmit }) => {
               type="text"
               id="documentName"
               name="documentName"
+              value={documentName}
+              onChange={(e) => setDocumentName(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.documentName ? "border-red-500" : ""
               }`}
@@ -76,6 +96,8 @@ const Document = ({ onSubmit }) => {
             <input
               type="date"
               name="documentDate"
+              value={documentDate}
+              onChange={(e) => setDocumentDate(e.target.value)}
               className={`rounded-md p-2 border border-gray-300 ${
                 errors.documentDate ? "border-red-500" : ""
               }`}
@@ -90,6 +112,8 @@ const Document = ({ onSubmit }) => {
               type="text"
               id="documentAuthor"
               name="documentAuthor"
+              value={documentAuthor}
+              onChange={(e) => setDocumentAuthor(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.documentAuthor ? "border-red-500" : ""
               }`}
@@ -103,9 +127,10 @@ const Document = ({ onSubmit }) => {
         <div className="flex flex-col items-center md:ml-6 md:space-x-4 md:flex-row md:justify-left">
           <Combobox
             data={documentType}
-            label={"Tipo de documento"}
+            label={info ? info.type : "Tipo de documento"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("documentType", option)}
+            value={selectedOptions.documentType}
             error={errors.documentType}
           />
           <div className="flex flex-col mt-6 md:mt-0">
@@ -116,6 +141,8 @@ const Document = ({ onSubmit }) => {
               type="text"
               id="institutionName"
               name="institutionName"
+              value={documentInstitution}
+              onChange={(e) => setDocumentInstitution(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.institutionName ? "border-red-500" : ""
               }`}
@@ -131,6 +158,8 @@ const Document = ({ onSubmit }) => {
               type="text"
               id="keyWords"
               name="keyWords"
+              value={documentKeyWords}
+              onChange={(e) => setDocumentKeyWords(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.keyWords ? "border-red-500" : ""
               }`}
@@ -148,6 +177,8 @@ const Document = ({ onSubmit }) => {
               type="text"
               id="documentUrl"
               name="documentUrl"
+              value={documentUrl}
+              onChange={(e) => setDocumentUrl(e.target.value)}
               className={`w-80 px-4 py-2 rounded-md border ${
                 errors.documentUrl ? "border-red-500" : ""
               }`}

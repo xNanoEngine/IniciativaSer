@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { personRole, gender, country } from "../../../constants";
 import { NaturalPersonSchema } from "../../validations/NaturalPersonValidation";
 import Combobox from "../Combobox";
 
 const NaturalPerson = ({ onSubmit, info }) => {
-  console.log(info);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [rutPerson, setRut] = useState("");
-
+  const [namePerson, setName] = useState("");
+  const [lastNamePerson, setLastNamePerson] = useState("");
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
-
-  const handleRutChange = (event) => {
-    let value = event.target.value;
+  const formatRut = (value) => {
     // Eliminar cualquier carácter que no sea un dígito o la letra 'k' (para RUTs válidos)
     value = value.replace(/[^\dkK]/g, "");
     // Formatear el RUT con puntos y guión
@@ -39,9 +37,29 @@ const NaturalPerson = ({ onSubmit, info }) => {
         );
       }
     }
-    setRut(value);
+    return value;
+  };
+  const handleRutChange = (event) => {
+    const value = event.target.value;
+    const formattedRut = formatRut(value);
+    setRut(formattedRut);
   };
 
+  const handleRutBlur = () => {
+    const formattedRut = formatRut(rut);
+    setRut(formattedRut);
+  };
+  useEffect(() => {
+    if (info) {
+      setRut(formatRut(info.rut || ""));
+      setName(info.nombre || "");
+      setLastNamePerson(info.apellido || "");
+      setSelectedOptions({
+        personRole: info.typeNaturalPersonality || "",
+        country: info.pais || "",
+      });
+    }
+  }, [info]);
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -49,10 +67,8 @@ const NaturalPerson = ({ onSubmit, info }) => {
       // Valida los datos con el esquema Yup importado
       await NaturalPersonSchema.validate(
         {
-          namePerson: document.getElementById("namePerson").value.trim(),
-          lastNamePerson: document
-            .getElementById("lastNamePerson")
-            .value.trim(),
+          namePerson: namePerson.trim(),
+          lastNamePerson: lastNamePerson.trim(),
           rutPerson: rutPerson.trim(),
           personRole: selectedOptions.personRole,
           gender: selectedOptions.gender,
@@ -88,6 +104,7 @@ const NaturalPerson = ({ onSubmit, info }) => {
               name="rutPerson"
               value={rutPerson}
               onChange={handleRutChange}
+              onBlur={handleRutBlur}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.rutPerson ? "border-red-500" : ""
               }`}
@@ -103,6 +120,8 @@ const NaturalPerson = ({ onSubmit, info }) => {
               type="text"
               id="namePerson"
               name="namePerson"
+              value={namePerson}
+              onChange={(e) => setName(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.namePerson ? "border-red-500" : ""
               }`}
@@ -120,6 +139,8 @@ const NaturalPerson = ({ onSubmit, info }) => {
               type="text"
               id="lastNamePerson"
               name="lastNamePerson"
+              value={lastNamePerson}
+              onChange={(e) => setLastNamePerson(e.target.value)}
               className={`w-full px-4 py-2 rounded-md border ${
                 errors.lastNamePerson ? "border-red-500" : ""
               }`}
@@ -139,9 +160,10 @@ const NaturalPerson = ({ onSubmit, info }) => {
         <div className="flex flex-col items-center md:ml-6 md:space-x-4 md:flex-row md:justify-left">
           <Combobox
             data={personRole}
-            label={"Rol Persona Natural"}
+            label={info ? info.typeNaturalPersonality : "Rol Persona Jurídica"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("personRole", option)}
+            value={selectedOptions.personRole}
             error={errors.personRole}
           />
           <Combobox
@@ -153,9 +175,10 @@ const NaturalPerson = ({ onSubmit, info }) => {
           />
           <Combobox
             data={country}
-            label={"País de origen"}
+            label={info ? info.pais : "País de origen"}
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("country", option)}
+            value={selectedOptions.country}
             error={errors.country}
           />
         </div>

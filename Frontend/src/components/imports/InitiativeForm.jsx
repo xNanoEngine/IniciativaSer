@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { titles } from "../../constants";
 import clientAxios from "../config/clienteAxios";
@@ -9,25 +9,78 @@ const InitiativeForm = () => {
   const [accordions, setAccordion] = useState(titles);
   const [formResults, setFormResults] = useState({});
   const [resetCounter, setResetCounter] = useState(0);
+  const [info, setInfo] = useState({});
   const searchParams = new URLSearchParams(window.location.search);
   const query = searchParams.get("Edit");
-  let data = {};
-  const handleGetInitiative = async (query) => {
-    try {
-      const config = getConfigAuth(localStorage.getItem("token"));
-      const { data } = await clientAxios.get(`/iniciativas/${query}`, {
-        params: {},
-        ...config,
-      });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // let info = {};
+  useEffect(() => {
+    const handleGetInitiative = async (query) => {
+      try {
+        const config = getConfigAuth(localStorage.getItem("token"));
+        const { data } = await clientAxios.get(`/iniciativas/${query}`, {
+          params: {},
+          ...config,
+        });
+        console.log(data.data);
+        const val = {
+          legalPersonality: {
+            typeLegalPersonality: data.data[0][0],
+            nombre: data.data[0][1],
+            rut: data.data[0][2],
+            juridicPersonRole: data.data[0][3],
+          },
+          naturalPerson: {
+            rut: data.data[1][0],
+            nombre: data.data[1][1],
+            apellido: data.data[1][2],
+            typeNaturalPersonality: data.data[1][3],
+            pais: data.data[1][4],
+          },
+          initiative: {
+            name: data.data[2][0],
+            program: data.data[2][1],
+            type: data.data[2][2],
+            component: data.data[2][3],
+            concurseLine: data.data[2][4],
+            area: data.data[2][5],
+            comune: data.data[2][6],
+            description: data.data[2][7],
+            initDate: data.data[2][8],
+            endDate: data.data[2][9],
+          },
+          culturalSpace: {
+            name: data.data[3][0],
+            address: data.data[3][1],
+            type: data.data[3][2],
+          },
+          targetAudiences: {
+            type: data.data[5][0],
+            amount: data.data[5][1],
+          },
+          financing: {
+            type: data.data[6][0],
+            budget: data.data[6][1],
+          },
+          document: {
+            name: data.data[7][0],
+            date: data.data[7][1],
+            author: data.data[7][2],
+            type: data.data[7][3],
+            institution: data.data[7][4],
+            key: data.data[7][5],
+            url: data.data[7][6],
+          },
+        };
+        setInfo(val);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  if (query) {
-    handleGetInitiative(query);
-  }
+    if (query) {
+      handleGetInitiative(query);
+    }
+  }, [query]);
 
   const toggleAccordion = (accordionkey) => {
     const updatedAccordions = accordions.map((accord) => {
@@ -114,7 +167,7 @@ const InitiativeForm = () => {
           title={accordion.title}
           data={accordion.data}
           isOpen={accordion.isOpen}
-          formInfo={data ? data[accordion.code] : {}}
+          formInfo={query ? info[accordion.code] : {}}
           code={accordion.code}
           toggleAccordion={() => toggleAccordion(accordion.key)}
           onSubmit={(formData) => handleFormSubmit(accordion.key, formData)}

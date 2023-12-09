@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { targetType } from "../../../constants";
 import { TargetAudiencesSchema } from "../../validations/TargetAudiencesValidation";
 import Combobox from "../Combobox";
 
-const TargetAudiences = ({ onSubmit }) => {
+const TargetAudiences = ({ onSubmit, info }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
   const [targetAmountNumber, setTargetAmountNumber] = useState(0);
@@ -25,6 +25,14 @@ const TargetAudiences = ({ onSubmit }) => {
     // Actualizar el estado con el valor formateado
     setTargetAmountNumber(value);
   };
+  useEffect(() => {
+    if (info) {
+      setTargetAmountNumber(info.amount || "");
+      setSelectedOptions({
+        targetType: info.type || "",
+      });
+    }
+  }, [info]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -58,10 +66,11 @@ const TargetAudiences = ({ onSubmit }) => {
       <div className="flex flex-col ml-4">
         <div className="flex flex-col md:flex-row justify-left space-x-4">
           <Combobox
-            data={targetType}
+            data={info ? info.type : targetType}
             label={"Tipo de Público Objetivo"}
             prop={"w-60 mt-6"}
             onChange={(option) => handleOptionChange("targetType", option)}
+            value={selectedOptions.targetType}
             error={errors.targetType}
           />
           <div className="flex flex-col mt-6 md:mt-0">
