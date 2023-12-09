@@ -590,6 +590,23 @@ export async function getCuentasIniciativas_(Body) {
       cuentaId: cuentaId,
       flag: true,
     },
+    include: [
+      {
+        model: Comuna,
+        attributes: ["nombre"],
+        as: "comunas",
+      },
+      {
+        model: Programa,
+        as: "programas",
+        attributes: ["nombre"],
+      },
+      {
+        model: Documento,
+        as: "documentos",
+        attributes: ["titulo", "enlace"],
+      },
+    ]
   };
 
   try {

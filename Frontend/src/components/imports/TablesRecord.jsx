@@ -44,7 +44,7 @@ const TablesRecord = ({ currentPage, setCurrentPage }) => {
       if (response.status === 200) {
         const data = response.data;
         //const accountId = data.accountId;
-        localStorage.setItem("data", JSON.stringify(data.data));
+        localStorage.setItem("data", JSON.stringify(data.results));
         //setUserId(accountId);
         console.log(data.totalPages);
         setTotalPages(data.totalPages);
@@ -85,15 +85,28 @@ const TablesRecord = ({ currentPage, setCurrentPage }) => {
   );
 
   const handleOnClick = async (id) => {
-    try {
-      // Construir la URL del backend con el ID del elemento
-      const urlDelBackend = `/iniciativascuenta/${id}`;
-      await clientAxios.patch(urlDelBackend, {});
-      console.log("Solicitud PATCH exitosa");
-    } catch (error) {
-      console.error("Error al realizar la solicitud PATCH:", error);
+
+    const confirmacion = window.confirm('¿Estás seguro de que deseas realizar esta acción?');
+
+    // Si el usuario hizo clic en "Aceptar"
+    if (confirmacion) {
+      try {
+        try {
+          // Construir la URL del backend con el ID del elemento
+          const urlDelBackend = `/iniciativascuenta/${id}`;
+          await clientAxios.patch(urlDelBackend, {});
+          console.log("Solicitud PATCH exitosa");
+        } catch (error) {
+          console.error("Error al realizar la solicitud PATCH:", error);
+        }
+        fetchData();
+      } catch (error) {
+        console.error('Error al realizar la solicitud PATCH:', error);
+      }
+    } else {
+      // El usuario hizo clic en "Cancelar"
+      console.log('Acción cancelada');
     }
-    fetchData();
   };
 
   return (
@@ -149,7 +162,7 @@ const TablesRecord = ({ currentPage, setCurrentPage }) => {
                               }`}
                             >
                               <td className={classes}>
-                                <span className="font-normal text-gray-600 text-sm">
+                                <span href={`/view?id=${index}`} className="font-normal text-gray-600 text-sm">
                                   {nombre}
                                 </span>
                               </td>
