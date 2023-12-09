@@ -9,6 +9,7 @@ const NaturalPerson = ({ onSubmit, info }) => {
   const [rutPerson, setRut] = useState("");
   const [namePerson, setName] = useState("");
   const [lastNamePerson, setLastNamePerson] = useState("");
+
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
@@ -39,6 +40,18 @@ const NaturalPerson = ({ onSubmit, info }) => {
     }
     return value;
   };
+  useEffect(() => {
+    if (info && Object.keys(info).length > 0) {
+      setRut(formatRut(info.rut || ""));
+      setName(info.nombre || "");
+      setLastNamePerson(info.apellido || "");
+      setSelectedOptions({
+        personRole: info.typeNaturalPersonality || "",
+        country: info.pais || "",
+        gender: info.genero || "",
+      });
+    }
+  }, [info]);
   const handleRutChange = (event) => {
     const value = event.target.value;
     const formattedRut = formatRut(value);
@@ -46,20 +59,10 @@ const NaturalPerson = ({ onSubmit, info }) => {
   };
 
   const handleRutBlur = () => {
-    const formattedRut = formatRut(rut);
+    const formattedRut = formatRut(rutPerson);
     setRut(formattedRut);
   };
-  useEffect(() => {
-    if (info) {
-      setRut(formatRut(info.rut || ""));
-      setName(info.nombre || "");
-      setLastNamePerson(info.apellido || "");
-      setSelectedOptions({
-        personRole: info.typeNaturalPersonality || "",
-        country: info.pais || "",
-      });
-    }
-  }, [info]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -172,7 +175,9 @@ const NaturalPerson = ({ onSubmit, info }) => {
           />
           <Combobox
             data={gender}
-            label={"Genero"}
+            label={
+              info && Object.keys(info).length > 0 ? info.genero : "Genero"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("gender", option)}
             error={errors.gender}

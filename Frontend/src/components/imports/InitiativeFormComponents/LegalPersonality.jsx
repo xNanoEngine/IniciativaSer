@@ -3,7 +3,7 @@ import { personRole, typeLegalPersonality } from "../../../constants";
 import Combobox from "../Combobox";
 import { LegalPersonalitySchema } from "../../validations/LegalPersonalityValidation";
 
-const LegalPersonality = ({ onSubmit, setFormIsValid, info }) => {
+const LegalPersonality = ({ onSubmit, info }) => {
   //console.log(info);
   const [selectedOptions, setSelectedOptions] = useState({});
   const [errors, setErrors] = useState({});
@@ -41,7 +41,7 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, info }) => {
     return value;
   };
   useEffect(() => {
-    if (info) {
+    if (info && Object.keys(info).length > 0) {
       setRut(formatRut(info.rut || ""));
       setName(info.nombre || "");
       setSelectedOptions({

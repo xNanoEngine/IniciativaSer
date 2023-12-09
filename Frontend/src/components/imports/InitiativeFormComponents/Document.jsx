@@ -18,7 +18,7 @@ const Document = ({ onSubmit, info }) => {
   };
 
   useEffect(() => {
-    if (info) {
+    if (info && Object.keys(info).length > 0) {
       setDocumentName(info.name || "");
       setDocumentAuthor(info.author || "");
       const isValidDate = info.date && !isNaN(new Date(info.date).getTime());

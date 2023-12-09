@@ -17,12 +17,11 @@ const Initiative = ({ onSubmit, info }) => {
   const [description, setDescription] = useState("");
   const [initDate, setInitDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  console.log(info);
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
   useEffect(() => {
-    if (info) {
+    if (info && Object.keys(info).length > 0) {
       setInitiativeName(info.name || "");
       setDescription(info.description || "");
       const isValidInitDate =
