@@ -26,7 +26,7 @@ const TargetAudiences = ({ onSubmit, info }) => {
     setTargetAmountNumber(value);
   };
   useEffect(() => {
-    if (info) {
+    if (info && Object.keys(info).length > 0) {
       setTargetAmountNumber(info.amount || "");
       setSelectedOptions({
         targetType: info.type || "",

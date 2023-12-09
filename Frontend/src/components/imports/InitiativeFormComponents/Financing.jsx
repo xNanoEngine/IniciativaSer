@@ -19,7 +19,7 @@ const Financing = ({ onSubmit, info }) => {
     setbudgetNumber(value);
   };
   useEffect(() => {
-    if (info) {
+    if (info && Object.keys(info).length > 0) {
       setbudgetNumber(info.budget || "");
       setSelectedOptions({
         financing: info.type || "",

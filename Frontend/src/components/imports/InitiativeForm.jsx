@@ -20,7 +20,7 @@ const InitiativeForm = () => {
           params: {},
           ...config,
         });
-        console.log(data.data);
+        console.log(data.data[1]);
         const val = {
           legalPersonality: {
             typeLegalPersonality: data.data[0][0],
@@ -33,7 +33,8 @@ const InitiativeForm = () => {
             nombre: data.data[1][1],
             apellido: data.data[1][2],
             typeNaturalPersonality: data.data[1][3],
-            pais: data.data[1][4],
+            genero: data.data[1][4],
+            pais: data.data[1][5],
           },
           initiative: {
             name: data.data[2][0],

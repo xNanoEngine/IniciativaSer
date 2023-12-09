@@ -13,7 +13,7 @@ const CulturalSpace = ({ onSubmit, info }) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
   useEffect(() => {
-    if (info) {
+    if (info && Object.keys(info).length > 0) {
       setCulturalSpaceName(info.name || "");
       setAddress(info.address || "");
       setSelectedOptions({
