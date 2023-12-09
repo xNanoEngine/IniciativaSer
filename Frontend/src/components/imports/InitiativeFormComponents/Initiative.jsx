@@ -17,7 +17,7 @@ const Initiative = ({ onSubmit, info }) => {
   const [description, setDescription] = useState("");
   const [initDate, setInitDate] = useState("");
   const [endDate, setEndDate] = useState("");
-
+  console.log(info);
   const handleOptionChange = (key, option) => {
     setSelectedOptions((prevOptions) => ({ ...prevOptions, [key]: option }));
   };
@@ -25,8 +25,19 @@ const Initiative = ({ onSubmit, info }) => {
     if (info) {
       setInitiativeName(info.name || "");
       setDescription(info.description || "");
-      setInitDate(new Date(info.initDate).toISOString().split("T")[0] || "");
-      setEndDate(new Date(info.endDate).toISOString().split("T")[0] || "");
+      const isValidInitDate =
+        info.initDate && !isNaN(new Date(info.initDate).getTime());
+      const isValidEndDate =
+        info.endDate && !isNaN(new Date(info.endDate).getTime());
+      setInitDate(
+        isValidInitDate
+          ? new Date(info.initDate).toISOString().split("T")[0]
+          : ""
+      );
+      setEndDate(
+        isValidEndDate ? new Date(info.endDate).toISOString().split("T")[0] : ""
+      );
+
       setSelectedOptions({
         initiativeProgram: info.program || "",
         initiativeType: info.type || "",
@@ -50,9 +61,9 @@ const Initiative = ({ onSubmit, info }) => {
           initiativeConcurseLine: selectedOptions.initiativeConcurseLine,
           initiativeArea: selectedOptions.initiativeArea,
           initiativeComune: selectedOptions.initiativeComune,
-          initiativeDescription: initiativeDescription.trim(),
-          initiativeInitDate: initiativeInitDate,
-          initiativeEndDate: initiativeEndDate,
+          initiativeDescription: description.trim(),
+          initiativeInitDate: initDate,
+          initiativeEndDate: endDate,
         },
         { abortEarly: false }
       );
@@ -96,7 +107,9 @@ const Initiative = ({ onSubmit, info }) => {
           </div>
           <Combobox
             data={initiativeProgram}
-            label={info ? info.program : "Programa"}
+            label={
+              info && Object.keys(info).length > 0 ? info.program : "Programa"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeProgram", option)
@@ -106,7 +119,11 @@ const Initiative = ({ onSubmit, info }) => {
           />
           <Combobox
             data={initiativeType}
-            label={info ? info.type : "Tipo de iniciativa"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.type
+                : "Tipo de iniciativa"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("initiativeType", option)}
             value={selectedOptions.initiativeType}
@@ -114,7 +131,11 @@ const Initiative = ({ onSubmit, info }) => {
           />
           <Combobox
             data={initiativeComponent}
-            label={info ? info.component : "Componente"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.component
+                : "Componente"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeComponent", option)
@@ -124,7 +145,11 @@ const Initiative = ({ onSubmit, info }) => {
           />
           <Combobox
             data={initiativeConcurseLine}
-            label={info ? info.concurseLine : "Línea concurso"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.concurseLine
+                : "Línea concurso"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeConcurseLine", option)
@@ -134,7 +159,11 @@ const Initiative = ({ onSubmit, info }) => {
           />
           <Combobox
             data={initiativeArea}
-            label={info ? info.area : "Disciplina-Área"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.area
+                : "Disciplina-Área"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("initiativeArea", option)}
             value={selectedOptions.initiativeArea}
@@ -144,7 +173,9 @@ const Initiative = ({ onSubmit, info }) => {
         <div className="flex flex-col items-center md:ml-6 md:space-x-4 md:flex-row md:justify-left">
           <Combobox
             data={comuneFilters}
-            label={info ? info.comune : "Comuna"}
+            label={
+              info && Object.keys(info).length > 0 ? info.comune : "Comuna"
+            }
             prop={"w-32 mt-6"}
             onChange={(option) =>
               handleOptionChange("initiativeComune", option)

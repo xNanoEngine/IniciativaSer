@@ -66,8 +66,12 @@ const TargetAudiences = ({ onSubmit, info }) => {
       <div className="flex flex-col ml-4">
         <div className="flex flex-col md:flex-row justify-left space-x-4">
           <Combobox
-            data={info ? info.type : targetType}
-            label={"Tipo de Público Objetivo"}
+            data={targetType}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.type
+                : "Tipo de Público Objetivo"
+            }
             prop={"w-60 mt-6"}
             onChange={(option) => handleOptionChange("targetType", option)}
             value={selectedOptions.targetType}

@@ -160,7 +160,11 @@ const NaturalPerson = ({ onSubmit, info }) => {
         <div className="flex flex-col items-center md:ml-6 md:space-x-4 md:flex-row md:justify-left">
           <Combobox
             data={personRole}
-            label={info ? info.typeNaturalPersonality : "Rol Persona Jurídica"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.typeNaturalPersonality
+                : "Rol Persona Jurídica"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("personRole", option)}
             value={selectedOptions.personRole}
@@ -175,7 +179,11 @@ const NaturalPerson = ({ onSubmit, info }) => {
           />
           <Combobox
             data={country}
-            label={info ? info.pais : "País de origen"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.pais
+                : "País de origen"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("country", option)}
             value={selectedOptions.country}

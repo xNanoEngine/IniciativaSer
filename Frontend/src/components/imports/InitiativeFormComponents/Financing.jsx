@@ -57,7 +57,11 @@ const Financing = ({ onSubmit, info }) => {
         <div className="flex flex-col md:flex-row justify-left space-x-4">
           <Combobox
             data={financing}
-            label={info ? info.type : "Financiamiento"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.type
+                : "Financiamiento"
+            }
             prop={"w-60 mt-6"}
             onChange={(option) => handleOptionChange("financing", option)}
             value={selectedOptions.financing}
