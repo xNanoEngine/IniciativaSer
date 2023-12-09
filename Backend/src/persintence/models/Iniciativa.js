@@ -35,6 +35,9 @@ export const Iniciativa = sequelize.define(
     presupuesto: {
       type: DataTypes.INTEGER,
     },
+    lineaconcurso: {
+      type: DataTypes.STRING,
+    },
     formaFinanciamiento: {
       type: DataTypes.STRING,
     },
