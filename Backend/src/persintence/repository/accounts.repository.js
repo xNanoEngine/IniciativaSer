@@ -16,6 +16,13 @@ export async function getAccouts_() {
 export async function createAccounts_(cuentas) {
   const { name, password, rol } = cuentas;
   try {
+      const existingAcount = await Cuentas.findOne({
+      where: { name }
+    });
+
+    if (existingAcount) {
+      throw new Error ("La cuenta ya existe.");
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     let newAccount = await Cuentas.create(
       {
