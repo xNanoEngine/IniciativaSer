@@ -21,7 +21,12 @@ const Document = ({ onSubmit, info }) => {
     if (info) {
       setDocumentName(info.name || "");
       setDocumentAuthor(info.author || "");
-      setDocumentDate(new Date(info.date).toISOString().split("T")[0] || "");
+      const isValidDate = info.date && !isNaN(new Date(info.date).getTime());
+
+      setDocumentDate(
+        isValidDate ? new Date(info.date).toISOString().split("T")[0] : ""
+      );
+
       setDocumentInstitution(info.institution || "");
       setDocumentKeyWords(info.key || "");
       setDocumentUrl(info.url || "");
@@ -127,7 +132,11 @@ const Document = ({ onSubmit, info }) => {
         <div className="flex flex-col items-center md:ml-6 md:space-x-4 md:flex-row md:justify-left">
           <Combobox
             data={documentType}
-            label={info ? info.type : "Tipo de documento"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.type
+                : "Tipo de documento"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) => handleOptionChange("documentType", option)}
             value={selectedOptions.documentType}

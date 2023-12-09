@@ -12,7 +12,6 @@ const InitiativeForm = () => {
   const [info, setInfo] = useState({});
   const searchParams = new URLSearchParams(window.location.search);
   const query = searchParams.get("Edit");
-  // let info = {};
   useEffect(() => {
     const handleGetInitiative = async (query) => {
       try {

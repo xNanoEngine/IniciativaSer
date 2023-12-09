@@ -98,7 +98,9 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, info }) => {
           <Combobox
             data={typeLegalPersonality}
             label={
-              info ? info.typeLegalPersonality : "Tipo de Persona Jurídica"
+              info && Object.keys(info).length > 0
+                ? info.typeLegalPersonality
+                : "Tipo de Persona Jurídica"
             }
             prop={"w-72 mt-6"}
             onChange={(option) =>
@@ -141,7 +143,11 @@ const LegalPersonality = ({ onSubmit, setFormIsValid, info }) => {
           </div>
           <Combobox
             data={personRole}
-            label={info ? info.juridicPersonRole : "Rol Persona Jurídica"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.juridicPersonRole
+                : "Rol Persona Jurídica"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("juridicPersonRole", option)

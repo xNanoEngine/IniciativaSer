@@ -90,7 +90,11 @@ const CulturalSpace = ({ onSubmit, info }) => {
           </div>
           <Combobox
             data={culturalSpaceTypes}
-            label={info ? info.type : "Tipo de espacio cultural"}
+            label={
+              info && Object.keys(info).length > 0
+                ? info.type
+                : "Tipo de espacio cultural"
+            }
             prop={"w-52 mt-6"}
             onChange={(option) =>
               handleOptionChange("culturalSpaceTypes", option)
