@@ -23,6 +23,7 @@ import { PersonaJuridica } from "../models/PersonaJuridica.js";
 import { PersonaNatural } from "../models/PersonaNatural.js";
 
 export async function createInitiative(body) {
+  console.log(body);
   const {
     Iniciativa_id,
     Iniciativa_idInterno,
@@ -100,6 +101,7 @@ export async function createInitiative(body) {
     descripcion: Iniciativa_descripcion,
     componente: Iniciativa_componente,
     presupuesto: Iniciativa_presupuesto,
+    lineaconcurso: "TEMPLATE",
     formaFinanciamiento: Iniciativa_formaFinanciamiento,
     tipoPublicoObjetivo: Iniciativa_tipoPublicoObjetivo,
     cantPublico: Iniciativa_cantPublico,
@@ -545,6 +547,7 @@ export async function getIniciativa_(id) {
     Iniciativa_Row[1] = iniciativa.programas[0].dataValues.nombre;
     Iniciativa_Row[2] = iniciativa.tipo;
     Iniciativa_Row[3] = iniciativa.componente;
+    Iniciativa_Row[4] = iniciativa.lineaconcurso;
     Iniciativa_Row[5] = iniciativa.ambitodominioareas[0].nombre;
     Iniciativa_Row[6] = iniciativa.comunas[0].nombre;
     Iniciativa_Row[7] = iniciativa.descripcion;
