@@ -23,7 +23,6 @@ import { PersonaJuridica } from "../models/PersonaJuridica.js";
 import { PersonaNatural } from "../models/PersonaNatural.js";
 
 export async function createInitiative(body) {
-  console.log(body);
   const {
     Iniciativa_id,
     Iniciativa_idInterno,
@@ -172,6 +171,7 @@ export async function createInitiative(body) {
   };
 
   const cuenta = await Cuentas.findOne({ where: { id: cuentaId } });
+  console.log(Iniciativa_);
 
   try {
     const iniciativa = await createIniciativa_(Iniciativa_);
@@ -234,6 +234,7 @@ async function createIniciativa_(iniciativa) {
     descripcion,
     componente,
     presupuesto,
+    lineaconcurso,
     formaFinanciamiento,
     tipoPublicoObjetivo,
     cantPublico,
@@ -249,6 +250,7 @@ async function createIniciativa_(iniciativa) {
       descripcion,
       componente,
       presupuesto,
+      lineaconcurso,
       formaFinanciamiento,
       tipoPublicoObjetivo,
       cantPublico,
@@ -567,7 +569,7 @@ export async function getIniciativa_(id) {
     Documento_[4] = iniciativa.documentos[0].fuente;
     Documento_[5] = iniciativa.documentos[0].materia;
     Documento_[6] = iniciativa.documentos[0].enlace;
-    //console.log(Documento_);
+    console.log(iniciativa);
     return [Personalidad_Juridica, Persona_Natural, Iniciativa_Row, Espacio_Cultural, Espacio_Cultural, Publico_Objetivo, Financiamiento, Documento_ ];
   } catch (error) {
     throw new Error(error);
