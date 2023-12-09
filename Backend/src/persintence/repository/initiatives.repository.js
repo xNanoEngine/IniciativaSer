@@ -540,7 +540,7 @@ export async function getIniciativa_(id) {
     Persona_Natural[2] = iniciativa.personanaturals[0].dataValues.apellido;
     Persona_Natural[3] = iniciativa.personanaturals[0].dataValues.iniciativa_personanatural.dataValues.rol_persona_natural;
     Persona_Natural[4] = iniciativa.personanaturals[0].dataValues.genero;
-    Persona_Natural[4] = iniciativa.personanaturals[0].dataValues.pais_origen;
+    Persona_Natural[5] = iniciativa.personanaturals[0].dataValues.pais_origen;
     Iniciativa_Row[0] = iniciativa.nombre;
     Iniciativa_Row[1] = iniciativa.programas[0].dataValues.nombre;
     Iniciativa_Row[2] = iniciativa.tipo;
