@@ -33,7 +33,7 @@ export const Cuentas = sequelize.define(
 Cuentas.afterSync(async () => {
   const usuariosPredeterminados = [
     { name: "user", password: "userS3r3mi119", rol: "seremi" },
-    { name: "admin", password: "admin", rol: "admin" },
+    { name: "admin", password: "admin1122", rol: "admin" },
     // Puedes agregar más tipos de usuarios según sea necesario
   ];
 
