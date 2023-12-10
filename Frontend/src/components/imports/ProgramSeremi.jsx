@@ -51,7 +51,7 @@ const ProgramSeremi = () => {
                 : "hidden"
             }`}
           >
-            <ProgramCards ind={program.name} desc={program.description} />
+            <ProgramCards  ind={program.name} desc={program.description} img={program.img} />
           </div>
         ))}
       </div>
