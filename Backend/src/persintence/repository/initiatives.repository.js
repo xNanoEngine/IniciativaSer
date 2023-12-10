@@ -2,14 +2,14 @@ import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 //import sequelize from "sequelize";
 import { sequelize } from "../database/database.js";
-import {QueryTypes} from "sequelize";
+import { QueryTypes } from "sequelize";
 import { Cuentas } from "../models/Cuentas.js";
 import { Iniciativa } from "../models/Iniciativa.js";
 import { Programa } from "../models/Programa.js";
 import { Comuna } from "../models/Comuna.js";
 import { Documento } from "../models/Documento.js";
 import { ambitodominioarea } from "../models/ambitodominioarea.js";
-import { programa_iniciativa } from "../models/programa_iniciativa.js"
+import { programa_iniciativa } from "../models/programa_iniciativa.js";
 import { iniciativa_comuna } from "../models/iniciativa_comuna.js";
 
 import { createDocumento_ } from "./documentos.repository.js";
@@ -32,6 +32,7 @@ export async function createInitiative(body) {
     Iniciativa_componente,
     Iniciativa_presupuesto,
     Iniciativa_formaFinanciamiento,
+    Iniciativa_lineaConcurso,
     Iniciativa_tipoPublicoObjetivo,
     Iniciativa_cantPublico,
     Iniciativa_fechaInicio,
@@ -100,7 +101,7 @@ export async function createInitiative(body) {
     descripcion: Iniciativa_descripcion,
     componente: Iniciativa_componente,
     presupuesto: Iniciativa_presupuesto,
-    lineaconcurso: "TEMPLATE",
+    lineaconcurso: Iniciativa_lineaConcurso,
     formaFinanciamiento: Iniciativa_formaFinanciamiento,
     tipoPublicoObjetivo: Iniciativa_tipoPublicoObjetivo,
     cantPublico: Iniciativa_cantPublico,
@@ -193,7 +194,7 @@ export async function createInitiative(body) {
     const ambito_dominio_area = await ambitodominioarea.findOne({
       where: { nombre: AmbitoDominioArea_nombre },
     });
-    
+
     // 1 x n
     await iniciativa.addDocumento(documento);
     await persona_juridica.addPrograma(programa);
@@ -208,10 +209,14 @@ export async function createInitiative(body) {
     await persona_juridica.addEspacio_cultural(espacio_cultural);
     await tipo_espacio_cultural.addEspacio_cultural(espacio_cultural);
     await iniciativa.addComuna(comuna);
-    await persona_natural.addIniciativa(iniciativa, {through:{rol_persona_natural: PersonaNatural_rol} });
+    await persona_natural.addIniciativa(iniciativa, {
+      through: { rol_persona_natural: PersonaNatural_rol },
+    });
     await localidad_territorio.addIniciativa(iniciativa);
     await objetivo.addIniciativa(iniciativa);
-    await persona_juridica.addIniciativa(iniciativa, {through:{rol_persona_juridica: PersonaJuridica_rol} });
+    await persona_juridica.addIniciativa(iniciativa, {
+      through: { rol_persona_juridica: PersonaJuridica_rol },
+    });
     await programa.addIniciativa(iniciativa);
     await ambito_dominio_area.addIniciativa(iniciativa);
     await ambito_dominio_area.addPersonanatural(persona_natural);
@@ -461,7 +466,8 @@ export async function updateIniciativa_(iniciativa) {
   }
 }
 
-export async function deleteIniciativa_(id) { // Hace un borrado logico a la iniciativa seleccionada
+export async function deleteIniciativa_(id) {
+  // Hace un borrado logico a la iniciativa seleccionada
   try {
     console.log(id);
     const iniciativa_update = await Iniciativa.findByPk(id);
@@ -509,24 +515,44 @@ export async function getIniciativa_(id) {
       ],
     });
 
-    const results= await sequelize.query("SELECT personaJuridicaId FROM personajuridica_iniciativa WHERE iniciativaId = ?", { 
-      replacements: [id],
-      type: QueryTypes.SELECT });
+    const results = await sequelize.query(
+      "SELECT personaJuridicaId FROM personajuridica_iniciativa WHERE iniciativaId = ?",
+      {
+        replacements: [id],
+        type: QueryTypes.SELECT,
+      }
+    );
     const personajuridicaidq = results[0].personaJuridicaId;
-    const results2 = await sequelize.query("SELECT espacioCulturalId FROM espaciocultural_personajuridica WHERE personaJuridicaId = ?",{
-      replacements: [personajuridicaidq],
-      type: QueryTypes.SELECT});
+    const results2 = await sequelize.query(
+      "SELECT espacioCulturalId FROM espaciocultural_personajuridica WHERE personaJuridicaId = ?",
+      {
+        replacements: [personajuridicaidq],
+        type: QueryTypes.SELECT,
+      }
+    );
     const espacio_culturalidq = results2[0].espacioCulturalId;
-    const results3 = await sequelize.query("SELECT nombre, direccion, comunaId FROM espacio_cultural WHERE id = ?",{
-      replacements: [espacio_culturalidq],
-      type: QueryTypes.SELECT});
-    const results4 = await sequelize.query("SELECT tipoespacioculturalId FROM espaciocultural_tipoespaciocultural WHERE espacioCulturalId = ?",{
-      replacements: [espacio_culturalidq],
-      type: QueryTypes.SELECT});
+    const results3 = await sequelize.query(
+      "SELECT nombre, direccion, comunaId FROM espacio_cultural WHERE id = ?",
+      {
+        replacements: [espacio_culturalidq],
+        type: QueryTypes.SELECT,
+      }
+    );
+    const results4 = await sequelize.query(
+      "SELECT tipoespacioculturalId FROM espaciocultural_tipoespaciocultural WHERE espacioCulturalId = ?",
+      {
+        replacements: [espacio_culturalidq],
+        type: QueryTypes.SELECT,
+      }
+    );
     const tipoespacioculturalq = results4[0].tipoespacioculturalId;
-    const results5 = await sequelize.query("SELECT tipo from tipoespaciocultural WHERE id = ?", {
-      replacements: [tipoespacioculturalq],
-      type: QueryTypes.SELECT});
+    const results5 = await sequelize.query(
+      "SELECT tipo from tipoespaciocultural WHERE id = ?",
+      {
+        replacements: [tipoespacioculturalq],
+        type: QueryTypes.SELECT,
+      }
+    );
     //console.log(iniciativa.persona_juridicas[0].dataValues.personajuridica_iniciativa.dataValues.rol_persona_juridica);
     let Personalidad_Juridica = [];
     let Persona_Natural = [];
@@ -536,13 +562,16 @@ export async function getIniciativa_(id) {
     let Financiamiento = [];
     let Documento_ = [];
     Personalidad_Juridica[0] = iniciativa.persona_juridicas[0].dataValues.tipo;
-    Personalidad_Juridica[1] = iniciativa.persona_juridicas[0].dataValues.nombre;
+    Personalidad_Juridica[1] =
+      iniciativa.persona_juridicas[0].dataValues.nombre;
     Personalidad_Juridica[2] = iniciativa.persona_juridicas[0].dataValues.rut;
-    Personalidad_Juridica[3] = iniciativa.persona_juridicas[0].dataValues.personajuridica_iniciativa.dataValues.rol_persona_juridica;
+    Personalidad_Juridica[3] =
+      iniciativa.persona_juridicas[0].dataValues.personajuridica_iniciativa.dataValues.rol_persona_juridica;
     Persona_Natural[0] = iniciativa.personanaturals[0].dataValues.rut;
     Persona_Natural[1] = iniciativa.personanaturals[0].dataValues.nombre;
     Persona_Natural[2] = iniciativa.personanaturals[0].dataValues.apellido;
-    Persona_Natural[3] = iniciativa.personanaturals[0].dataValues.iniciativa_personanatural.dataValues.rol_persona_natural;
+    Persona_Natural[3] =
+      iniciativa.personanaturals[0].dataValues.iniciativa_personanatural.dataValues.rol_persona_natural;
     Persona_Natural[4] = iniciativa.personanaturals[0].dataValues.genero;
     Persona_Natural[5] = iniciativa.personanaturals[0].dataValues.pais_origen;
     Iniciativa_Row[0] = iniciativa.nombre;
@@ -570,7 +599,16 @@ export async function getIniciativa_(id) {
     Documento_[5] = iniciativa.documentos[0].materia;
     Documento_[6] = iniciativa.documentos[0].enlace;
     console.log(iniciativa);
-    return [Personalidad_Juridica, Persona_Natural, Iniciativa_Row, Espacio_Cultural, Espacio_Cultural, Publico_Objetivo, Financiamiento, Documento_ ];
+    return [
+      Personalidad_Juridica,
+      Persona_Natural,
+      Iniciativa_Row,
+      Espacio_Cultural,
+      Espacio_Cultural,
+      Publico_Objetivo,
+      Financiamiento,
+      Documento_,
+    ];
   } catch (error) {
     throw new Error(error);
   }
@@ -611,7 +649,7 @@ export async function getCuentasIniciativas_(Body) {
         as: "documentos",
         attributes: ["titulo", "enlace"],
       },
-    ]
+    ],
   };
 
   try {
@@ -628,57 +666,66 @@ export async function getCuentasIniciativas_(Body) {
   }
 }
 
-export async function getData_() { 
+export async function getData_() {
   try {
-    const data1 = await Programa.findAll({ // Agrupa las iniciativas por el programa
-      include: [{
-        model: Iniciativa,
-        attributes: [],
-        duplicating: false,
-      }],
+    const data1 = await Programa.findAll({
+      // Agrupa las iniciativas por el programa
+      include: [
+        {
+          model: Iniciativa,
+          attributes: [],
+          duplicating: false,
+        },
+      ],
       attributes: [
-        'nombre', 
-        [sequelize.fn('COUNT', sequelize.col("iniciativas.id")), "cantidad"],
+        "nombre",
+        [sequelize.fn("COUNT", sequelize.col("iniciativas.id")), "cantidad"],
       ],
       includeIgnoreAttributes: false,
-      group: ['id'], 
+      group: ["id"],
     });
 
-    const data2 = await Comuna.findAll({ // Agrupa las iniciativas por la comuna
-      include: [{
-        model: Iniciativa,
-        attributes: [],
-        duplicating: false,
-      }],
+    const data2 = await Comuna.findAll({
+      // Agrupa las iniciativas por la comuna
+      include: [
+        {
+          model: Iniciativa,
+          attributes: [],
+          duplicating: false,
+        },
+      ],
       attributes: [
-        'nombre', 
-        [sequelize.fn('COUNT', sequelize.col("iniciativas.id")), "cantidad"],
+        "nombre",
+        [sequelize.fn("COUNT", sequelize.col("iniciativas.id")), "cantidad"],
       ],
       includeIgnoreAttributes: false,
-      group: ['id'], 
+      group: ["id"],
     });
 
-    const data3 = await ambitodominioarea.findAll({ // Agrupa las iniciativas por el ambito
-      include: [{
-        model: Iniciativa,
-        attributes: [],
-        duplicating: false,
-      }],
+    const data3 = await ambitodominioarea.findAll({
+      // Agrupa las iniciativas por el ambito
+      include: [
+        {
+          model: Iniciativa,
+          attributes: [],
+          duplicating: false,
+        },
+      ],
       attributes: [
-        'nombre',
-        [sequelize.fn('COUNT', sequelize.col("iniciativas.id")), "cantidad"],
+        "nombre",
+        [sequelize.fn("COUNT", sequelize.col("iniciativas.id")), "cantidad"],
       ],
       includeIgnoreAttributes: false,
-      group: ['id'], 
+      group: ["id"],
     });
 
     return {
       data1: data1,
       data2: data2,
       data3: data3,
-    }
+    };
   } catch (error) {
     console.log(error);
-    return { "hola" : "hola", "message": error.message };
+    return { hola: "hola", message: error.message };
   }
 }
