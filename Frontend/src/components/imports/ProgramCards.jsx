@@ -21,7 +21,7 @@ const ProgramCards = (props) => {
       <div className="">
         <div className="w-full">
           {" "}
-          <img src={props.imagen} alt="" />
+          <img src={props.img} alt="" />
         </div>
         <div className="flex flex-col mx-4 my-2 space-y-5">
           <div className="mt-5">
