@@ -220,7 +220,11 @@ const InitiativeForm = () => {
     };
 
     try {
-      const { data } = await clientAxios.put(`/iniciativas`, formData, config);
+      const { data } = await clientAxios.put(
+        `/iniciativas/${query}`,
+        formData,
+        config
+      );
     } catch (error) {
       console.log(error);
     }
