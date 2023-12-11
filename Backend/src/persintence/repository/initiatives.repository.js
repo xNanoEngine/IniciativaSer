@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { QueryTypes } from "sequelize";
 import { Cuentas } from "../models/Cuentas.js";
-import { Iniciativa } from "../models/Iniciativa.js";
+import { Iniciativa, personajuridica_iniciativa } from "../models/Iniciativa.js";
 import { Programa } from "../models/Programa.js";
 import { Comuna } from "../models/Comuna.js";
 import { Documento } from "../models/Documento.js";
@@ -21,6 +21,7 @@ import { createPersonanatural_ } from "./personanaturals.repository.js";
 import { createTipoespaciocultural_ } from "./tipoespaciocultural.repository.js";
 import { PersonaJuridica } from "../models/PersonaJuridica.js";
 import { PersonaNatural } from "../models/PersonaNatural.js";
+import { tipoespaciocultural } from "../models/TipoEspacioCultural.js";
 
 export async function createInitiative(body) {
   const {
@@ -172,7 +173,6 @@ export async function createInitiative(body) {
   };
 
   const cuenta = await Cuentas.findOne({ where: { id: cuentaId } });
-  console.log(Iniciativa_);
 
   try {
     const iniciativa = await createIniciativa_(Iniciativa_);
@@ -222,7 +222,7 @@ export async function createInitiative(body) {
     await ambito_dominio_area.addPersonanatural(persona_natural);
     await ambito_dominio_area.addDocumento(documento);
     await ambito_dominio_area.addPersona_juridica(persona_juridica);
-    //console.log(Object.keys(iniciativa.__proto__));
+    //console.log(Object.keys(espacio_cultural.__proto__));
     console.log("TERMINO");
     return { status: true };
   } catch (error) {
@@ -429,40 +429,121 @@ export async function getIniciativas_(Body) {
   }
 }
 
-export async function updateIniciativa_(iniciativa) {
+export async function updateIniciativa_(req) {
+  console.log("El body es: ", req.body);
   const {
-    id,
-    idInterno,
-    nombre,
-    tipo,
-    descripcion,
-    componente,
-    presupuesto,
-    formaFinanciamiento,
-    tipoPublicoObjetivo,
-    cantPublico,
-    fechaInicio,
-    fechaFin,
-  } = iniciativa;
+    PersonaJuridica_nombre, //'UACH',
+    PersonaJuridica_rut, //'10.776.024-5',
+    PersonaJuridica_tipo, //'Institución pública',
+    PersonaJuridica_rol, //'Ejecutor',
+    PersonaNatural_rut, //'19.722.223-9',
+    PersonaNatural_nombre, //'Javier',
+    PersonaNatural_apellido, //'Mansilla',
+    PersonaNatural_genero, //'Masculino',
+    PersonaNatural_pais_origen, //'Chile',
+    PersonaNatural_rol, //'Ejecutor',
+    Iniciativa_nombre, //'LA INICIATIVA',
+    Comuna_nombre, //'Valdivia',
+    Programa_nombre, //'CECREA',
+    Iniciativa_id, //'1',
+    Iniciativa_tipo, //'Asesoría',
+    Iniciativa_descripcion, //'DESC',
+    Iniciativa_componente, //'Comisión de coordinación de protección de Mejor Niñez',
+    Iniciativa_lineaConcurso, //'Fomento a la Música Nacional',
+    Iniciativa_fechaInicio, //'2023-12-10',
+    Iniciativa_fechaFin, //'2023-12-17',
+    Iniciativa_presupuesto, //'7000000',
+    Iniciativa_formaFinanciamiento, //'Asignacion Directa',
+    Iniciativa_tipoPublicoObjetivo, //'Organizaciones',
+    Iniciativa_cantPublico, //'500',
+    AmbitoDominioArea_nombre, //'Arquitectura',
+    EspacioCultural_nombre, //'Curiñaco',
+    EspacioCultural_direccion, //'Miraflores #5555',
+    TipoEspacioCultural_tipo, //'Archivo',
+    Documento_titulo, //'DOC',
+    Documento_autor, //'Autor',
+    Documento_fecha_publicacion, //'2023-12-10',
+    Documento_enlace, //'https://www.google.cl',
+    Documento_materia, //'SICR',
+    Documento_fuente, //'LA FUENTE',
+    Documento_tipo, //'Afiche',
+    userRol, //'seremi',
+    userId //1
+  } = req.body;
+  const cuentaId = userId;
+  const comunaf = await Comuna.findOne({ where: { nombre: Comuna_nombre } });
+  const programaf = await Programa.findOne({
+    where: { nombre: Programa_nombre },
+  });
+  const cuenta = await Cuentas.findOne({ where: { id: cuentaId } });
+  const iniciativa_update = await Iniciativa.findByPk(Iniciativa_id);
   try {
-    const iniciativa_update = await Iniciativa.findByPk(id);
-    console.log(iniciativa_update);
-    iniciativa_update.idInterno = idInterno;
-    iniciativa_update.nombre = nombre;
-    iniciativa_update.tipo = tipo;
-    iniciativa_update.descripcion = descripcion;
-    iniciativa_update.componente = componente;
-    iniciativa_update.presupuesto = presupuesto;
-    iniciativa_update.formaFinanciamiento = formaFinanciamiento;
-    iniciativa_update.tipoPublicoObjetivo = tipoPublicoObjetivo;
-    iniciativa_update.cantPublico = cantPublico;
-    iniciativa_update.fechaInicio = fechaInicio;
-    iniciativa_update.fechaFin = fechaFin;
+    iniciativa_update.nombre = Iniciativa_nombre;
+    iniciativa_update.tipo = Iniciativa_tipo;
+    iniciativa_update.descripcion = Iniciativa_descripcion;
+    iniciativa_update.componente = Iniciativa_componente;
+    iniciativa_update.presupuesto = Iniciativa_presupuesto;
+    iniciativa_update.lineaconcurso = Iniciativa_lineaConcurso;
+    iniciativa_update.formaFinanciamiento = Iniciativa_formaFinanciamiento;
+    iniciativa_update.tipoPublicoObjetivo = Iniciativa_tipoPublicoObjetivo;
+    iniciativa_update.cantPublico = Iniciativa_cantPublico;
+    iniciativa_update.fechaInicio = Iniciativa_fechaInicio;
+    iniciativa_update.fechaFin = Iniciativa_fechaFin;
+    iniciativa_update.setComunas([comunaf]);
+    iniciativa_update.setProgramas([programaf]);
     await iniciativa_update.save();
-    return "se modifico correctamente";
+    console.log("iniciativa modificada correctamente, pasando al los documento");
+    const documentos_update = await iniciativa_update.getDocumentos();
+    const documento = await documentos_update[0];
+    documento.titulo = Documento_titulo;
+    documento.fecha_publicacion = Documento_fecha_publicacion;
+    documento.enlace = Documento_enlace;
+    documento.materia = Documento_materia;
+    documento.fuente = Documento_fuente;
+    documento.tipo = Documento_tipo;
+    documento.autor = Documento_autor;
+    await documento.save();
+    console.log("documento actualizado correctamente, pasando a persona juridica");
+    const personas_juridica_update = await iniciativa_update.getPersona_juridicas();
+    const pjuridica = await personas_juridica_update[0];
+    pjuridica.nombre = PersonaJuridica_nombre;
+    pjuridica.rut = PersonaJuridica_rut;
+    pjuridica.tipo = PersonaJuridica_tipo;
+    await pjuridica.save();
+    console.log("Persona juridica actualizada, pasando a persona natrual");
+    const personas_natural_update = await iniciativa_update.getPersonanaturals();
+    const pnatural = await personas_natural_update[0];
+    pnatural.rut = PersonaNatural_rut;
+    pnatural.nombre = PersonaNatural_nombre;
+    pnatural.apellido = PersonaNatural_apellido;
+    pnatural.genero = PersonaNatural_genero;
+    pnatural.pais_origen = PersonaNatural_pais_origen;
+    await pnatural.save();
+    const espacios_cultural_update = await pjuridica.getEspacio_culturals();
+    const espacio_cultural_ = await espacios_cultural_update[0];
+    espacio_cultural_.nombre = EspacioCultural_nombre;
+    espacio_cultural_.direccion = EspacioCultural_direccion;
+    await espacio_cultural_.save();
+    const ambitos_dominio_area_update = await iniciativa_update.getAmbitodominioareas();
+    const ambitodom = await ambitos_dominio_area_update[0];
+    ambitodom.nombre = AmbitoDominioArea_nombre;
+    ambitodom.save();
+    // const rjuridica = await personajuridica_iniciativa.findOne({ where: { iniciativa_id: Iniciativa_id } });
+    // rjuridica.rol_persona_juridica = PersonaJuridica_rol;
+    // await rjuridica.save();
+    // console.log("Pasó rol juridico");
+    // const rnatural = await iniciativa_personanatural.findOne({where: { iniciativa_id: Iniciativa_id}});
+    // rnatural.rol_persona_natural = PersonaNatural_rol;
+    // rnatural.save();
+    //console.log(Object.keys(espacio_cultural_.__proto__));
+    const tipo_espacio_cultural_ = await espacio_cultural_.getTipoespacioculturals();
+    const tipoespacio = await tipo_espacio_cultural_[0];
+    tipoespacio.tipo = TipoEspacioCultural_tipo;
+    tipoespacio.save();
+    console.log("TERMINO EL UPDATE!!!!");
   } catch (error) {
     console.log(error);
-    throw new Error("Sucedio un error......");
+    throw new Error("Sucedio un error al modificar updatear iniciativa......");
   }
 }
 
@@ -482,7 +563,7 @@ export async function deleteIniciativa_(id) {
 
 export async function getIniciativa_(id) {
   try {
-    console.log("getIniciativa");
+    //console.log("getIniciativa");
     const iniciativa = await Iniciativa.findOne({
       where: { id },
       include: [
@@ -598,7 +679,7 @@ export async function getIniciativa_(id) {
     Documento_[4] = iniciativa.documentos[0].fuente;
     Documento_[5] = iniciativa.documentos[0].materia;
     Documento_[6] = iniciativa.documentos[0].enlace;
-    console.log(iniciativa);
+    //console.log(iniciativa);
     return [
       Personalidad_Juridica,
       Persona_Natural,
