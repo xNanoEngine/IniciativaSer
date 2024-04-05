@@ -15,6 +15,7 @@ async function example() {
       .findElement(By.id("user_password"))
       .sendKeys("admin1122", Key.RETURN);
     // await driver.findElement(By.)
+    //await driver.findElement(By.css("Registrar Informacion")).click();
   } finally {
   }
 }
