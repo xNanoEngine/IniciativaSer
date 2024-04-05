@@ -62,7 +62,6 @@ function Navbar({ isAuth }) {
       <ul className="list-none sm:flex hidden justify-end items-center flex-1 ">
         {filteredLinks.map((nav, index) => (
           <li
-            id={nav.id}
             key={nav.ref || index}
             className={`font-custom_Syne relative font-bold cursor-pointer text-[16px] ${
               active === nav.ref ? "text-[#666666]" : "text-[#666666]"
@@ -93,6 +92,7 @@ function Navbar({ isAuth }) {
               <div className="cursor-default">
                 <a
                   href={`${nav.ref}`}
+                  id={`${nav.id}`}
                   className=" hover:text-black hover:underline hover:underline-offset-[24px] hover:decoration-2"
                 >
                   {nav.title}
@@ -113,7 +113,7 @@ function Navbar({ isAuth }) {
                     {subLink.title === "Salir" ? (
                       <a
                         href="#"
-                        id={subLink.id}
+                        id={`${subLink.id}`}
                         onClick={(e) => {
                           e.preventDefault();
                           handleToggleSub(nav.ref);
