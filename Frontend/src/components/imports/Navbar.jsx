@@ -62,6 +62,7 @@ function Navbar({ isAuth }) {
       <ul className="list-none sm:flex hidden justify-end items-center flex-1 ">
         {filteredLinks.map((nav, index) => (
           <li
+            id={nav.id}
             key={nav.ref || index}
             className={`font-custom_Syne relative font-bold cursor-pointer text-[16px] ${
               active === nav.ref ? "text-[#666666]" : "text-[#666666]"
@@ -112,6 +113,7 @@ function Navbar({ isAuth }) {
                     {subLink.title === "Salir" ? (
                       <a
                         href="#"
+                        id={subLink.id}
                         onClick={(e) => {
                           e.preventDefault();
                           handleToggleSub(nav.ref);
@@ -121,7 +123,9 @@ function Navbar({ isAuth }) {
                         {subLink.title}
                       </a>
                     ) : (
-                      <a href={`${subLink.ref}`}>{subLink.title}</a>
+                      <a href={`${subLink.ref}`} id={subLink.id}>
+                        {subLink.title}
+                      </a>
                     )}
                   </li>
                 ))}

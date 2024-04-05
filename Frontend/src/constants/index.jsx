@@ -11,67 +11,81 @@ export const navLinks = [
   {
     title: "Inicio",
     ref: "/",
+    id: "inicio",
   },
   {
     title: "Busqueda de información",
     ref: "buscar",
+    id: "buscar",
     subLinks: [
       {
         title: "Búsqueda avanzada",
         ref: "/search",
+        id: "avanzada",
       },
       {
         title: "Búsqueda de documentos",
         ref: "/document",
+        id: "documentos",
       },
     ],
   },
   {
     title: "Indicadores territoriales",
     ref: "indicadores",
+    id: "indicadores",
     subLinks: [
       {
         title: "Visor territorial",
         ref: "/visor",
+        id: "visor",
       },
       {
         title: "Estadísticas",
         ref: "/estadisticas",
+        id: "estadisticas",
       },
     ],
   },
   {
     title: "Registrar Información",
     ref: "/initiative",
+    id: "iniciativa",
     isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
   },
   {
     title: "Gestionar usuarios",
     ref: "/users",
+    id: "usuarios",
     isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
     isAdmin: true, // Esta opción solo se mostrará si el usuario es administrador
   },
   {
     title: "Iniciar Sesión",
     ref: "/login",
+    id: "iniciar",
     isAuth: false, // Esta opción solo se mostrará si el usuario no está logeado
   },
   {
     title: "Mi cuenta",
     ref: "cuenta",
+    id: "cuenta",
     isAuth: true, // Esta opción solo se mostrará si el usuario está logeado
     subLinks: [
       {
         title: "Mis datos",
         ref: "/subelemento1",
+        id: "datos",
       },
       {
         title: "Mis registros",
         ref: "/records",
+        id: "registros",
       },
       {
         title: "Salir",
         ref: "/logout", // Puedes usar una ruta diferente para cerrar sesión
+        id: "salir",
       },
     ],
   },
@@ -277,7 +291,7 @@ export const initiativeProgram = [
     name: "Acciona",
     description:
       "Acciona es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/1_c7hpcf.jpg"
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/1_c7hpcf.jpg",
   },
   {
     name: "CECREA",
@@ -289,68 +303,68 @@ export const initiativeProgram = [
     name: "Comunidad Creativa Regional",
     description:
       "Comunidad Creativa Regional es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/3_emhqmz.jpg",
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/3_emhqmz.jpg",
   },
   {
     name: "Cultura, Memoria y DDHH",
     description:
       "Cultura, Memoria y DDHH es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/4_wgpq7d.jpg",
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/4_wgpq7d.jpg",
   },
   {
     name: "Estrategias Regionales",
     description:
       "Estrategias Regionales es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156750/5_zgietg.jpg",
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156750/5_zgietg.jpg",
   },
   {
     name: "Fondo del Arte y la Educación",
     description:
       "Fondo del Arte y la Educación es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/6_qdm0kr.jpg",
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156749/6_qdm0kr.jpg",
   },
   {
     name: "Fondos concursables",
     description:
       "Fondos concursables es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156750/7_bgprm6.jpg",
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156750/7_bgprm6.jpg",
   },
   {
     name: "Fondos concursables Industrias Creativas",
     description:
       "Fondos concursables Industrias Creativas es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156751/8_jcplir.jpg",
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156751/8_jcplir.jpg",
   },
   {
     name: "Fortalecimiento de la Identidad Cultural",
     description:
       "Fortalecimiento de la Identidad Cultural es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156751/9_q3tcfq.jpg",
-    },
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156751/9_q3tcfq.jpg",
+  },
   {
     name: "Migrantes",
     description:
       "Migrantes es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156751/10_rtq9vx.jpg",
-    },
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156751/10_rtq9vx.jpg",
+  },
   {
     name: "Plan Nacional de Lectura",
     description:
       "Plan Nacional de Lectura es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156797/11_jbox8y.jpg",
-    },
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156797/11_jbox8y.jpg",
+  },
   {
     name: "Plan Nacional de Desarrollo Artístico en la región",
     description:
       "Plan Nacional de Desarrollo Artístico en la región es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156853/12_i8pu0i.jpg",
-    },
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156853/12_i8pu0i.jpg",
+  },
   {
     name: "Red Cultural",
     description:
       "Red Cultural es uno de los programas mas reconocidos a nivel pais, en el se pueden destacar diferentes proyectos como por ejemplo: Proyecto Seremi Cultura, Proyecto arboles UACH, entre otros.",
-    img:"https://res.cloudinary.com/de74rjdry/image/upload/v1702156909/13_zg652c.jpg",
-    },
+    img: "https://res.cloudinary.com/de74rjdry/image/upload/v1702156909/13_zg652c.jpg",
+  },
 ];
 export const initiativeFilters = [
   { name: "Nombre" },
