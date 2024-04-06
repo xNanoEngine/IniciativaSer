@@ -170,6 +170,7 @@ const InitiativeForm = () => {
       Documento_fuente: formResults[7].institutionName,
       Documento_tipo: formResults[7].selectedOptions.documentType,
     };
+    console.log(formData);
     try {
       const { data } = await clientAxios.post(`/iniciativas`, formData, config);
     } catch (error) {
