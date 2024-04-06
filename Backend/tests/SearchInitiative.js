@@ -1,10 +1,11 @@
 import { Builder, By, Key, until } from "selenium-webdriver";
+import {leerArchivoJSON} from "./OpenJson.js";
 
-async function busquedaTest() {
+async function busquedaTest(ip, name) {
   let driver = await new Builder().forBrowser("chrome").build();
   try {
-    await driver.get("http://localhost:3000/");
-    await driver.findElement(By.id("busqueda")).sendKeys("test", Key.RETURN); // crear iniciativa antes que se llame test
+    await driver.get(ip);
+    await driver.findElement(By.id("busqueda")).sendKeys(name, Key.RETURN); // crear iniciativa antes que se llame test
     const leerIniciativaSelect = await driver.wait(
       until.elementLocated(By.xpath("//a[contains(text(),'Leer iniciativa')]")),
       10000
@@ -13,5 +14,8 @@ async function busquedaTest() {
   } finally {
   }
 }
-busquedaTest();
 
+
+const dato = await leerArchivoJSON();
+
+busquedaTest(dato.ip, dato.name);
