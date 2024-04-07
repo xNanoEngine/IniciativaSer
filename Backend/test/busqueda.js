@@ -1,4 +1,4 @@
-//test no funcional tiempo de busqueda
+//test no funcional tiempo de busqueda (falta hacer iniciativas)
 
 import { Builder, By, Key } from "selenium-webdriver";
 
