@@ -1,49 +1,62 @@
-//test no funcional tiempo de busqueda (falta hacer iniciativas)
+  //test no funcional tiempo de busqueda (falta hacer iniciativas)
 
-import { Builder, By, Key } from "selenium-webdriver";
+  import { Builder, By, Key } from "selenium-webdriver";
+  import fs from "fs/promises";
 
-async function example() {
-  let driver = await new Builder().forBrowser("MicrosoftEdge").build();
-  try {
-    // Obtener el tiempo de inicio
-    const startTime = new Date().getTime();
+  const namesData = await fs.readFile("nombres.json", "utf-8");
+  const names = JSON.parse(namesData);
 
-    await driver.get("http://localhost:3000");
-    await driver.findElement(By.id("busqueda")).sendKeys("si", Key.RETURN);
+  // Seleccionar un valor aleatorio de la lista de nombres
+  const randomIndex = Math.floor(Math.random() * names.length);
+  const randomName = names[randomIndex];
+  const archivo = "tiempos_busqueda.txt";
 
-    // Esperar hasta que la URL cambie a la ruta deseada con un límite de 5 segundos
-    await waitForUrlChange(driver, "http://localhost:3000/search", 5000);
+  async function example() {
+    let driver = await new Builder().forBrowser("MicrosoftEdge").build();
+    try {
+      // Obtener el tiempo de inicio
+      const startTime = new Date().getTime();
 
-    // Obtener el tiempo de finalización
-    const endTime = new Date().getTime();
+      await driver.get("http://localhost:3000");
+      await driver.findElement(By.id("busqueda")).sendKeys(randomName, Key.RETURN);
 
-    // Calcular el tiempo transcurrido en milisegundos
-    const elapsedTime = endTime - startTime;
+      // Esperar hasta que la URL cambie a la ruta deseada con un límite de 5 segundos
+      await waitForUrlChange(driver, "http://localhost:3000/search", 5000);
 
-    console.log(`La página tardó ${elapsedTime} milisegundos en cargar después de la búsqueda.`);
-  } catch (error) {
-    console.error(error);
-  } finally {
+      // Obtener el tiempo de finalización
+      const endTime = new Date().getTime();
+
+      // Calcular el tiempo transcurrido en milisegundos
+      const elapsedTime = endTime - startTime;
+
+
+      
+      console.log(`La página tardó ${elapsedTime} milisegundos en cargar después de la búsqueda.`);
+      fs.appendFile(archivo, `${elapsedTime} milisegundos\n`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      await driver.quit(); // Cerrar el navegador
+    }
   }
-}
 
-async function waitForUrlChange(driver, targetUrl, timeout) {
-  return new Promise((resolve, reject) => {
-    const interval = 100; // Intervalo de verificación de la URL en milisegundos
-    let elapsedTime = 0;
+  async function waitForUrlChange(driver, targetUrl, timeout) {
+    return new Promise((resolve, reject) => {
+      const interval = 100; // Intervalo de verificación de la URL en milisegundos
+      let elapsedTime = 0;
 
-    const intervalId = setInterval(async () => {
-      elapsedTime += interval;
-      const currentUrl = await driver.getCurrentUrl();
-      if (currentUrl.includes(targetUrl)) {
-        clearInterval(intervalId);
-        resolve();
-      } else if (elapsedTime >= timeout) {
-        clearInterval(intervalId);
-        reject(new Error(`La página no cargó la URL ${targetUrl} dentro de ${timeout} milisegundos.`));
-      }
-    }, interval);
-  });
-}
+      const intervalId = setInterval(async () => {
+        elapsedTime += interval;
+        const currentUrl = await driver.getCurrentUrl();
+        if (currentUrl.includes(targetUrl)) {
+          clearInterval(intervalId);
+          resolve();
+        } else if (elapsedTime >= timeout) {
+          clearInterval(intervalId);
+          reject(new Error(`La página no cargó la URL ${targetUrl} dentro de ${timeout} milisegundos.`));
+        }
+      }, interval);
+    });
+  }
 
-example();
+  example();
