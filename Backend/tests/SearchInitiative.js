@@ -26,6 +26,5 @@ async function busquedaTest(ip, name, expectedName) {
 }
 
 
-const dato = await leerArchivoJSON();
-
+const dato = await leerArchivoJSON("SearchInitiative.json");
 busquedaTest(dato.ip, dato.name, "test");
