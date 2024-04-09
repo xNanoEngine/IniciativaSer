@@ -3,7 +3,7 @@ import {leerArchivoJSON} from "./OpenJson.js";
 import assert from 'assert';
 import { error } from "console";
 
-async function busquedaTest(ip, name, expectedName) {
+async function busquedaTest(ip, name) {
   let driver = await new Builder().forBrowser("chrome").build();
   try {
     await driver.get(ip);
@@ -19,12 +19,12 @@ async function busquedaTest(ip, name, expectedName) {
 }
   finally {
     let nombreIniciativaEncontrado = await driver.findElement(By.xpath(`//h1[contains(text(), "${name}")]`)).getText();
-    assert.strictEqual(nombreIniciativaEncontrado, expectedName, 'El nombre de la iniciativa no coincide con el valor esperado.');
-    console.log('El nombre de la iniciativa coincide con el valor esperado:', expectedName);
+    assert.strictEqual(nombreIniciativaEncontrado, name, 'El nombre de la iniciativa no coincide con el valor esperado.');
+    console.log('El nombre de la iniciativa coincide con el valor esperado:', name);
     await driver.quit();
   }
 }
 
 
 const dato = await leerArchivoJSON("SearchInitiative.json");
-busquedaTest(dato.ip, dato.name, "test");
+busquedaTest(dato.ip, dato.name);
