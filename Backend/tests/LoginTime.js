@@ -19,6 +19,9 @@ async function loginTime(username, password) {
   } catch (error) {
     console.error(error);
   } finally {
+    const currentUrl = await driver.getCurrentUrl();
+    assert.strictEqual(currentUrl, 'http://localhost:3000/', 'La pagina resultado no es la de inicio.');
+    console.log('El valor obtenido coincide con el valor esperado:');
     await driver.quit(); 
   }
 }
@@ -27,5 +30,4 @@ const dato = await leerArchivoJSON("TestUsers.json");
 const tiempo = 0;
 for (const key in dato) {
     tiempo += loginTime(key.name, key.password)}
-
 console.log("Tiempo promedio de carga: " + (tiempo/dato.length));
