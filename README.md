@@ -13,3 +13,16 @@ Trabajo que busca dar trazabilidad a las iniciativas propuestas en la región de
 -  Javier Mansilla
 -  Tomas Manriquez
 -  Manuel Gatica
+
+## Ejecucion de test:
+Pre-requisitos:
+- Tener la aplicación clonada del GitHub
+- Tener Nodejs instalado
+- Instalar Selenium-webdriver
+    + npm install selenium-webdriver
+
+- Ejecutar los test automáticos desde la consola
+    + node .\Backend\test\login.js
+        -(funcional)
+    + node .\Backend\test\busqueda.js
+        -(no funcional)

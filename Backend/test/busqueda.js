@@ -1,4 +1,4 @@
-  //test no funcional tiempo de busqueda (falta hacer iniciativas)
+  //test no funcional tiempo de busqueda 
 
   import { Builder, By, Key } from "selenium-webdriver";
   import fs from "fs/promises";

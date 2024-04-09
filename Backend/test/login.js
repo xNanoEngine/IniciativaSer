@@ -1,3 +1,4 @@
+ //test funcional login
 import { Builder, By, Key } from "selenium-webdriver";
 import fs from "fs/promises";
 
