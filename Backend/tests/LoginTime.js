@@ -22,7 +22,8 @@ async function loginTime(username, password) {
     const currentUrl = await driver.getCurrentUrl();
     assert.strictEqual(currentUrl, 'http://localhost:3000/', 'La pagina resultado no es la de inicio.');
     console.log('El valor obtenido coincide con el valor esperado:');
-    await driver.quit(); 
+    await driver.quit();
+    return elapsedTime;
   }
 }
 
