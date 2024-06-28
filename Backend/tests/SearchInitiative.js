@@ -4,7 +4,7 @@ import assert from 'assert';
 import { error } from "console";
 
 async function busquedaTest(ip, name) {
-  let driver = await new Builder().forBrowser("chrome").build();
+  let driver = await new Builder().forBrowser("firefox").build();
   try {
     await driver.get(ip);
     await driver.findElement(By.id("busqueda")).sendKeys(name, Key.RETURN); // crear iniciativa antes que se llame test
